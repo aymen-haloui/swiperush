@@ -2,7 +2,13 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useNavigate } from "react-router-dom";
 import { Crown, Mail, Lock, User, Chrome, Loader2 } from "lucide-react";
@@ -10,6 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/useApi";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { apiClient } from "@/lib/api";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -19,28 +26,22 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
   const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (formData.password !== formData.confirmPassword) {
-      alert(t("auth.passwordsDontMatch"));
-      return;
-    }
+  e.preventDefault();
+  try {
+    const response = await apiClient.register(formData);
+    console.log("✅ Registered:", response.user);
 
-    try {
-      await register({
-        username: formData.username,
-        email: formData.email,
-        password: formData.password
-      });
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Registration failed:", error);
-    }
-  };
+    // Redirect only after successful registration
+    navigate("/dashboard");
+  } catch (err) {
+    console.error("❌ Registration failed:", err);
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -82,7 +83,9 @@ const Register = () => {
                     type="text"
                     placeholder="challenger123"
                     value={formData.username}
-                    onChange={(e) => setFormData({...formData, username: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, username: e.target.value })
+                    }
                     className="pl-10"
                     required
                     disabled={isRegistering}
@@ -99,7 +102,9 @@ const Register = () => {
                     type="email"
                     placeholder="your@email.com"
                     value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     className="pl-10"
                     required
                     disabled={isRegistering}
@@ -116,7 +121,9 @@ const Register = () => {
                     type="password"
                     placeholder="••••••••"
                     value={formData.password}
-                    onChange={(e) => setFormData({...formData, password: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                     className="pl-10"
                     required
                     disabled={isRegistering}
@@ -125,7 +132,9 @@ const Register = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">{t("auth.confirmPassword")}</Label>
+                <Label htmlFor="confirmPassword">
+                  {t("auth.confirmPassword")}
+                </Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -133,7 +142,12 @@ const Register = () => {
                     type="password"
                     placeholder="••••••••"
                     value={formData.confirmPassword}
-                    onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        confirmPassword: e.target.value,
+                      })
+                    }
                     className="pl-10"
                     required
                     disabled={isRegistering}
@@ -141,7 +155,11 @@ const Register = () => {
                 </div>
               </div>
 
-              <Button type="submit" variant="hero" className="w-full" disabled={isRegistering}>
+              <Button
+                type="submit"
+                variant="hero"
+                className="w-full"
+                disabled={isRegistering}>
                 {isRegistering ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -169,8 +187,7 @@ const Register = () => {
                 <button
                   type="button"
                   className="text-primary hover:underline font-semibold"
-                  onClick={() => navigate("/login")}
-                >
+                  onClick={() => navigate("/login")}>
                   {t("auth.signIn")}
                 </button>
               </div>

@@ -219,119 +219,98 @@ const Profile = () => {
           </CardContent>
         </Card>
         {/* Change Password Section */}
-        <Card className="glass-card border border-border/40 max-w-4xl mx-auto">
-          <CardContent className="p-8 space-y-6">
-            <h2 className="text-xl font-semibold flex items-center gap-2">
-              <KeyRound className="w-5 h-5 text-primary" /> Change Password
-            </h2>
+        {/* Change Password Section */}
+        <Card className="glass-card border border-border/40 max-w-4xl mx-auto transition-all duration-300 hover:shadow-[0_0_25px_rgba(99,102,241,0.3)]">
+          <CardContent className="p-8 space-y-8">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <KeyRound className="w-5 h-5 text-primary" /> Change Password
+              </h2>
+              {changing && (
+                <Loader2 className="w-5 h-5 text-primary animate-spin" />
+              )}
+            </div>
 
+            {/* Status Alerts */}
             {errorMsg && (
-              <Alert variant="destructive">
+              <Alert variant="destructive" className="animate-fade-in">
                 <AlertDescription>{errorMsg}</AlertDescription>
               </Alert>
             )}
             {message && (
-              <Alert>
-                <AlertDescription>{message}</AlertDescription>
+              <Alert className="border border-green-500/40 bg-green-500/10 animate-fade-in">
+                <AlertDescription className="text-green-600">
+                  {message}
+                </AlertDescription>
               </Alert>
             )}
 
+            {/* Inputs Grid */}
             <div className="grid md:grid-cols-3 gap-4">
-              {/* Current Password */}
-              <div className="relative">
-                <Input
-                  type={showPassword.current ? "text" : "password"}
-                  placeholder="Current Password"
-                  value={passwordData.currentPassword}
-                  onChange={(e) =>
-                    setPasswordData({
-                      ...passwordData,
-                      currentPassword: e.target.value,
-                    })
-                  }
-                  className="pr-10"
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-3 flex items-center text-muted-foreground"
-                  onClick={() =>
-                    setShowPassword({
-                      ...showPassword,
-                      current: !showPassword.current,
-                    })
-                  }>
-                  {showPassword.current ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
-                </button>
-              </div>
-
-              {/* New Password */}
-              <div className="relative">
-                <Input
-                  type={showPassword.new ? "text" : "password"}
-                  placeholder="New Password"
-                  value={passwordData.newPassword}
-                  onChange={(e) =>
-                    setPasswordData({
-                      ...passwordData,
-                      newPassword: e.target.value,
-                    })
-                  }
-                  className="pr-10"
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-3 flex items-center text-muted-foreground"
-                  onClick={() =>
-                    setShowPassword({ ...showPassword, new: !showPassword.new })
-                  }>
-                  {showPassword.new ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
-                </button>
-              </div>
-
-              {/* Confirm Password */}
-              <div className="relative">
-                <Input
-                  type={showPassword.confirm ? "text" : "password"}
-                  placeholder="Confirm Password"
-                  value={passwordData.confirmPassword}
-                  onChange={(e) =>
-                    setPasswordData({
-                      ...passwordData,
-                      confirmPassword: e.target.value,
-                    })
-                  }
-                  className="pr-10"
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-3 flex items-center text-muted-foreground"
-                  onClick={() =>
-                    setShowPassword({
-                      ...showPassword,
-                      confirm: !showPassword.confirm,
-                    })
-                  }>
-                  {showPassword.confirm ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
-                </button>
-              </div>
+              {[
+                {
+                  key: "current",
+                  placeholder: "Current Password",
+                  value: passwordData.currentPassword,
+                },
+                {
+                  key: "new",
+                  placeholder: "New Password",
+                  value: passwordData.newPassword,
+                },
+                {
+                  key: "confirm",
+                  placeholder: "Confirm Password",
+                  value: passwordData.confirmPassword,
+                },
+              ].map((field) => (
+                <div key={field.key} className="relative group">
+                  <Input
+                    type={
+                      showPassword[field.key as keyof typeof showPassword]
+                        ? "text"
+                        : "password"
+                    }
+                    placeholder={field.placeholder}
+                    value={field.value}
+                    onChange={(e) =>
+                      setPasswordData({
+                        ...passwordData,
+                        [`${field.key}Password`]: e.target.value,
+                      } as typeof passwordData)
+                    }
+                    className="pr-10 focus:ring-2 focus:ring-primary/40 transition-all"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-3 flex items-center text-muted-foreground hover:text-primary transition-colors"
+                    onClick={() =>
+                      setShowPassword({
+                        ...showPassword,
+                        [field.key]:
+                          !showPassword[field.key as keyof typeof showPassword],
+                      })
+                    }>
+                    {showPassword[field.key as keyof typeof showPassword] ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
+              ))}
             </div>
 
-            <Button onClick={handleChangePassword} disabled={changing}>
-              {changing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Change Password
-            </Button>
+            {/* Action Button */}
+            <div className="flex justify-end pt-4">
+              <Button
+                onClick={handleChangePassword}
+                disabled={changing}
+                className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-all rounded-lg shadow-md">
+                {changing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                Change Password
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </main>

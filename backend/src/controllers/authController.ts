@@ -5,22 +5,27 @@ import { AuthRequest } from '../middleware/auth';
 export class AuthController {
   // Register new user
   static async register(req: Request, res: Response): Promise<void> {
-    try {
-      const result = await AuthService.register(req.body);
-      
-      res.status(201).json({
-        success: true,
-        message: 'User registered successfully',
-        data: result
-      });
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Unknown error';
-      res.status(400).json({
-        success: false,
-        error: message
-      });
-    }
+  try {
+    // Validate and register user
+    const result = await AuthService.register(req.body);
+
+    res.status(201).json({
+      success: true,
+      message: 'User registered successfully',
+      data: {
+        user: result.user,
+        token: result.token,
+      },
+    });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    res.status(400).json({
+      success: false,
+      error: message,
+    });
   }
+}
+
 
   // Login user
   static async login(req: Request, res: Response): Promise<void> {
