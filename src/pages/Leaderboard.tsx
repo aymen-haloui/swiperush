@@ -2,7 +2,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
-import { Crown, Trophy, Medal, Award, Zap, Loader2, LogOut } from "lucide-react";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
+import {
+  Crown,
+  Trophy,
+  Medal,
+  Award,
+  Zap,
+  Loader2,
+  LogOut,
+} from "lucide-react";
 import { useLeaderboard } from "@/hooks/useApi";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
@@ -78,9 +91,16 @@ const Leaderboard = () => {
               </Button>
             )}
             {isAuthenticated && (
-             <Button variant="ghost" size="icon" onClick={handleLogout}>
-              <LogOut className="w-5 h-5" />
-            </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon" onClick={handleLogout}>
+                    <LogOut className="w-5 h-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                  <p>Logout</p>
+                </TooltipContent>
+              </Tooltip>
             )}
           </div>
         </div>
