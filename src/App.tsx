@@ -16,6 +16,7 @@ import "./i18n"; // Initialize i18n
 import { useRTL } from "./hooks/useRTL";
 import Profile from "./pages/Profile";
 import AuthRoute from "./components/AuthRoute";
+import AdminRoute from "./components/AdminRoute";
 
 const queryClient = new QueryClient();
 
@@ -42,7 +43,15 @@ const AppContent = () => {
 
           <Route path="/challenge/:id" element={<ChallengeDetail />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          />
+  
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin/create-challenge" element={<CreateChallenge />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

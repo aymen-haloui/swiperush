@@ -46,28 +46,53 @@ const Login = () => {
   // ✅ Handle login
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
-      await login({ email, password });
+      const res = await login({ email, password }); // from your useAuth() hook
+
+      // ✅ Store token securely
+      if (res?.token) {
+        localStorage.setItem("auth_token", res.token);
+      }
+
+      // ✅ Optional: store minimal user info if you need it later
+      if (res?.user) {
+        localStorage.setItem("user_email", res.user.email);
+        localStorage.setItem("is_admin", String(res.user.isAdmin));
+      }
 
       await queryClient.invalidateQueries({ queryKey: ["profile"] });
 
-      toast({
-        title: "✅ Successfully logged in",
-        description: "Welcome back!",
-        duration: 2500,
-        className:
-          "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
-      });
-
-      navigate("/dashboard");
-    } catch (error) {
+      // ✅ Redirect based on admin status
+      if (res?.user?.isAdmin) {
+        toast({
+          title: "👑 Welcome Admin",
+          description: "Redirecting you to the admin dashboard...",
+          duration: 2500,
+          className:
+            "border-purple-500 bg-purple-50 text-purple-700 dark:bg-purple-900 dark:text-purple-100",
+        });
+        navigate("/admin");
+      } else {
+        toast({
+          title: "✅ Login successful",
+          description: "Welcome back!",
+          duration: 2500,
+          className:
+            "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
+        });
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
       console.error("Login failed:", error);
       toast({
-        title: "⚠️ Unexpected error",
-        description: "Please try again later.",
+        title: "❌ Login failed",
+        description:
+          error?.response?.data?.message ||
+          error?.message ||
+          "Invalid email or password.",
         duration: 3000,
-        className:
-          "border-yellow-500 bg-yellow-50 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-100",
+        variant: "destructive",
       });
     }
   };
@@ -194,4 +219,3 @@ const Login = () => {
 };
 
 export default Login;
-  
