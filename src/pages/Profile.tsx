@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Loader2,
   Eye,
@@ -27,6 +28,8 @@ const Profile = () => {
   console.log("🌍 API base URL =", import.meta.env.VITE_API_URL);
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { toast } = useToast();
+
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState({
     current: false,
@@ -62,19 +65,27 @@ const Profile = () => {
       !passwordData.newPassword ||
       !passwordData.confirmPassword
     ) {
-      setErrorMsg("Please fill in all fields.");
+      toast({
+        title: "⚠️ Missing fields",
+        description: "Please fill in all password fields.",
+        variant: "destructive",
+        duration: 3000,
+      });
       return;
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setErrorMsg("New passwords do not match.");
+      toast({
+        title: "❌ Passwords do not match",
+        description: "Make sure the new and confirm passwords are identical.",
+        variant: "destructive",
+        duration: 3000,
+      });
       return;
     }
 
     try {
       setChanging(true);
-      setErrorMsg(null);
-      setMessage(null);
 
       const token = localStorage.getItem("auth_token");
       const baseUrl = import.meta.env.VITE_API_URL;
@@ -92,17 +103,34 @@ const Profile = () => {
 
       const data = await res.json();
       if (res.ok) {
-        setMessage("Password changed successfully!");
+        toast({
+          title: "✅ Password changed successfully!",
+          description: "Your password has been updated securely.",
+          duration: 3000,
+          className:
+            "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
+        });
+
         setPasswordData({
           currentPassword: "",
           newPassword: "",
           confirmPassword: "",
         });
       } else {
-        setErrorMsg(data.message || "Failed to change password.");
+        toast({
+          title: "❌ Failed to change password",
+          description: data.message || "An unknown error occurred.",
+          variant: "destructive",
+          duration: 3000,
+        });
       }
     } catch {
-      setErrorMsg("Something went wrong. Please try again.");
+      toast({
+        title: "⚠️ Network error",
+        description: "Something went wrong. Please try again later.",
+        variant: "destructive",
+        duration: 3000,
+      });
     } finally {
       setChanging(false);
     }
@@ -232,18 +260,6 @@ const Profile = () => {
             </div>
 
             {/* Status Alerts */}
-            {errorMsg && (
-              <Alert variant="destructive" className="animate-fade-in">
-                <AlertDescription>{errorMsg}</AlertDescription>
-              </Alert>
-            )}
-            {message && (
-              <Alert className="border border-green-500/40 bg-green-500/10 animate-fade-in">
-                <AlertDescription className="text-green-600">
-                  {message}
-                </AlertDescription>
-              </Alert>
-            )}
 
             {/* Inputs Grid */}
             <div className="grid md:grid-cols-3 gap-4">

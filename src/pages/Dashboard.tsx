@@ -32,9 +32,12 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
+import { toast } from "@/components/ui/sonner";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const { logout } = useAuth();
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
@@ -61,6 +64,14 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     logout();
+    toast({
+      title: "✅ Successfully logged out",
+      description: "Hope to see you again soon!",
+      duration: 2500,
+      className:
+        "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
+    });
+
     navigate("/");
   };
 
