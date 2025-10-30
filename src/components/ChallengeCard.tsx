@@ -12,6 +12,7 @@ interface ChallengeCardProps {
   category: string;
   difficulty: "easy" | "medium" | "hard";
   xpReward: number;
+  
   deadline: string;
   participants: number;
   stagesCompleted?: number;

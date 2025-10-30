@@ -34,10 +34,11 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
 import { toast } from "@/components/ui/sonner";
 import { useToast } from "@/hooks/use-toast";
+import { apiClient } from "@/lib/api";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();    
+  const { toast } = useToast();
   const { logout } = useAuth();
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
@@ -64,7 +65,7 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     logout();
-        toast({
+    toast({
       title: "✅ Successfully logged out",
       description: "Hope to see you again soon!",
       duration: 2500,
@@ -75,9 +76,36 @@ const Dashboard = () => {
     navigate("/");
   };
 
+  // adjust path if needed
+
   const handleJoinChallenge = async (challengeId: string) => {
-    // This would be implemented with the join mutation
-    console.log("Join challenge:", challengeId);
+    try {
+      const response = await apiClient.joinChallenge(challengeId);
+
+      toast({
+        title: "🎯 Challenge joined successfully!",
+        description: `You’ve joined the challenge and can start progressing.`,
+        duration: 2500,
+        className:
+          "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
+      });
+
+      // Wait for the toast to display before reloading
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
+    } catch (error: any) {
+      toast({
+        title: "⚠️ Failed to join challenge",
+        description:
+          error?.message ||
+          error?.response?.data?.error ||
+          "Something went wrong. Try again later.",
+        duration: 3000,
+        className:
+          "border-red-500 bg-red-50 text-red-700 dark:bg-red-900 dark:text-red-100",
+      });
+    }
   };
 
   const handleViewDetails = (challengeId: string) => {

@@ -84,6 +84,13 @@ const ChallengeDetail = () => {
         100
       : 0;
 
+  const daysLeft = Math.max(
+    0,
+    Math.ceil(
+      (new Date(challenge.endDate).getTime() - new Date().getTime()) /
+        (1000 * 60 * 60 * 24)
+    )
+  );
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -131,13 +138,7 @@ const ChallengeDetail = () => {
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Clock className="w-4 h-4 text-primary" />
-                  <span>
-                    {Math.ceil(
-                      (new Date(challenge.endDate).getTime() - Date.now()) /
-                        (1000 * 60 * 60 * 24)
-                    )}{" "}
-                    days left
-                  </span>
+                  <span>{daysLeft} days left</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <MapPin className="w-4 h-4 text-success" />

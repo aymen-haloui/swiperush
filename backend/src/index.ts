@@ -87,7 +87,7 @@ apiRouter.put('/challenges/:id', authenticateToken, requireAdmin, ChallengeContr
 apiRouter.delete('/challenges/:id', authenticateToken, requireAdmin, ChallengeController.deleteChallenge);//verified
 apiRouter.post('/challenges/join', authenticateToken, ChallengeController.joinChallenge);
 apiRouter.post('/challenges/submit-stage', authenticateToken, submissionRateLimit, ChallengeController.submitStage);
-apiRouter.get('/challenges/user/my-challenges', authenticateToken, ChallengeController.getUserChallenges);//verified
+apiRouter.get('/challenges/user/my-challenges', authenticateToken, ChallengeController.getUserChallenges);//should craate a page in the frontend
 
 // Leaderboard routes
 apiRouter.get('/leaderboard', LeaderboardController.getLeaderboard);//verified
