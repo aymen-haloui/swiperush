@@ -32,7 +32,10 @@ This guide covers deploying SwipeRush (React + Node.js + PostgreSQL) to popular 
 1. Click **"+ New"** → **"GitHub Repo"**
 2. Select your repository
 3. Railway will auto-detect it's a Node.js project
-4. Configure environment variables in the service settings:
+4. **IMPORTANT**: Set the **Root Directory** to `backend`:
+   - Go to **Settings** → **Service**
+   - Set **Root Directory** to `backend`
+5. Configure environment variables in the service settings:
 
 ```env
 NODE_ENV=production
@@ -46,28 +49,18 @@ CORS_ORIGIN=https://your-frontend-domain.com
 PORT=5000
 ```
 
-5. Add a build command:
-   ```bash
-   npm install && npm run build
-   ```
-
-6. Add a start command:
-   ```bash
-   npm start
-   ```
+6. Railway will automatically detect the build and start commands from `package.json`
 
 7. Add persistent storage for uploads:
    - Settings → **Volumes** → Add `/app/uploads`
 
 8. Deploy the database migrations:
-   ```bash
-   npm run db:migrate
-   ```
+   - Go to **Deployments** → Click on the deployment
+   - Go to **Command** tab
+   - Run: `npx prisma migrate deploy`
 
 9. Optional: Seed the database:
-   ```bash
-   npm run db:seed
-   ```
+   - In the same **Command** tab, run: `npm run db:seed`
 
 #### 3. Frontend Deployment
 
