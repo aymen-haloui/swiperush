@@ -45,9 +45,29 @@ app.use(helmet({
   contentSecurityPolicy: false,
   crossOriginResourcePolicy: false,
 }));
+
+// CORS configuration - allow multiple origins
+const allowedOrigins = [
+  'http://localhost:8081',
+  'http://localhost:5173',
+  'https://challengequest-frontend.vercel.app',
+  process.env.CORS_ORIGIN
+].filter(Boolean); // Remove any undefined values
+
 app.use(cors({
-  origin: "http://localhost:8081",
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 // Body parsing middleware
@@ -62,7 +82,10 @@ app.use(generalRateLimit);
 
 // Static files for uploads with CORS headers
 app.use('/uploads', (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8081');
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
   res.header('Access-Control-Allow-Methods', 'GET');
   res.header('Access-Control-Allow-Credentials', 'true');
   next();

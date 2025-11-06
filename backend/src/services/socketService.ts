@@ -19,9 +19,27 @@ export class SocketService {
   private connectedUsers: Map<string, string> = new Map(); // userId -> socketId
 
   constructor(server: HTTPServer) {
+    // CORS configuration - allow multiple origins
+    const allowedOrigins = [
+      'http://localhost:8081',
+      'http://localhost:5173',
+      'https://challengequest-frontend.vercel.app',
+      process.env.SOCKET_CORS_ORIGIN,
+      process.env.CORS_ORIGIN
+    ].filter(Boolean); // Remove any undefined values
+
     this.io = new SocketIOServer(server, {
       cors: {
-        origin: process.env.SOCKET_CORS_ORIGIN || "http://localhost:5173",
+        origin: (origin, callback) => {
+          // Allow requests with no origin (like mobile apps)
+          if (!origin) return callback(null, true);
+          
+          if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+          } else {
+            callback(new Error('Not allowed by CORS'));
+          }
+        },
         methods: ["GET", "POST"],
         credentials: true
       }
