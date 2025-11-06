@@ -149,6 +149,52 @@ app.get('/health/db', async (req, res) => {
 // API Routes
 const apiRouter = express.Router();
 
+// API root endpoint - returns API information
+apiRouter.get('/', (req, res) => {
+  res.json({
+    name: 'ChallengeQuest API',
+    version: '1.0.0',
+    status: 'active',
+    endpoints: {
+      auth: {
+        register: 'POST /api/auth/register',
+        login: 'POST /api/auth/login',
+        profile: 'GET /api/auth/profile',
+        updateProfile: 'PUT /api/auth/profile',
+        changePassword: 'PUT /api/auth/change-password',
+        refreshToken: 'POST /api/auth/refresh'
+      },
+      challenges: {
+        list: 'GET /api/challenges',
+        getById: 'GET /api/challenges/:id',
+        create: 'POST /api/challenges',
+        update: 'PUT /api/challenges/:id',
+        delete: 'DELETE /api/challenges/:id',
+        join: 'POST /api/challenges/join',
+        submitStage: 'POST /api/challenges/submit-stage',
+        myChallenges: 'GET /api/challenges/user/my-challenges'
+      },
+      leaderboard: {
+        get: 'GET /api/leaderboard',
+        stats: 'GET /api/leaderboard/stats',
+        userRank: 'GET /api/leaderboard/user-rank'
+      },
+      categories: {
+        list: 'GET /api/categories',
+        getById: 'GET /api/categories/:id'
+      },
+      levels: {
+        list: 'GET /api/levels',
+        getById: 'GET /api/levels/:id'
+      },
+      health: {
+        basic: 'GET /health',
+        database: 'GET /health/db'
+      }
+    }
+  });
+});
+
 // Auth routes (rate limiting removed for testing)
 apiRouter.post('/auth/register', AuthController.register);//verified
 apiRouter.post('/auth/login', AuthController.login);//verified
