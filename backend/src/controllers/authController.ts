@@ -30,8 +30,10 @@ export class AuthController {
   // Login user
   static async login(req: Request, res: Response): Promise<void> {
     try {
+      console.log(`Login attempt for email: ${req.body?.email || 'unknown'}`);
       const result = await AuthService.login(req.body);
       
+      console.log(`Login successful for user: ${result.user.email}`);
       res.json({
         success: true,
         message: 'Login successful',
@@ -39,6 +41,7 @@ export class AuthController {
       });
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Unknown error';
+      console.error('Login error:', message, err);
       res.status(401).json({
         success: false,
         error: message

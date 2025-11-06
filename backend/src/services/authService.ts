@@ -87,7 +87,13 @@ export class AuthService {
       where: { email: validatedData.email }
     });
 
-    if (!user || !user.isActive) {
+    if (!user) {
+      console.log(`Login attempt failed: User not found for email: ${validatedData.email}`);
+      throw new Error('Invalid credentials');
+    }
+
+    if (!user.isActive) {
+      console.log(`Login attempt failed: User ${user.email} is inactive`);
       throw new Error('Invalid credentials');
     }
 
@@ -95,6 +101,7 @@ export class AuthService {
     const isValidPassword = await bcrypt.compare(validatedData.password, user.password);
 
     if (!isValidPassword) {
+      console.log(`Login attempt failed: Invalid password for email: ${validatedData.email}`);
       throw new Error('Invalid credentials');
     }
 
