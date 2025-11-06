@@ -105,9 +105,9 @@ app.get('/health', (req, res) => {
 // API Routes
 const apiRouter = express.Router();
 
-// Auth routes
-apiRouter.post('/auth/register', authRateLimit, AuthController.register);//verified
-apiRouter.post('/auth/login', authRateLimit, AuthController.login);//verified
+// Auth routes (rate limiting removed for testing)
+apiRouter.post('/auth/register', AuthController.register);//verified
+apiRouter.post('/auth/login', AuthController.login);//verified
 apiRouter.get('/auth/profile', authenticateToken, AuthController.getProfile);//verified
 apiRouter.put('/auth/profile', authenticateToken, AuthController.updateProfile);//verified
 apiRouter.put('/auth/change-password', authenticateToken, AuthController.changePassword);//verified
