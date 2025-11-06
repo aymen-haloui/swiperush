@@ -24,7 +24,22 @@ npx prisma generate || echo "⚠️  Warning: Prisma generate failed, continuing
 
 # Run database migrations
 echo "🗄️  Running database migrations..."
-npx prisma migrate deploy || echo "⚠️  Warning: Migrations failed, continuing..."
+if npx prisma migrate deploy; then
+  echo "✅ Migrations completed successfully"
+else
+  echo "⚠️  Warning: Migrations failed, continuing..."
+  echo "⚠️  This might indicate a database connection issue with Neon"
+  echo "⚠️  Check DATABASE_URL environment variable"
+fi
+
+# Test database connection
+echo "🔍 Testing database connection..."
+if npx prisma db execute --stdin <<< "SELECT 1" > /dev/null 2>&1; then
+  echo "✅ Database connection test passed"
+else
+  echo "⚠️  Database connection test failed"
+  echo "⚠️  Check Neon database status and DATABASE_URL"
+fi
 
 # Start the application
 echo "🎯 Starting application on port ${PORT:-5000}..."

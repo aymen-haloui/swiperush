@@ -109,39 +109,80 @@ app.get('/health/db', async (req, res) => {
     const prisma = new PrismaClient();
     
     // Test database connection
-    await prisma.$queryRaw`SELECT 1`;
+    const connectionTest = await prisma.$queryRaw`SELECT 1 as test`;
+    console.log('Database connection test:', connectionTest);
     
-    // Count users
-    const userCount = await prisma.user.count();
+    // Check if tables exist
+    let tablesExist = false;
+    let userCount = 0;
+    let sampleUsers: any[] = [];
     
-    // Get sample users (without passwords)
-    const sampleUsers = await prisma.user.findMany({
-      take: 5,
-      select: {
-        id: true,
-        email: true,
-        username: true,
-        isActive: true,
-        isAdmin: true
-      }
-    });
+    try {
+      // Count users
+      userCount = await prisma.user.count();
+      
+      // Get sample users (without passwords)
+      sampleUsers = await prisma.user.findMany({
+        take: 5,
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          isActive: true,
+          isAdmin: true
+        }
+      });
+      
+      tablesExist = true;
+    } catch (tableError: any) {
+      console.error('Table access error:', tableError);
+      // Tables might not exist - migrations might not have run
+    }
+    
+    // Get DATABASE_URL info (without password)
+    const dbUrl = process.env.DATABASE_URL || 'Not set';
+    const dbUrlInfo = dbUrl.includes('@') 
+      ? dbUrl.split('@')[1]?.split('/')[0] || 'Unknown host'
+      : 'Invalid format';
     
     await prisma.$disconnect();
     
     res.json({
       status: 'OK',
       database: 'Connected',
+      databaseHost: dbUrlInfo,
+      tablesExist,
       userCount,
       sampleUsers,
-      message: userCount === 0 ? 'No users found in database. You may need to register a user or run the seed script.' : 'Database is accessible'
+      hasUsers: userCount > 0,
+      message: !tablesExist 
+        ? 'Database connected but tables may not exist. Run migrations: npx prisma migrate deploy'
+        : userCount === 0 
+          ? 'Database connected but no users found. Register a user at /api/auth/register or run seed script.'
+          : 'Database is accessible and has users'
     });
   } catch (error: any) {
     console.error('Database health check failed:', error);
+    const dbUrl = process.env.DATABASE_URL || 'Not set';
+    const dbUrlInfo = dbUrl !== 'Not set' && dbUrl.includes('@')
+      ? dbUrl.split('@')[1]?.split('/')[0] || 'Unknown host'
+      : 'Not configured';
+    
     res.status(500).json({
       status: 'ERROR',
       database: 'Connection failed',
+      databaseHost: dbUrlInfo,
       error: error.message,
-      message: 'Database connection failed. Check DATABASE_URL environment variable.'
+      errorCode: error.code,
+      errorName: error.name,
+      message: 'Database connection failed. Check DATABASE_URL environment variable in Render dashboard.',
+      troubleshooting: [
+        '1. Verify DATABASE_URL is set in Render environment variables',
+        '2. Check if Neon database is active and accessible',
+        '3. Ensure DATABASE_URL format is: postgresql://user:password@host:port/database',
+        '4. Check Neon dashboard for connection issues',
+        '5. Verify network connectivity from Render to Neon'
+      ]
     });
   }
 });
