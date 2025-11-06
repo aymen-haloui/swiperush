@@ -30,7 +30,19 @@ export class AuthController {
   // Login user
   static async login(req: Request, res: Response): Promise<void> {
     try {
+      console.log(`Login attempt - Request body:`, JSON.stringify(req.body));
       console.log(`Login attempt for email: ${req.body?.email || 'unknown'}`);
+      
+      // Validate request body
+      if (!req.body || !req.body.email || !req.body.password) {
+        console.error('Login failed: Missing email or password in request body');
+        res.status(400).json({
+          success: false,
+          error: 'Email and password are required'
+        });
+        return;
+      }
+      
       const result = await AuthService.login(req.body);
       
       console.log(`Login successful for user: ${result.user.email}`);

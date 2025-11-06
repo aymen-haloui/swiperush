@@ -102,6 +102,50 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Database health check endpoint
+app.get('/health/db', async (req, res) => {
+  try {
+    const { PrismaClient } = await import('@prisma/client');
+    const prisma = new PrismaClient();
+    
+    // Test database connection
+    await prisma.$queryRaw`SELECT 1`;
+    
+    // Count users
+    const userCount = await prisma.user.count();
+    
+    // Get sample users (without passwords)
+    const sampleUsers = await prisma.user.findMany({
+      take: 5,
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        isActive: true,
+        isAdmin: true
+      }
+    });
+    
+    await prisma.$disconnect();
+    
+    res.json({
+      status: 'OK',
+      database: 'Connected',
+      userCount,
+      sampleUsers,
+      message: userCount === 0 ? 'No users found in database. You may need to register a user or run the seed script.' : 'Database is accessible'
+    });
+  } catch (error: any) {
+    console.error('Database health check failed:', error);
+    res.status(500).json({
+      status: 'ERROR',
+      database: 'Connection failed',
+      error: error.message,
+      message: 'Database connection failed. Check DATABASE_URL environment variable.'
+    });
+  }
+});
+
 // API Routes
 const apiRouter = express.Router();
 
