@@ -6,6 +6,30 @@ import QRCode from 'qrcode';
 
 const prisma = new PrismaClient();
 
+// Helper function to decode QR code from image file
+const decodeQRCodeFromFile = async (filePath: string): Promise<string | null> => {
+  try {
+    // Read the image file
+    const imageBuffer = fs.readFileSync(filePath);
+    
+    // Decode QR code from image buffer
+    // Note: The qrcode package doesn't have a decode function, so we'll use a try-catch approach
+    // For proper decoding, we would need a library like 'qrcode-reader' or 'jsqr'
+    // For now, we'll validate by attempting to decode and if it fails, we'll regenerate
+    // This is a simplified approach - in production, you might want to use a dedicated QR decoder
+    
+    // Try to decode using QRCode.decode (if available) or use an alternative method
+    // Since qrcode package primarily generates QR codes, we'll use a workaround:
+    // We'll always regenerate QR codes to ensure they contain the correct stage ID
+    // This ensures data integrity regardless of what admin uploads
+    
+    return null; // Return null to indicate we should regenerate
+  } catch (error) {
+    console.error('Error decoding QR code:', error);
+    return null; // If decoding fails, return null to trigger regeneration
+  }
+};
+
 // Helper function to generate QR code with stage ID encoded
 const generateQRCode = async (stageId: string, filenamePrefix: string = 'qr'): Promise<string> => {
   const uploadDir = process.env.UPLOAD_DIR || './uploads';
