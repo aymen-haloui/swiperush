@@ -15,6 +15,10 @@ import {
   Award,
   Activity,
   User,
+  Edit,
+  UserCircle,
+  Upload,
+  Image as ImageIcon,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
@@ -25,7 +29,7 @@ import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useProfile, useAuth, useUserChallenges, useUserRank } from "@/hooks/useApi";
+import { useProfile, useAuth, useUserChallenges, useUserRank, useUpdateProfile } from "@/hooks/useApi";
 import { useTranslation } from "react-i18next";
 
 const Profile = () => {
@@ -48,6 +52,24 @@ const Profile = () => {
   });
   const [message, setMessage] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [changingEmail, setChangingEmail] = useState(false);
+  const [changingUsername, setChangingUsername] = useState(false);
+  const [emailData, setEmailData] = useState({
+    newEmail: "",
+    confirmEmail: "",
+  });
+  const [usernameData, setUsernameData] = useState({
+    newUsername: "",
+  });
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const [profilePicturePreview, setProfilePicturePreview] = useState<string | null>(null);
+  const [uploadingPicture, setUploadingPicture] = useState(false);
+
+  // Load user profile and challenges
+  const { data: profile, isLoading, error } = useProfile();
+  const { data: userChallenges, isLoading: challengesLoading } = useUserChallenges();
+  const { data: userRank } = useUserRank('ALL_TIME');
+  const updateProfileMutation = useUpdateProfile();
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -55,11 +77,6 @@ const Profile = () => {
     if (!token) navigate("/login");
   }, [navigate]);
 
-  // Load user profile and challenges
-  const { data: profile, isLoading, error } = useProfile();
-  const { data: userChallenges, isLoading: challengesLoading } = useUserChallenges();
-  const { data: userRank } = useUserRank('ALL_TIME');
-  
   // Calculate stats
   const stats = {
     totalXP: profile?.xp || 0,
@@ -149,6 +166,226 @@ const Profile = () => {
       });
     } finally {
       setChanging(false);
+    }
+  };
+
+  const handleChangeEmail = async () => {
+    if (!emailData.newEmail || !emailData.confirmEmail) {
+      toast({
+        title: "⚠️ Missing fields",
+        description: "Please fill in both email fields.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    if (emailData.newEmail !== emailData.confirmEmail) {
+      toast({
+        title: "❌ Emails do not match",
+        description: "Make sure both email addresses are identical.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailData.newEmail)) {
+      toast({
+        title: "❌ Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    if (emailData.newEmail === profile?.email) {
+      toast({
+        title: "⚠️ Same email",
+        description: "This is already your current email address.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    try {
+      setChangingEmail(true);
+      await updateProfileMutation.mutateAsync({ email: emailData.newEmail });
+      
+      toast({
+        title: "✅ Email changed successfully!",
+        description: "Your email address has been updated.",
+        duration: 3000,
+        className:
+          "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
+      });
+
+      setEmailData({
+        newEmail: "",
+        confirmEmail: "",
+      });
+    } catch (error: any) {
+      toast({
+        title: "❌ Failed to change email",
+        description: error?.response?.data?.message || error?.message || "An unknown error occurred.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    } finally {
+      setChangingEmail(false);
+    }
+  };
+
+  // Helper function to convert file to base64
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const handleProfilePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const validImageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
+    if (!validImageTypes.includes(file.type)) {
+      toast({
+        title: "❌ Invalid file type",
+        description: "Please select an image file (PNG, JPG, GIF, or WEBP).",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "❌ File too large",
+        description: "Profile picture must be smaller than 5MB.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    setProfilePicture(file);
+    
+    // Create preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfilePicturePreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleUploadProfilePicture = async () => {
+    if (!profilePicture) {
+      toast({
+        title: "⚠️ No file selected",
+        description: "Please select a profile picture to upload.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    try {
+      setUploadingPicture(true);
+      const imageData = await fileToBase64(profilePicture);
+      await updateProfileMutation.mutateAsync({ avatar: imageData });
+      
+      toast({
+        title: "✅ Profile picture updated!",
+        description: "Your profile picture has been updated successfully.",
+        duration: 3000,
+        className:
+          "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
+      });
+
+      // Clear the file input and preview
+      setProfilePicture(null);
+      setProfilePicturePreview(null);
+      
+      // Reset file input
+      const fileInput = document.getElementById('profile-picture-input') as HTMLInputElement;
+      if (fileInput) fileInput.value = '';
+    } catch (error: any) {
+      toast({
+        title: "❌ Failed to upload profile picture",
+        description: error?.response?.data?.message || error?.message || "An unknown error occurred.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    } finally {
+      setUploadingPicture(false);
+    }
+  };
+
+  const handleChangeUsername = async () => {
+    if (!usernameData.newUsername) {
+      toast({
+        title: "⚠️ Missing field",
+        description: "Please enter a new username.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    // Basic username validation
+    if (usernameData.newUsername.length < 3) {
+      toast({
+        title: "❌ Invalid username",
+        description: "Username must be at least 3 characters long.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    if (usernameData.newUsername === profile?.username) {
+      toast({
+        title: "⚠️ Same username",
+        description: "This is already your current username.",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+
+    try {
+      setChangingUsername(true);
+      await updateProfileMutation.mutateAsync({ username: usernameData.newUsername });
+      
+      toast({
+        title: "✅ Username changed successfully!",
+        description: "Your username has been updated.",
+        duration: 3000,
+        className:
+          "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
+      });
+
+      setUsernameData({
+        newUsername: "",
+      });
+    } catch (error: any) {
+      toast({
+        title: "❌ Failed to change username",
+        description: error?.response?.data?.message || error?.message || "An unknown error occurred.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    } finally {
+      setChangingUsername(false);
     }
   };
 
@@ -452,7 +689,98 @@ const Profile = () => {
             )}
           </TabsContent>
 
-          <TabsContent value="settings">
+          <TabsContent value="settings" className="space-y-6">
+            {/* Change Profile Picture Section */}
+            <Card className="glass-card border border-border/40 transition-all duration-300 hover:shadow-[0_0_25px_rgba(99,102,241,0.3)]">
+              <CardContent className="p-8 space-y-8">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <ImageIcon className="w-5 h-5 text-primary" /> Profile Picture
+                  </h2>
+                  {uploadingPicture && (
+                    <Loader2 className="w-5 h-5 text-primary animate-spin" />
+                  )}
+                </div>
+
+                <div className="flex flex-col md:flex-row items-center gap-6">
+                  {/* Current/Preview Avatar */}
+                  <div className="relative">
+                    <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[var(--shadow-glow-primary)] border-4 border-background overflow-hidden">
+                      {profilePicturePreview ? (
+                        <img
+                          src={profilePicturePreview}
+                          alt="Preview"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : profile?.avatar ? (
+                        <img
+                          src={profile.avatar}
+                          alt="Profile"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <User className="w-16 h-16 text-primary-foreground" />
+                      )}
+                    </div>
+                    {profilePicturePreview && (
+                      <div className="absolute -bottom-2 -right-2 bg-primary text-primary-foreground rounded-full p-2 border-4 border-background">
+                        <ImageIcon className="w-4 h-4" />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Upload Section */}
+                  <div className="flex-1 space-y-4 w-full md:w-auto">
+                    <div>
+                      <label htmlFor="profile-picture-input" className="cursor-pointer">
+                        <div className="flex items-center justify-center gap-2 px-4 py-2 border-2 border-dashed border-primary/50 rounded-lg hover:border-primary hover:bg-primary/5 transition-all">
+                          <Upload className="w-5 h-5 text-primary" />
+                          <span className="text-sm font-medium text-primary">
+                            {profilePicture ? 'Change Picture' : 'Upload Picture'}
+                          </span>
+                        </div>
+                      </label>
+                      <input
+                        id="profile-picture-input"
+                        type="file"
+                        accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
+                        onChange={handleProfilePictureChange}
+                        className="hidden"
+                      />
+                      <p className="text-xs text-muted-foreground mt-2 text-center md:text-left">
+                        Supported formats: PNG, JPG, GIF, WEBP (Max 5MB)
+                      </p>
+                    </div>
+
+                    {profilePicture && (
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <Button
+                          onClick={handleUploadProfilePicture}
+                          disabled={uploadingPicture}
+                          className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-all rounded-lg shadow-md"
+                        >
+                          {uploadingPicture && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                          Upload Picture
+                        </Button>
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            setProfilePicture(null);
+                            setProfilePicturePreview(null);
+                            const fileInput = document.getElementById('profile-picture-input') as HTMLInputElement;
+                            if (fileInput) fileInput.value = '';
+                          }}
+                          disabled={uploadingPicture}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Change Password Section */}
             <Card className="glass-card border border-border/40 transition-all duration-300 hover:shadow-[0_0_25px_rgba(99,102,241,0.3)]">
           <CardContent className="p-8 space-y-8">
@@ -534,6 +862,129 @@ const Profile = () => {
               </Button>
             </div>
           </CardContent>
+            </Card>
+
+            {/* Change Email Section */}
+            <Card className="glass-card border border-border/40 transition-all duration-300 hover:shadow-[0_0_25px_rgba(99,102,241,0.3)]">
+              <CardContent className="p-8 space-y-8">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <Mail className="w-5 h-5 text-primary" /> Change Email
+                  </h2>
+                  {changingEmail && (
+                    <Loader2 className="w-5 h-5 text-primary animate-spin" />
+                  )}
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                      Current Email
+                    </label>
+                    <Input
+                      type="email"
+                      value={profile?.email || ""}
+                      disabled
+                      className="bg-muted/50"
+                    />
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                        New Email
+                      </label>
+                      <Input
+                        type="email"
+                        placeholder="Enter new email"
+                        value={emailData.newEmail}
+                        onChange={(e) =>
+                          setEmailData({ ...emailData, newEmail: e.target.value })
+                        }
+                        className="focus:ring-2 focus:ring-primary/40 transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                        Confirm New Email
+                      </label>
+                      <Input
+                        type="email"
+                        placeholder="Confirm new email"
+                        value={emailData.confirmEmail}
+                        onChange={(e) =>
+                          setEmailData({ ...emailData, confirmEmail: e.target.value })
+                        }
+                        className="focus:ring-2 focus:ring-primary/40 transition-all"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-end pt-4">
+                  <Button
+                    onClick={handleChangeEmail}
+                    disabled={changingEmail}
+                    className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-all rounded-lg shadow-md">
+                    {changingEmail && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                    Change Email
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Change Username Section */}
+            <Card className="glass-card border border-border/40 transition-all duration-300 hover:shadow-[0_0_25px_rgba(99,102,241,0.3)]">
+              <CardContent className="p-8 space-y-8">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold flex items-center gap-2">
+                    <UserCircle className="w-5 h-5 text-primary" /> Change Username
+                  </h2>
+                  {changingUsername && (
+                    <Loader2 className="w-5 h-5 text-primary animate-spin" />
+                  )}
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                      Current Username
+                    </label>
+                    <Input
+                      type="text"
+                      value={`@${profile?.username || ""}`}
+                      disabled
+                      className="bg-muted/50"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground mb-2 block">
+                      New Username
+                    </label>
+                    <Input
+                      type="text"
+                      placeholder="Enter new username"
+                      value={usernameData.newUsername}
+                      onChange={(e) =>
+                        setUsernameData({ newUsername: e.target.value })
+                      }
+                      className="focus:ring-2 focus:ring-primary/40 transition-all"
+                    />
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Username must be at least 3 characters long.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex justify-end pt-4">
+                  <Button
+                    onClick={handleChangeUsername}
+                    disabled={changingUsername}
+                    className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-all rounded-lg shadow-md">
+                    {changingUsername && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                    Change Username
+                  </Button>
+                </div>
+              </CardContent>
             </Card>
           </TabsContent>
         </Tabs>

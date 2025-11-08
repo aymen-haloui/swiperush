@@ -452,10 +452,19 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
             <>
               {!isAuthenticated ? (
                 <>
+                  {/* Login Button - Desktop */}
                   <Button
                     variant="ghost"
                     onClick={() => navigate("/login")}
                     className="hidden sm:inline-flex text-sm hover:bg-primary/10 transition-colors"
+                  >
+                    {t("navigation.login")}
+                  </Button>
+                  {/* Login Button - Mobile */}
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate("/login")}
+                    className="sm:hidden text-xs px-2 h-9 hover:bg-primary/10 transition-colors"
                   >
                     {t("navigation.login")}
                   </Button>

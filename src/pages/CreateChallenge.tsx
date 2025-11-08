@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Plus, MapPin, Save, Loader2, X, Trash2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { toast } from "@/hooks/use-toast";
-import { apiClient } from "@/lib/api";
+import { apiClient, CreateChallengeRequest } from "@/lib/api";
 import { useCategories, useCreateChallenge } from "@/hooks/useApi";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Level, Challenge } from "@/lib/api";
@@ -441,9 +441,9 @@ const handleSubmit = async (e: React.FormEvent) => {
                             </SelectItem>
                           ))
                       ) : (
-                        <SelectItem value="" disabled>
-                          No categories available
-                        </SelectItem>
+                          <div className="flex items-center justify-center p-4 text-sm text-muted-foreground">
+                          No levels available
+                        </div>
                       )}
                     </SelectContent>
                   </Select>

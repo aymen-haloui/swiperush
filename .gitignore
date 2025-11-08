@@ -30,3 +30,42 @@ backend/.env.local
 *.njsproj
 *.sln
 *.sw?
+# dependencies
+node_modules/
+.pnpm-store/
+.yarn/
+
+# build outputs
+dist/
+build/
+out/
+.vercel/
+.next/
+
+# environment variables
+
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# lock files (optional, keep one)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+

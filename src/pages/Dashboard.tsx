@@ -10,14 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import ChallengeCard from "@/components/ChallengeCard";
-import {
-  Search,
-  Trophy,
-  Zap,
-  Target,
-  LogOut,
-  Loader2,
-} from "lucide-react";
+import { Search, Trophy, Zap, Target, LogOut, Loader2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
@@ -45,9 +38,10 @@ const Dashboard = () => {
   const [difficultyFilter, setDifficultyFilter] = useState("all");
 
   // Fetch categories and levels from backend
-  const { data: categories, isLoading: categoriesLoading } = useCategories(false);
+  const { data: categories, isLoading: categoriesLoading } =
+    useCategories(false);
   const { data: levels = [], isLoading: levelsLoading } = useLevels(false);
-  
+
   // Fetch user profile and challenges
   const {
     data: profile,
@@ -70,7 +64,7 @@ const Dashboard = () => {
   const challengeCategories = React.useMemo(() => {
     if (!challengesData?.challenges) return [];
     const uniqueCategories = new Set<string>();
-    challengesData.challenges.forEach(challenge => {
+    challengesData.challenges.forEach((challenge) => {
       if (challenge.category) {
         uniqueCategories.add(challenge.category);
       }
@@ -80,25 +74,34 @@ const Dashboard = () => {
 
   // Combine categories from table and from challenges (avoid duplicates)
   const allCategories = React.useMemo(() => {
-    const categoryMap = new Map<string, { name: string; icon?: string; isFromTable: boolean }>();
-    
+    const categoryMap = new Map<
+      string,
+      { name: string; icon?: string; isFromTable: boolean }
+    >();
+
     // Add categories from Category table
     if (categories) {
-      categories.forEach(cat => {
+      categories.forEach((cat) => {
         if (cat.isActive) {
-          categoryMap.set(cat.name, { name: cat.name, icon: cat.icon, isFromTable: true });
+          categoryMap.set(cat.name, {
+            name: cat.name,
+            icon: cat.icon,
+            isFromTable: true,
+          });
         }
       });
     }
-    
+
     // Add categories from challenges (legacy support)
-    challengeCategories.forEach(catName => {
+    challengeCategories.forEach((catName) => {
       if (!categoryMap.has(catName)) {
         categoryMap.set(catName, { name: catName, isFromTable: false });
       }
     });
-    
-    return Array.from(categoryMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+
+    return Array.from(categoryMap.values()).sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
   }, [categories, challengeCategories]);
 
   const handleLogout = () => {
@@ -133,7 +136,10 @@ const Dashboard = () => {
         window.location.reload();
       }, 3000);
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Something went wrong. Try again later.";
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Try again later.";
       toast({
         title: "⚠️ Failed to join challenge",
         description: errorMessage,
@@ -157,7 +163,9 @@ const Dashboard = () => {
     // Challenge hasn't started yet
     if (now < start) {
       const daysUntilStart = Math.ceil((start - now) / (1000 * 60 * 60 * 24));
-      return `Starts in ${daysUntilStart} ${daysUntilStart === 1 ? 'day' : 'days'}`;
+      return `Starts in ${daysUntilStart} ${
+        daysUntilStart === 1 ? "day" : "days"
+      }`;
     }
 
     // Challenge has ended
@@ -166,25 +174,27 @@ const Dashboard = () => {
     }
 
     // Challenge is active
-    const daysLeft = Math.max(0, Math.ceil((end - now) / (1000 * 60 * 60 * 24)));
-    return `${daysLeft} ${daysLeft === 1 ? 'day' : 'days'} left`;
+    const daysLeft = Math.max(
+      0,
+      Math.ceil((end - now) / (1000 * 60 * 60 * 24))
+    );
+    return `${daysLeft} ${daysLeft === 1 ? "day" : "days"} left`;
   };
 
   // Filter challenges based on search query and user level
   const filteredChallenges =
-    challengesData?.challenges.filter(
-      (challenge) => {
-        // Filter by search query
-        const matchesSearch = 
-          challenge.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          challenge.description.toLowerCase().includes(searchQuery.toLowerCase());
-        
-        // Filter by user level - only show challenges user can join
-        const canJoin = !profile || challenge.requiredLevel <= (profile.level || 1);
-        
-        return matchesSearch && canJoin;
-      }
-    ) || [];
+    challengesData?.challenges.filter((challenge) => {
+      // Filter by search query
+      const matchesSearch =
+        challenge.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        challenge.description.toLowerCase().includes(searchQuery.toLowerCase());
+
+      // Filter by user level - only show challenges user can join
+      const canJoin =
+        !profile || challenge.requiredLevel <= (profile.level || 1);
+
+      return matchesSearch && canJoin;
+    }) || [];
 
   // Get active challenges count
   const activeChallengesCount =
@@ -193,35 +203,49 @@ const Dashboard = () => {
   // Calculate XP progress based on actual level system
   const currentLevelInfo = React.useMemo(() => {
     if (!profile || levels.length === 0) return null;
-    
+
     // Find the current level based on user's XP
     const currentLevel = levels.find(
-      (level) => 
+      (level) =>
         level.isActive &&
         profile.xp >= level.minXP &&
-        (level.maxXP === null || level.maxXP === undefined || profile.xp <= level.maxXP)
+        (level.maxXP === null ||
+          level.maxXP === undefined ||
+          profile.xp <= level.maxXP)
     );
-    
-    return currentLevel || levels.find(l => l.isActive && l.number === 1) || null;
+
+    return (
+      currentLevel || levels.find((l) => l.isActive && l.number === 1) || null
+    );
   }, [profile, levels]);
 
   const nextLevelInfo = React.useMemo(() => {
     if (!currentLevelInfo || levels.length === 0) return null;
-    
+
     // Find the next level
     const nextLevel = levels
-      .filter(l => l.isActive && l.number > currentLevelInfo.number)
+      .filter((l) => l.isActive && l.number > currentLevelInfo.number)
       .sort((a, b) => a.number - b.number)[0];
-    
+
     return nextLevel || null;
   }, [currentLevelInfo, levels]);
 
   // Calculate XP progress for current level
   const currentLevelXP = currentLevelInfo?.minXP || 0;
-  const nextLevelXP = nextLevelInfo?.minXP || (currentLevelInfo?.maxXP ?? currentLevelInfo?.minXP ?? 0);
-  const xpProgress = profile && nextLevelXP > currentLevelXP
-    ? Math.min(100, Math.max(0, ((profile.xp - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100))
-    : 100;
+  const nextLevelXP =
+    nextLevelInfo?.minXP ||
+    (currentLevelInfo?.maxXP ?? currentLevelInfo?.minXP ?? 0);
+  const xpProgress =
+    profile && nextLevelXP > currentLevelXP
+      ? Math.min(
+          100,
+          Math.max(
+            0,
+            ((profile.xp - currentLevelXP) / (nextLevelXP - currentLevelXP)) *
+              100
+          )
+        )
+      : 100;
 
   if (profileLoading) {
     return (
@@ -278,7 +302,8 @@ const Dashboard = () => {
                   {t("dashboard.levelProgress")}
                 </span>
                 <span className="font-semibold">
-                  {profile?.xp || 0} / {nextLevelXP || '∞'} {t("leaderboard.xp")}
+                  {profile?.xp || 0} / {nextLevelXP || "∞"}{" "}
+                  {t("leaderboard.xp")}
                   {currentLevelInfo && (
                     <span className="text-xs text-muted-foreground ml-2">
                       (Level {currentLevelInfo.number}: {currentLevelInfo.name})
@@ -325,7 +350,10 @@ const Dashboard = () => {
               className="pl-10"
             />
           </div>
-          <Select value={categoryFilter} onValueChange={setCategoryFilter} disabled={categoriesLoading || challengesLoading}>
+          <Select
+            value={categoryFilter}
+            onValueChange={setCategoryFilter}
+            disabled={categoriesLoading || challengesLoading}>
             <SelectTrigger className="md:w-[200px]">
               <SelectValue placeholder={t("dashboard.category")} />
             </SelectTrigger>
@@ -333,20 +361,19 @@ const Dashboard = () => {
               <SelectItem value="all">
                 {t("dashboard.allCategories")}
               </SelectItem>
-              {allCategories.length > 0 ? (
-                allCategories.map((cat) => (
-                  <SelectItem key={cat.name} value={cat.name}>
-                    {cat.icon && <span className="mr-2">{cat.icon}</span>}
-                    {cat.name}
-                  </SelectItem>
-                ))
-              ) : (
-                !categoriesLoading && !challengesLoading && (
-                  <SelectItem value="" disabled>
-                    No categories available
-                  </SelectItem>
-                )
-              )}
+              {allCategories.length > 0
+                ? allCategories.map((cat) => (
+                    <SelectItem key={cat.name} value={cat.name}>
+                      {cat.icon && <span className="mr-2">{cat.icon}</span>}
+                      {cat.name}
+                    </SelectItem>
+                  ))
+                : !categoriesLoading &&
+                  !challengesLoading && (
+                    <div className="flex items-center justify-center p-4 text-sm text-muted-foreground">
+                      No levels available
+                    </div>
+                  )}
             </SelectContent>
           </Select>
           <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
@@ -354,7 +381,9 @@ const Dashboard = () => {
               <SelectValue placeholder={t("dashboard.difficulty")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">{t("dashboard.allDifficulties")}</SelectItem>
+              <SelectItem value="all">
+                {t("dashboard.allDifficulties")}
+              </SelectItem>
               <SelectItem value="easy">{t("dashboard.easy")}</SelectItem>
               <SelectItem value="medium">{t("dashboard.medium")}</SelectItem>
               <SelectItem value="hard">{t("dashboard.hard")}</SelectItem>
@@ -423,7 +452,10 @@ const Dashboard = () => {
                       xpReward={challenge.xpReward}
                       image={challenge.image}
                       requiredLevel={challenge.requiredLevel}
-                      deadline={getDeadlineText(challenge.startDate, challenge.endDate)}
+                      deadline={getDeadlineText(
+                        challenge.startDate,
+                        challenge.endDate
+                      )}
                       participants={challenge._count.progress}
                       status={status as "available" | "active" | "completed"}
                       stagesCompleted={completedStages}
@@ -467,7 +499,10 @@ const Dashboard = () => {
                       xpReward={challenge.xpReward}
                       image={challenge.image}
                       requiredLevel={challenge.requiredLevel}
-                      deadline={getDeadlineText(challenge.startDate, challenge.endDate)}
+                      deadline={getDeadlineText(
+                        challenge.startDate,
+                        challenge.endDate
+                      )}
                       participants={challenge._count.progress}
                       status="active"
                       stagesCompleted={completedStages}
@@ -482,17 +517,16 @@ const Dashboard = () => {
           <TabsContent value="available">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredChallenges
-                .filter(
-                  (challenge) => {
-                    // Not already joined
-                    const notJoined = !userChallenges?.some(
-                      (uc) => uc.challengeId === challenge.id
-                    );
-                    // User level is sufficient
-                    const canJoin = !profile || challenge.requiredLevel <= (profile.level || 1);
-                    return notJoined && canJoin;
-                  }
-                )
+                .filter((challenge) => {
+                  // Not already joined
+                  const notJoined = !userChallenges?.some(
+                    (uc) => uc.challengeId === challenge.id
+                  );
+                  // User level is sufficient
+                  const canJoin =
+                    !profile || challenge.requiredLevel <= (profile.level || 1);
+                  return notJoined && canJoin;
+                })
                 .map((challenge) => (
                   <ChallengeCard
                     key={challenge.id}
@@ -508,7 +542,10 @@ const Dashboard = () => {
                     }
                     xpReward={challenge.xpReward}
                     image={challenge.image}
-                    deadline={getDeadlineText(challenge.startDate, challenge.endDate)}
+                    deadline={getDeadlineText(
+                      challenge.startDate,
+                      challenge.endDate
+                    )}
                     participants={challenge._count.progress}
                     status="available"
                     onJoin={() => handleJoinChallenge(challenge.id)}
