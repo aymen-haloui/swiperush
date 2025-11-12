@@ -15,8 +15,10 @@ const FloatingCard = React.forwardRef<HTMLDivElement, FloatingCardProps>(
       <div
         ref={(node) => {
           if (typeof ref === "function") ref(node);
-          else if (ref) ref.current = node;
-          hoverRef.current = node;
+          else if (ref && typeof ref !== "function")
+            (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+          // `hoverRef` comes from a hook returning a MutableRef; cast to MutableRefObject to assign
+          (hoverRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
         }}
         className={cn(
           "transition-all duration-300",

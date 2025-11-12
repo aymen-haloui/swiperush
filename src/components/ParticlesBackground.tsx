@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
 import Particles from "@tsparticles/react";
+// Workaround typing mismatch with @tsparticles/react types in this project
+const ParticlesAny: any = Particles;
 import { loadSlim } from "@tsparticles/slim";
 import type { Engine } from "@tsparticles/engine";
 
@@ -50,7 +52,7 @@ const ParticlesBackground = () => {
               enable: true,
               mode: "grab",
             },
-            resize: true,
+            resize: { enable: true },
           },
           modes: {
             push: {
@@ -181,12 +183,12 @@ const ParticlesBackground = () => {
       }), [isDark]);
 
   return (
-    <Particles
+    <ParticlesAny
       id="tsparticles"
       init={particlesInit}
       className="fixed inset-0 -z-10 w-full h-full"
       key={isDark ? 'dark' : 'light'}
-      options={particlesOptions}
+      options={particlesOptions as any}
     />
   );
 };

@@ -22,8 +22,7 @@
       "@/*": ["src/*"]
     },
 
-    // ✅ Silences the TypeScript 6+ deprecation warning
-    "ignoreDeprecations": "6.0"
+  // NOTE: removed `ignoreDeprecations` to stay compatible with the installed TypeScript version
   },
   "include": ["src"]
 }

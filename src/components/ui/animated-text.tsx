@@ -32,7 +32,7 @@ const AnimatedText = React.forwardRef<HTMLElement, AnimatedTextProps>(
 
     // Type-safe component rendering
     const componentProps = {
-      ref: ref as React.Ref<HTMLElement>,
+      ref: ref as any,
       className: cn(baseClasses, effectClasses[effect], className),
       style: { animationDelay: `${delay}ms` },
       ...props,
