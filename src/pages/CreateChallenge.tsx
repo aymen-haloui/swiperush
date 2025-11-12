@@ -12,6 +12,7 @@ import Navbar from "@/components/Navbar";
 import { toast } from "@/hooks/use-toast";
 import { apiClient, CreateChallengeRequest } from "@/lib/api";
 import { useCategories, useCreateChallenge } from "@/hooks/useApi";
+import { UPLOADS_BASE } from '@/lib/config';
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Level, Challenge } from "@/lib/api";
 import {
@@ -348,7 +349,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                 ) : existingImageUrl && isEditMode ? (
                   <div className="flex items-center gap-2 p-3 border rounded-md bg-muted/20">
                     <img 
-                      src={existingImageUrl.startsWith('http') ? existingImageUrl : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/uploads/${existingImageUrl}`}
+                      src={existingImageUrl.startsWith('http') ? existingImageUrl : `${UPLOADS_BASE}/uploads/${existingImageUrl}`}
                       alt="Current challenge image" 
                       className="w-20 h-20 object-cover rounded-md"
                     />

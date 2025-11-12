@@ -5,9 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const logger_1 = __importDefault(require("../src/utils/logger"));
 const prisma = new client_1.PrismaClient();
 async function main() {
-    console.log('🌱 Starting database seed...');
+    logger_1.default.info('🌱 Starting database seed...');
     const levels = [
         { number: 1, name: 'Novice Explorer', minXP: 0, maxXP: 499 },
         { number: 2, name: 'Adventurer', minXP: 500, maxXP: 999 },
@@ -30,7 +31,7 @@ async function main() {
             },
             create: levelData
         });
-        console.log('✅ Level created:', level.name);
+    logger_1.default.info('✅ Level created:', level.name);
     }
     const adminPassword = await bcryptjs_1.default.hash('admin123', 12);
     const admin = await prisma.user.upsert({
@@ -47,7 +48,7 @@ async function main() {
             level: 10
         }
     });
-    console.log('✅ Admin user created:', admin.username);
+    logger_1.default.info('✅ Admin user created:', admin.username);
     const testUsers = [
         {
             email: 'john@example.com',
@@ -84,7 +85,7 @@ async function main() {
                 password
             }
         });
-        console.log('✅ Test user created:', user.username);
+    logger_1.default.info('✅ Test user created:', user.username);
     }
     const challenges = [
         {
@@ -344,7 +345,7 @@ async function main() {
                 }
             }
         });
-        console.log('✅ Challenge created:', challenge.title);
+    logger_1.default.info('✅ Challenge created:', challenge.title);
     }
     const achievements = [
         {
@@ -389,7 +390,7 @@ async function main() {
             update: {},
             create: achievementData
         });
-        console.log('✅ Achievement created:', achievement.name);
+    logger_1.default.info('✅ Achievement created:', achievement.name);
     }
     const users = await prisma.user.findMany({
         where: { isActive: true },
@@ -401,12 +402,12 @@ async function main() {
             data: { rank: i + 1 }
         });
     }
-    console.log('✅ User ranks updated');
-    console.log('🎉 Database seed completed successfully!');
+    logger_1.default.info('✅ User ranks updated');
+    logger_1.default.info('🎉 Database seed completed successfully!');
 }
 main()
     .catch((e) => {
-    console.error('❌ Seed failed:', e);
+    logger_1.default.error('❌ Seed failed:', e);
     process.exit(1);
 })
     .finally(async () => {

@@ -1,9 +1,8 @@
 // API configuration and utilities
-// API configuration and utilities
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+import logger from './logger';
+import { API_BASE_URL } from './config';
 
-console.log("🔍 API_BASE_URL =", API_BASE_URL);
+logger.debug('🔍 API_BASE_URL =', API_BASE_URL);
 
 export const getChallengeById = (id: string) => apiClient.getChallengeById(id);
 

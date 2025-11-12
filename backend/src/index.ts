@@ -29,6 +29,7 @@ import { authenticateToken, requireAdmin, optionalAuth } from './middleware/auth
 
 // Import socket service
 import { initializeSocketService } from './services/socketService';
+import logger from './utils/logger';
 
 // Load environment variables
 dotenv.config();
@@ -47,12 +48,14 @@ app.use(helmet({
 }));
 
 // CORS configuration - allow multiple origins
-const allowedOrigins = [
+const defaultOrigins = [
   'http://localhost:8081',
   'http://localhost:5173',
-  'https://challengequest-frontend.vercel.app',
-  process.env.CORS_ORIGIN
-].filter(Boolean); // Remove any undefined values
+  'https://challengequest-frontend.vercel.app'
+];
+
+const envOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',').map((s) => s.trim()) : [];
+const allowedOrigins = Array.from(new Set([...envOrigins, ...defaultOrigins])).filter(Boolean);
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -110,7 +113,7 @@ app.get('/health/db', async (req, res) => {
     
     // Test database connection
     const connectionTest = await prisma.$queryRaw`SELECT 1 as test`;
-    console.log('Database connection test:', connectionTest);
+  logger.debug('Database connection test:', connectionTest);
     
     // Check if tables exist
     let tablesExist = false;
@@ -162,7 +165,7 @@ app.get('/health/db', async (req, res) => {
           : 'Database is accessible and has users'
     });
   } catch (error: any) {
-    console.error('Database health check failed:', error);
+  logger.error('Database health check failed:', error);
     const dbUrl = process.env.DATABASE_URL || 'Not set';
     const dbUrlInfo = dbUrl !== 'Not set' && dbUrl.includes('@')
       ? dbUrl.split('@')[1]?.split('/')[0] || 'Unknown host'
@@ -297,40 +300,40 @@ const PORT = process.env.PORT || 5000;
 
 // Validate required environment variables
 if (!process.env.JWT_SECRET) {
-  console.error('❌ ERROR: JWT_SECRET environment variable is not set');
+  logger.error('❌ ERROR: JWT_SECRET environment variable is not set');
   process.exit(1);
 }
 
 if (!process.env.DATABASE_URL) {
-  console.error('❌ ERROR: DATABASE_URL environment variable is not set');
+  logger.error('❌ ERROR: DATABASE_URL environment variable is not set');
   process.exit(1);
 }
 
 server.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📊 Environment: ${process.env.NODE_ENV}`);
-  console.log(`🔗 Health check: http://localhost:${PORT}/health`);
-  console.log(`📡 Socket.IO enabled`);
+  logger.info(`🚀 Server running on port ${PORT}`);
+  logger.info(`📊 Environment: ${process.env.NODE_ENV}`);
+  logger.info(`🔗 Health check: http://localhost:${PORT}/health`);
+  logger.info(`📡 Socket.IO enabled`);
 }).on('error', (error: any) => {
-  console.error('❌ Failed to start server:', error);
+  logger.error('❌ Failed to start server:', error);
   if (error.code === 'EADDRINUSE') {
-    console.error(`Port ${PORT} is already in use`);
+    logger.error(`Port ${PORT} is already in use`);
   }
   process.exit(1);
 });
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
+  logger.info('SIGTERM received, shutting down gracefully');
   server.close(() => {
-    console.log('Process terminated');
+    logger.info('Process terminated');
   });
 });
 
 process.on('SIGINT', () => {
-  console.log('SIGINT received, shutting down gracefully');
+  logger.info('SIGINT received, shutting down gracefully');
   server.close(() => {
-    console.log('Process terminated');
+    logger.info('Process terminated');
   });
 });
 

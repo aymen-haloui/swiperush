@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import logger from "@/lib/logger";
 import { Html5Qrcode } from "html5-qrcode";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -54,7 +55,7 @@ export const QRCodeScanner = ({ open, onClose, onScanSuccess, stageTitle }: QRCo
           }
         } catch (permError) {
           // Permission query not supported or failed, continue to try getUserMedia
-          console.log("Permission query not supported, trying getUserMedia directly");
+          logger.debug("Permission query not supported, trying getUserMedia directly");
         }
       }
 

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import logger from '../utils/logger';
 import rateLimit from 'express-rate-limit';
 
 // Rate limiting middleware (auto-adjusts based on environment)
@@ -95,7 +96,7 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
   
   res.on('finish', () => {
     const duration = Date.now() - start;
-    console.log(`${req.method} ${req.originalUrl} - ${res.statusCode} - ${duration}ms`);
+  logger.info(`${req.method} ${req.originalUrl} - ${res.statusCode} - ${duration}ms`);
   });
   
   next();

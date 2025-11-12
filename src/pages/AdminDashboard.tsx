@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { UPLOADS_BASE } from '@/lib/config';
 import {
   Dialog,
   DialogContent,
@@ -547,8 +548,7 @@ const AdminDashboard = () => {
                         status = 'completed';
                       }
 
-                      const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-                      const imageUrl = challenge.image ? (challenge.image.startsWith('http') ? challenge.image : `${API_BASE_URL.replace('/api', '')}/uploads/${challenge.image}`) : null;
+                      const imageUrl = challenge.image ? (challenge.image.startsWith('http') ? challenge.image : `${UPLOADS_BASE}/uploads/${challenge.image}`) : null;
 
                       return (
                         <div

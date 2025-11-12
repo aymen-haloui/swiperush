@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import logger from '../utils/logger';
 import jwt, { SignOptions, Secret } from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
@@ -88,12 +89,12 @@ export class AuthService {
     });
 
     if (!user) {
-      console.log(`Login attempt failed: User not found for email: ${validatedData.email}`);
+  logger.warn(`Login attempt failed: User not found for email: ${validatedData.email}`);
       throw new Error('Invalid credentials');
     }
 
     if (!user.isActive) {
-      console.log(`Login attempt failed: User ${user.email} is inactive`);
+  logger.warn(`Login attempt failed: User ${user.email} is inactive`);
       throw new Error('Invalid credentials');
     }
 
@@ -101,7 +102,7 @@ export class AuthService {
     const isValidPassword = await bcrypt.compare(validatedData.password, user.password);
 
     if (!isValidPassword) {
-      console.log(`Login attempt failed: Invalid password for email: ${validatedData.email}`);
+  logger.warn(`Login attempt failed: Invalid password for email: ${validatedData.email}`);
       throw new Error('Invalid credentials');
     }
 

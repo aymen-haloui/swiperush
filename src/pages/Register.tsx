@@ -17,6 +17,7 @@ import { useAuth } from "@/hooks/useApi";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { apiClient } from "@/lib/api";
+import logger from "@/lib/logger";
 import ParticlesBackground from "@/components/ParticlesBackground";
 import AnimatedGradient from "@/components/AnimatedGradient";
 import FloatingShapes from "@/components/FloatingShapes";
@@ -39,7 +40,7 @@ const Register = () => {
   e.preventDefault();
   try {
     const response = await apiClient.register(formData);
-    console.log("✅ Registered:", response.user);
+    logger.info("✅ Registered:", response.user);
 
     // Redirect only after successful registration
     navigate("/dashboard");

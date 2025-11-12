@@ -1,3 +1,5 @@
+import { UPLOADS_BASE } from '@/lib/config';
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -258,7 +260,7 @@ const ChallengeDetail = () => {
             {challenge.image && (
               <div className="md:w-80 h-64 md:h-auto flex-shrink-0">
                 <img
-                  src={challenge.image.startsWith('http') ? challenge.image : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/uploads/${challenge.image}`}
+                  src={challenge.image.startsWith('http') ? challenge.image : `${UPLOADS_BASE}/uploads/${challenge.image}`}
                   alt={challenge.title}
                   className="w-full h-full object-cover rounded-lg shadow-lg"
                 />

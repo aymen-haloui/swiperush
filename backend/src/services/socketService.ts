@@ -1,4 +1,5 @@
 import { Server as SocketIOServer, Socket } from "socket.io";
+import logger from '../utils/logger';
 
 import { Server as HTTPServer } from 'http';
 import jwt from 'jsonwebtoken';
@@ -20,13 +21,15 @@ export class SocketService {
 
   constructor(server: HTTPServer) {
     // CORS configuration - allow multiple origins
-    const allowedOrigins = [
+    const defaultOrigins = [
       'http://localhost:8081',
       'http://localhost:5173',
-      'https://challengequest-frontend.vercel.app',
-      process.env.SOCKET_CORS_ORIGIN,
-      process.env.CORS_ORIGIN
-    ].filter(Boolean); // Remove any undefined values
+      'https://challengequest-frontend.vercel.app'
+    ];
+
+    const socketEnv = process.env.SOCKET_CORS_ORIGIN ? process.env.SOCKET_CORS_ORIGIN.split(',').map(s => s.trim()) : [];
+    const commonEnv = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',').map(s => s.trim()) : [];
+    const allowedOrigins = Array.from(new Set([...socketEnv, ...commonEnv, ...defaultOrigins])).filter(Boolean);
 
     this.io = new SocketIOServer(server, {
       cors: {
@@ -52,7 +55,7 @@ export class SocketService {
     this.io.use(this.authenticateSocket.bind(this));
 
     this.io.on('connection', (socket: AuthenticatedSocket) => {
-      console.log(`User ${socket.user?.username} connected: ${socket.id}`);
+  logger.info(`User ${socket.user?.username} connected: ${socket.id}`);
 
       if (socket.user) {
         this.connectedUsers.set(socket.user.id, socket.id);
@@ -86,7 +89,7 @@ export class SocketService {
 
       // Handle disconnect
       socket.on('disconnect', () => {
-        console.log(`User ${socket.user?.username} disconnected: ${socket.id}`);
+  logger.info(`User ${socket.user?.username} disconnected: ${socket.id}`);
         
         if (socket.user) {
           this.connectedUsers.delete(socket.user.id);

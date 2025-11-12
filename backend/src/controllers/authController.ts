@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import logger from '../utils/logger';
 import { AuthService, registerSchema, loginSchema, changePasswordSchema } from '../services/authService';
 import { AuthRequest } from '../middleware/auth';
 
@@ -30,8 +31,8 @@ export class AuthController {
   // Login user
   static async login(req: Request, res: Response): Promise<void> {
     try {
-      console.log(`Login attempt - Request body:`, JSON.stringify(req.body));
-      console.log(`Login attempt for email: ${req.body?.email || 'unknown'}`);
+  logger.debug(`Login attempt - Request body:`, JSON.stringify(req.body));
+  logger.debug(`Login attempt for email: ${req.body?.email || 'unknown'}`);
       
       // Validate request body
       if (!req.body || !req.body.email || !req.body.password) {
@@ -45,7 +46,7 @@ export class AuthController {
       
       const result = await AuthService.login(req.body);
       
-      console.log(`Login successful for user: ${result.user.email}`);
+  logger.info(`Login successful for user: ${result.user.email}`);
       res.json({
         success: true,
         message: 'Login successful',

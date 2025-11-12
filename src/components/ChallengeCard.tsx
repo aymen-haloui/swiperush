@@ -6,6 +6,7 @@ import { FloatingCard } from "@/components/ui/floating-card";
 import { Progress } from "@/components/ui/progress";
 import { MapPin, Clock, Trophy, Users, Award } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { UPLOADS_BASE } from '@/lib/config';
 
 interface ChallengeCardProps {
   id: string;
@@ -50,8 +51,7 @@ const ChallengeCard = ({
   };
 
   const progressPercentage = (stagesCompleted / totalStages) * 100;
-  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-  const imageUrl = image ? (image.startsWith('http') ? image : `${API_BASE_URL.replace('/api', '')}/uploads/${image}`) : null;
+  const imageUrl = image ? (image.startsWith('http') ? image : `${UPLOADS_BASE}/uploads/${image}`) : null;
 
   return (
     <FloatingCard floating glow>

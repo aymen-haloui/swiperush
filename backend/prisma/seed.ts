@@ -1,10 +1,11 @@
 import { PrismaClient, Difficulty } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import logger from '../src/utils/logger';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting database seed...');
+  logger.info('🌱 Starting database seed...');
 
   // Create levels
   const levels = [
@@ -30,7 +31,7 @@ async function main() {
       },
       create: levelData
     });
-    console.log('✅ Level created:', level.name);
+  logger.info('✅ Level created:', level.name);
   }
 
   // Create admin user
@@ -50,7 +51,7 @@ async function main() {
     }
   });
 
-  console.log('✅ Admin user created:', admin.username);
+  logger.info('✅ Admin user created:', admin.username);
 
   // Create test users
   const testUsers = [
@@ -90,7 +91,7 @@ async function main() {
         password
       }
     });
-    console.log('✅ Test user created:', user.username);
+  logger.info('✅ Test user created:', user.username);
   }
 
   // Create sample challenges
@@ -353,7 +354,7 @@ async function main() {
         }
       }
     });
-    console.log('✅ Challenge created:', challenge.title);
+  logger.info('✅ Challenge created:', challenge.title);
   }
 
   // Create achievements
@@ -401,7 +402,7 @@ async function main() {
       update: {},
       create: achievementData
     });
-    console.log('✅ Achievement created:', achievement.name);
+  logger.info('✅ Achievement created:', achievement.name);
   }
 
   // Update user ranks
@@ -417,14 +418,14 @@ async function main() {
     });
   }
 
-  console.log('✅ User ranks updated');
+  logger.info('✅ User ranks updated');
 
-  console.log('🎉 Database seed completed successfully!');
+  logger.info('🎉 Database seed completed successfully!');
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Seed failed:', e);
+    logger.error('❌ Seed failed:', e);
     process.exit(1);
   })
   .finally(async () => {

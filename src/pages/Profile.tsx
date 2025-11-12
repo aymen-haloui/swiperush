@@ -21,6 +21,8 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import logger from "@/lib/logger";
+import { API_BASE_URL } from '@/lib/config';
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -33,7 +35,7 @@ import { useProfile, useAuth, useUserChallenges, useUserRank, useUpdateProfile }
 import { useTranslation } from "react-i18next";
 
 const Profile = () => {
-  console.log("🌍 API base URL =", import.meta.env.VITE_API_URL);
+  logger.debug('🌍 API base URL =', API_BASE_URL);
   const navigate = useNavigate();
   const { logout } = useAuth();
   const { toast } = useToast();
@@ -120,8 +122,8 @@ const Profile = () => {
     try {
       setChanging(true);
 
-      const token = localStorage.getItem("auth_token");
-      const baseUrl = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("auth_token");
+  const baseUrl = API_BASE_URL;
       const res = await fetch(`${baseUrl}/auth/change-password`, {
         method: "PUT",
         headers: {
