@@ -760,7 +760,7 @@ const Profile = () => {
                         <Button
                           onClick={handleUploadProfilePicture}
                           disabled={uploadingPicture}
-                          className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-all rounded-lg shadow-md"
+                          className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:opacity-90 transition-all rounded-lg shadow-md"
                         >
                           {uploadingPicture && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                           Upload Picture
@@ -859,7 +859,7 @@ const Profile = () => {
               <Button
                 onClick={handleChangePassword}
                 disabled={changing}
-                className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-all rounded-lg shadow-md">
+                className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:opacity-90 transition-all rounded-lg shadow-md">
                 {changing && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                 Change Password
               </Button>
@@ -927,7 +927,7 @@ const Profile = () => {
                   <Button
                     onClick={handleChangeEmail}
                     disabled={changingEmail}
-                    className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-all rounded-lg shadow-md">
+                    className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:opacity-90 transition-all rounded-lg shadow-md">
                     {changingEmail && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                     Change Email
                   </Button>
@@ -982,7 +982,7 @@ const Profile = () => {
                   <Button
                     onClick={handleChangeUsername}
                     disabled={changingUsername}
-                    className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 transition-all rounded-lg shadow-md">
+                    className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:opacity-90 transition-all rounded-lg shadow-md">
                     {changingUsername && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                     Change Username
                   </Button>

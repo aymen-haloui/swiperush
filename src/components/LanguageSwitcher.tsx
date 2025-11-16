@@ -67,7 +67,7 @@ export const LanguageSwitcher = () => {
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 px-2 hover:bg-primary/10 hover:text-white transition-colors"
+          className="h-8 px-2 hover:bg-primary/10 hover:text-primary transition-colors"
         >
           <ReactCountryFlag
             countryCode={currentLanguage.countryCode}

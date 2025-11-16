@@ -223,7 +223,7 @@ const ChallengeDetail = () => {
 
   if (!challenge)
     return (
-      <div className="flex justify-center items-center h-screen text-gray-400">
+      <div className="flex justify-center items-center h-screen text-muted-foreground">
         Challenge not found.
       </div>
     );
