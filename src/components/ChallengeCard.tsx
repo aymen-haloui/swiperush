@@ -50,7 +50,12 @@ const ChallengeCard = ({
   };
 
   const progressPercentage = (stagesCompleted / totalStages) * 100;
-  const imageUrl = image ? (image.startsWith('http') ? image : `${UPLOADS_BASE}/uploads/${image}`) : null;
+  // Handle base64 images, http URLs, and file paths
+  const imageUrl = image ? (
+    image.startsWith('data:image') || image.startsWith('http') 
+      ? image 
+      : `${UPLOADS_BASE}/uploads/${image}`
+  ) : null;
 
   return (
     <Card className="group relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-background via-background/95 to-background shadow-lg hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] hover:border-primary/40 transition-all duration-300">
@@ -58,11 +63,16 @@ const ChallengeCard = ({
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
       
       {imageUrl && (
-        <div className="relative w-full h-40 sm:h-56 overflow-hidden">
+        <div className="relative w-full h-40 sm:h-56 overflow-hidden bg-muted/20">
           <img 
             src={imageUrl} 
             alt={title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
+            className="group-hover:scale-110 transition-transform duration-500"
+            onError={(e) => {
+              // Hide image on error
+              (e.target as HTMLImageElement).style.display = 'none';
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
           

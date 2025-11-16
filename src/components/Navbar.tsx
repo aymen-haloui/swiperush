@@ -107,8 +107,8 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
             className="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink transition-all duration-200 cursor-pointer hover:opacity-80 active:scale-95"
             onClick={() => navigate('/dashboard')}
           >
-            <div className="relative">
-              <Crown className="w-5 h-5 sm:w-10 sm:h-10 text-primary flex-shrink-0 drop-shadow-sm hover:drop-shadow-lg transition-all" />
+            <div className="relative flex items-center justify-center" style={{ width: '1.5rem', height: '1.5rem' }}>
+              <Crown className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-primary flex-shrink-0 drop-shadow-sm hover:drop-shadow-lg transition-all" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               <div className="absolute inset-0 bg-primary/20 blur-xl opacity-50 -z-10" />
             </div>
             <span className="text-sm sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">
@@ -280,8 +280,8 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
             className="flex items-center gap-1 sm:gap-2 min-w-0 flex-shrink transition-all duration-200 cursor-pointer hover:opacity-80 active:scale-95"
             onClick={() => navigate('/admin')}
           >
-            <div className="relative">
-              <Crown className="w-5 h-5 sm:w-10 sm:h-10 text-primary flex-shrink-0 drop-shadow-sm hover:drop-shadow-lg transition-all" />
+            <div className="relative flex items-center justify-center" style={{ width: '1.5rem', height: '1.5rem' }}>
+              <Crown className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-primary flex-shrink-0 drop-shadow-sm hover:drop-shadow-lg transition-all" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               <div className="absolute inset-0 bg-primary/20 blur-xl opacity-50 -z-10" />
             </div>
             <span className="text-xs sm:text-base md:text-lg lg:text-xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">

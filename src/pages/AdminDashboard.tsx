@@ -391,113 +391,113 @@ const AdminDashboard = () => {
     <div className="min-h-screen">
       <Navbar variant="admin" />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
         {/* Stats Overview */}
         {(statsLoading || challengesLoading) && (
-          <div className="flex items-center gap-2 text-muted-foreground mb-4">
-            <Loader2 className="w-4 h-4 animate-spin" /> Loading...
+          <div className="flex items-center gap-2 text-muted-foreground mb-3 sm:mb-4">
+            <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" /> <span className="text-xs sm:text-sm">Loading...</span>
           </div>
         )}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
           <Card className="glass-card border-primary/20">
-            <CardHeader className="pb-3">
-              <CardDescription>Active Challenges</CardDescription>
-              <CardTitle className="text-3xl font-bold">{stats.activeChallenges}</CardTitle>
+            <CardHeader className="pb-2 sm:pb-3 p-3 sm:p-6">
+              <CardDescription className="text-xs sm:text-sm">Active Challenges</CardDescription>
+              <CardTitle className="text-2xl sm:text-3xl font-bold">{stats.activeChallenges}</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-2 text-sm text-success">
-                <Activity className="w-4 h-4" />
-                <span>Currently Running</span>
+            <CardContent className="p-3 sm:p-6 pt-0">
+              <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-success">
+                <Activity className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="truncate">Currently Running</span>
               </div>
             </CardContent>
           </Card>
 
           <Card className="glass-card border-secondary/20">
-            <CardHeader className="pb-3">
-              <CardDescription>Total Players</CardDescription>
-              <CardTitle className="text-3xl font-bold">{stats.totalPlayers}</CardTitle>
+            <CardHeader className="pb-2 sm:pb-3 p-3 sm:p-6">
+              <CardDescription className="text-xs sm:text-sm">Total Players</CardDescription>
+              <CardTitle className="text-2xl sm:text-3xl font-bold">{stats.totalPlayers}</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-2 text-sm text-secondary">
-                <Users className="w-4 h-4" />
-                <span>{stats.activePlayers} Active Now</span>
+            <CardContent className="p-3 sm:p-6 pt-0">
+              <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-secondary">
+                <Users className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="truncate">{stats.activePlayers} Active Now</span>
               </div>
             </CardContent>
           </Card>
 
           <Card className="glass-card border-accent/20">
-            <CardHeader className="pb-3">
-              <CardDescription>Active Players</CardDescription>
-              <CardTitle className="text-3xl font-bold">{stats.activePlayers}</CardTitle>
+            <CardHeader className="pb-2 sm:pb-3 p-3 sm:p-6">
+              <CardDescription className="text-xs sm:text-sm">Active Players</CardDescription>
+              <CardTitle className="text-2xl sm:text-3xl font-bold">{stats.activePlayers}</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-2 text-sm text-accent">
-                <Activity className="w-4 h-4" />
-                <span>In Challenges</span>
+            <CardContent className="p-3 sm:p-6 pt-0">
+              <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-accent">
+                <Activity className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="truncate">In Challenges</span>
               </div>
             </CardContent>
           </Card>
 
           <Card className="glass-card border-border/50">
-            <CardHeader className="pb-3">
-              <CardDescription>Top Performers</CardDescription>
-              <CardTitle className="text-3xl font-bold">{stats.topPerformers}</CardTitle>
+            <CardHeader className="pb-2 sm:pb-3 p-3 sm:p-6">
+              <CardDescription className="text-xs sm:text-sm">Top Performers</CardDescription>
+              <CardTitle className="text-2xl sm:text-3xl font-bold">{stats.topPerformers}</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Trophy className="w-4 h-4" />
-                <span>This Week</span>
+            <CardContent className="p-3 sm:p-6 pt-0">
+              <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
+                <Trophy className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="truncate">This Week</span>
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Main Content Tabs */}
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="glass-card">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="challenges">Challenges</TabsTrigger>
-            <TabsTrigger value="categories">Categories</TabsTrigger>
-            <TabsTrigger value="difficulty">Difficulty</TabsTrigger>
-            <TabsTrigger value="levels">Levels</TabsTrigger>
-            <TabsTrigger value="players">Players</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
+          <TabsList className="glass-card w-full overflow-x-auto flex-nowrap justify-start sm:justify-center">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Overview</TabsTrigger>
+            <TabsTrigger value="challenges" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Challenges</TabsTrigger>
+            <TabsTrigger value="categories" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Categories</TabsTrigger>
+            <TabsTrigger value="difficulty" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Difficulty</TabsTrigger>
+            <TabsTrigger value="levels" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Levels</TabsTrigger>
+            <TabsTrigger value="players" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Players</TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Analytics</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-6">
+          <TabsContent value="overview" className="space-y-4 sm:space-y-6">
             {/* Active Challenges */}
             <Card className="glass-card border-border/50">
-              <CardHeader>
-                <div className="flex items-center justify-between">
+              <CardHeader className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
-                    <CardTitle>Active Challenges</CardTitle>
-                    <CardDescription>Currently running challenges</CardDescription>
+                    <CardTitle className="text-lg sm:text-xl">Active Challenges</CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">Currently running challenges</CardDescription>
                   </div>
-                  <Button variant="hero" onClick={() => navigate("/admin/create-challenge")}>
-                    <Plus className="w-4 h-4" />
-                    Create New
+                  <Button variant="hero" size="sm" className="text-xs sm:text-sm h-8 sm:h-10" onClick={() => navigate("/admin/create-challenge")}>
+                    <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span className="hidden sm:inline ml-2">Create New</span>
                   </Button>
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
+              <CardContent className="p-4 sm:p-6 pt-0">
+                <div className="space-y-2 sm:space-y-3">
                   {activeChallenges.length === 0 && (
-                    <div className="text-sm text-muted-foreground py-4">No active challenges.</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground py-3 sm:py-4">No active challenges.</div>
                   )}
                   {activeChallenges.map((challenge) => (
-                    <div key={challenge.id} className="flex items-center justify-between p-4 rounded-lg bg-muted/20 border border-border/50">
-                      <div>
-                        <p className="font-semibold">{challenge.name}</p>
-                        <p className="text-sm text-muted-foreground">{challenge.participants} participants</p>
+                    <div key={challenge.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 rounded-lg bg-muted/20 border border-border/50">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-sm sm:text-base truncate">{challenge.name}</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground">{challenge.participants} participants</p>
                       </div>
-                      <div className="flex items-center gap-4">
-                        <div className="text-right">
-                          <p className="text-sm text-muted-foreground">Completion Rate</p>
-                          <p className="font-bold text-success">{challenge.completionRate}%</p>
+                      <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
+                        <div className="text-left sm:text-right">
+                          <p className="text-xs sm:text-sm text-muted-foreground">Completion Rate</p>
+                          <p className="font-bold text-success text-sm sm:text-base">{challenge.completionRate}%</p>
                         </div>
-                        <Badge className="bg-success text-success-foreground">{challenge.status}</Badge>
-                        <Button variant="outline" size="sm" onClick={() => navigate(`/challenge/${challenge.id}`)}>
-                          <Eye className="w-4 h-4" />
+                        <Badge className="bg-success text-success-foreground text-xs">{challenge.status}</Badge>
+                        <Button variant="outline" size="sm" className="h-8 w-8 sm:h-9 sm:w-9 p-0" onClick={() => navigate(`/challenge/${challenge.id}`)}>
+                          <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         </Button>
                       </div>
                     </div>
@@ -507,36 +507,36 @@ const AdminDashboard = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="challenges">
+          <TabsContent value="challenges" className="space-y-4 sm:space-y-6">
             <Card className="glass-card border-border/50">
-              <CardHeader>
-                <div className="flex items-center justify-between">
+              <CardHeader className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
-                    <CardTitle>Challenge Management</CardTitle>
-                    <CardDescription>View, edit, and delete challenges</CardDescription>
+                    <CardTitle className="text-lg sm:text-xl">Challenge Management</CardTitle>
+                    <CardDescription className="text-xs sm:text-sm">View, edit, and delete challenges</CardDescription>
                   </div>
-                  <Button variant="hero" onClick={() => navigate("/admin/create-challenge")}>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Create Challenge
+                  <Button variant="hero" size="sm" className="text-xs sm:text-sm h-8 sm:h-10" onClick={() => navigate("/admin/create-challenge")}>
+                    <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <span className="ml-1.5 sm:ml-2">Create Challenge</span>
                   </Button>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-4 sm:p-6 pt-0">
                 {challengesLoading ? (
-                  <div className="flex items-center justify-center py-12">
-                    <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+                  <div className="flex items-center justify-center py-8 sm:py-12">
+                    <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin text-muted-foreground" />
                   </div>
                 ) : !challengesData?.challenges || challengesData.challenges.length === 0 ? (
-                  <div className="text-center py-12 text-muted-foreground">
-                    <Trophy className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                    <p className="mb-4">No challenges created yet</p>
-                    <Button variant="hero" onClick={() => navigate("/admin/create-challenge")}>
-                      <Plus className="w-4 h-4 mr-2" />
-                      Create First Challenge
+                  <div className="text-center py-8 sm:py-12 text-muted-foreground">
+                    <Trophy className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 opacity-50" />
+                    <p className="mb-3 sm:mb-4 text-sm sm:text-base">No challenges created yet</p>
+                    <Button variant="hero" size="sm" className="text-xs sm:text-sm h-8 sm:h-10" onClick={() => navigate("/admin/create-challenge")}>
+                      <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="ml-1.5 sm:ml-2">Create First Challenge</span>
                     </Button>
                   </div>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {challengesData.challenges.map((challenge) => {
                       const now = new Date();
                       const startDate = new Date(challenge.startDate);
@@ -548,57 +548,70 @@ const AdminDashboard = () => {
                         status = 'completed';
                       }
 
-                      const imageUrl = challenge.image ? (challenge.image.startsWith('http') ? challenge.image : `${UPLOADS_BASE}/uploads/${challenge.image}`) : null;
+                      // Handle base64 images, http URLs, and file paths
+                      const imageUrl = challenge.image ? (
+                        challenge.image.startsWith('data:image') || challenge.image.startsWith('http') 
+                          ? challenge.image 
+                          : `${UPLOADS_BASE}/uploads/${challenge.image}`
+                      ) : null;
 
                       return (
                         <div
                           key={challenge.id}
-                          className="flex items-center justify-between p-4 rounded-lg bg-muted/20 border border-border/50 hover:bg-muted/30 transition-colors"
+                          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 rounded-lg bg-muted/20 border border-border/50 hover:bg-muted/30 transition-colors"
                         >
-                          {imageUrl && (
-                            <img 
-                              src={imageUrl} 
-                              alt={challenge.title}
-                              className="w-20 h-20 object-cover rounded-md mr-4 flex-shrink-0"
-                            />
-                          )}
-                          <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-2">
-                              <h3 className="font-semibold text-lg">{challenge.title}</h3>
-                              <Badge variant={status === 'active' ? 'default' : status === 'completed' ? 'secondary' : 'outline'}>
-                                {status === 'active' ? 'Active' : status === 'upcoming' ? 'Upcoming' : 'Completed'}
-                              </Badge>
-                              {!challenge.isActive && (
-                                <Badge variant="destructive">Inactive</Badge>
-                              )}
-                            </div>
-                            <p className="text-sm text-muted-foreground line-clamp-1 mb-2">
-                              {challenge.description}
-                            </p>
-                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                              <span>{challenge.category}</span>
-                              <span>•</span>
-                              <span>{challenge.difficulty}</span>
-                              <span>•</span>
-                              <span>Level {challenge.requiredLevel} required</span>
-                              <span>•</span>
-                              <span>{challenge._count?.progress || 0} participants</span>
-                              <span>•</span>
-                              <span>{challenge.stages.length} stages</span>
+                          <div className="flex items-start gap-3 flex-1 min-w-0 w-full sm:w-auto">
+                            {imageUrl && (
+                              <img 
+                                src={imageUrl} 
+                                alt={challenge.title}
+                                style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px' }}
+                                className="flex-shrink-0"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).style.display = 'none';
+                                }}
+                              />
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                                <h3 className="font-semibold text-sm sm:text-base truncate">{challenge.title}</h3>
+                                <Badge variant={status === 'active' ? 'default' : status === 'completed' ? 'secondary' : 'outline'} className="text-xs">
+                                  {status === 'active' ? 'Active' : status === 'upcoming' ? 'Upcoming' : 'Completed'}
+                                </Badge>
+                                {!challenge.isActive && (
+                                  <Badge variant="destructive" className="text-xs">Inactive</Badge>
+                                )}
+                              </div>
+                              <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1 mb-1.5">
+                                {challenge.description}
+                              </p>
+                              <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-muted-foreground">
+                                <span>{challenge.category}</span>
+                                <span>•</span>
+                                <span>{challenge.difficulty}</span>
+                                <span>•</span>
+                                <span>Lv {challenge.requiredLevel}</span>
+                                <span>•</span>
+                                <span>{challenge._count?.progress || 0} participants</span>
+                                <span>•</span>
+                                <span>{challenge.stages.length} stages</span>
+                              </div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 w-full sm:w-auto">
                             <Button
                               variant="outline"
                               size="sm"
+                              className="flex-1 sm:flex-none h-8 text-xs sm:text-sm"
                               onClick={() => navigate(`/admin/edit-challenge/${challenge.id}`)}
                             >
-                              <Edit className="w-4 h-4 mr-2" />
-                              Edit
+                              <Edit className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-2" />
+                              <span className="hidden sm:inline">Edit</span>
                             </Button>
                             <Button
                               variant="destructive"
                               size="sm"
+                              className="flex-1 sm:flex-none h-8 text-xs sm:text-sm"
                               onClick={() => handleDeleteChallenge(challenge)}
                               disabled={deleteChallengeMutation.isPending}
                             >

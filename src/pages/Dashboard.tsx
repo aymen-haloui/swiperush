@@ -292,22 +292,26 @@ const Dashboard = () => {
 
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 flex-1">
         {/* Simplified User Stats Card */}
-        <div className="relative rounded-2xl p-5 sm:p-8 mb-6 sm:mb-10 bg-gradient-to-br from-background via-background/95 to-background border border-primary/20 shadow-lg dark:shadow-xl overflow-hidden">
-          {/* Subtle background gradient */}
+        <div className="relative rounded-2xl p-6 sm:p-10 mb-6 sm:mb-10 bg-gradient-to-br from-background via-background/95 to-background border-2 border-primary/30 shadow-xl dark:shadow-2xl overflow-hidden">
+          {/* Enhanced background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-50" />
           <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-transparent to-secondary/3 opacity-30" />
           
+          {/* Enhanced border glow */}
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-secondary/20 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl" />
+          
           <div className="relative z-10">
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-8">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-8 sm:gap-10">
               {/* Avatar with Circular Progress */}
-              <div className="flex flex-col items-center gap-4">
+              <div className="flex flex-col items-center gap-5">
                 <div className="relative">
                   <CircularProgress
                     value={xpProgress}
                     size={100}
                     strokeWidth={3.2}
-                    className="sm:w-28 sm:h-28"
+                    className="sm:w-32 sm:h-32"
                   >
-                    <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center overflow-hidden border-2 border-background flex-shrink-0 ${profile?.rank && profile.rank <= 10 ? 'shadow-[0_0_25px_rgba(139,92,246,0.5)] ring-2 ring-primary/40' : ''}`}>
+                    <div className={`w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center overflow-hidden border-2 border-background flex-shrink-0 shadow-lg ${profile?.rank && profile.rank <= 10 ? 'shadow-[0_0_30px_rgba(139,92,246,0.6)] ring-2 ring-primary/50' : 'shadow-[0_0_15px_rgba(139,92,246,0.2)]'}`}>
                       {profile?.avatar ? (
                         <img
                           src={profile.avatar}
@@ -315,7 +319,7 @@ const Dashboard = () => {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <Trophy className="w-10 h-10 sm:w-12 sm:h-12 text-primary-foreground" />
+                        <Trophy className="w-10 h-10 sm:w-14 sm:h-14 text-primary-foreground" />
                       )}
                     </div>
                   </CircularProgress>
@@ -323,36 +327,36 @@ const Dashboard = () => {
               </div>
               
               {/* Profile Info */}
-              <div className="flex-1 w-full md:w-auto text-center md:text-left space-y-3 sm:space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-center md:justify-start gap-3 flex-wrap">
-                    <h2 className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+              <div className="flex-1 w-full md:w-auto text-center md:text-left space-y-4 sm:space-y-5">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-center md:justify-start gap-4 flex-wrap">
+                    <h2 className="text-2xl sm:text-4xl font-extrabold bg-gradient-to-r from-foreground via-foreground/90 to-foreground/80 bg-clip-text tracking-tight">
                       {profile?.username || t("dashboard.welcome")}
                     </h2>
                     {currentLevelInfo && (
-                      <Badge className="bg-gradient-to-r from-primary/20 to-secondary/20 text-primary border-primary/30 px-3 py-1 text-sm">
+                      <Badge className="bg-gradient-to-r from-primary/25 to-secondary/25 text-primary border-2 border-primary/40 px-4 py-1.5 text-sm font-semibold shadow-md">
                         {getLevelName(currentLevelInfo.number)}
                       </Badge>
                     )}
                   </div>
                   
                   {profile?.rank && (
-                    <div className="flex items-center justify-center md:justify-start gap-2 text-sm sm:text-base text-muted-foreground">
-                      <Medal className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
-                      <span>Rank #{profile.rank}</span>
+                    <div className="flex items-center justify-center md:justify-start gap-2.5 text-base sm:text-lg text-muted-foreground">
+                      <Medal className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
+                      <span className="font-medium">Rank #{profile.rank}</span>
                     </div>
                   )}
                 </div>
                 
                 {/* XP Progress */}
-                <div className="space-y-2 pt-2 border-t border-border/50">
-                  <div className="flex items-center justify-between text-sm sm:text-base">
-                    <span className="text-muted-foreground">XP Progress</span>
-                    <span className="font-semibold text-primary">{Math.round(xpProgress)}%</span>
+                <div className="space-y-3 pt-3 border-t-2 border-border/60">
+                  <div className="flex items-center justify-between text-base sm:text-lg">
+                    <span className="text-muted-foreground font-medium">XP Progress</span>
+                    <span className="font-bold text-primary text-lg sm:text-xl">{Math.round(xpProgress)}%</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground">
-                    <span>{profile?.xp || 0} / {nextLevelXP || "∞"} XP</span>
-                    <span>{nextLevelInfo ? `→ ${getLevelName(nextLevelInfo.number)}` : 'Max Level'}</span>
+                  <div className="flex items-center justify-between text-sm sm:text-base text-muted-foreground">
+                    <span className="font-semibold">{profile?.xp || 0} / {nextLevelXP || "∞"} XP</span>
+                    <span className="font-medium">{nextLevelInfo ? `→ ${getLevelName(nextLevelInfo.number)}` : 'Max Level'}</span>
                   </div>
                 </div>
               </div>
