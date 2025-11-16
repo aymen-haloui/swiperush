@@ -103,6 +103,9 @@ const CreateChallenge = () => {
       setDescription(challenge.description || "");
       setCategory(challenge.category || "");
       setDifficulty((challenge.difficulty?.toLowerCase() as "easy" | "medium" | "hard") || "easy");
+      if (challenge.latitude && challenge.longitude) {
+        setChallengeLocation({ lat: challenge.latitude, lng: challenge.longitude });
+      }
       setRequiredLevel(challenge.requiredLevel || 1);
       setXpReward(challenge.xpReward || 500);
       

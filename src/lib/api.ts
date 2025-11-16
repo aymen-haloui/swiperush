@@ -95,10 +95,14 @@ export interface CreateChallengeRequest {
   image?: string; // optional - base64 image string
   requiredLevel?: number; // optional, defaults to 1
   maxParticipants?: number; // optional
+  latitude?: number; // optional - challenge location latitude
+  longitude?: number; // optional - challenge location longitude
   stages: CreateStageRequest[];
 }
 export interface Challenge {
   id: string;
+  latitude?: number;
+  longitude?: number;
   title: string;
   description: string;
   category: string;

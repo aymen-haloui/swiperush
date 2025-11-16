@@ -291,25 +291,23 @@ const Dashboard = () => {
       <Navbar variant="client" />
 
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 flex-1">
-        {/* Enhanced User Stats Card */}
-        <div className="relative rounded-2xl p-4 sm:p-6 mb-4 sm:mb-8 bg-gradient-to-br from-background via-background/95 to-background border-2 border-primary/30 shadow-[0_0_30px_rgba(139,92,246,0.15)] dark:shadow-[0_0_30px_rgba(139,92,246,0.25)] overflow-hidden">
-          {/* Animated background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-50" />
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+        {/* Simplified User Stats Card */}
+        <div className="relative rounded-2xl p-5 sm:p-8 mb-6 sm:mb-10 bg-gradient-to-br from-background via-background/95 to-background border border-primary/20 shadow-lg dark:shadow-xl overflow-hidden">
+          {/* Subtle background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-transparent to-secondary/3 opacity-30" />
           
           <div className="relative z-10">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-8">
               {/* Avatar with Circular Progress */}
-              <div className="flex items-center gap-3 sm:gap-4 w-full md:w-auto">
+              <div className="flex flex-col items-center gap-4">
                 <div className="relative">
                   <CircularProgress
                     value={xpProgress}
-                    size={80}
-                    strokeWidth={5}
-                    className="sm:w-24 sm:h-24"
+                    size={100}
+                    strokeWidth={3.2}
+                    className="sm:w-28 sm:h-28"
                   >
-                    <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center overflow-hidden border-2 border-background flex-shrink-0 ${profile?.rank && profile.rank <= 10 ? 'shadow-[0_0_20px_rgba(139,92,246,0.6)] ring-2 ring-primary/50' : ''}`}>
+                    <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center overflow-hidden border-2 border-background flex-shrink-0 ${profile?.rank && profile.rank <= 10 ? 'shadow-[0_0_25px_rgba(139,92,246,0.5)] ring-2 ring-primary/40' : ''}`}>
                       {profile?.avatar ? (
                         <img
                           src={profile.avatar}
@@ -317,213 +315,80 @@ const Dashboard = () => {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <Trophy className="w-8 h-8 sm:w-10 sm:h-10 text-primary-foreground" />
+                        <Trophy className="w-10 h-10 sm:w-12 sm:h-12 text-primary-foreground" />
                       )}
                     </div>
                   </CircularProgress>
                 </div>
-                
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                    <h2 className="text-lg sm:text-2xl font-bold truncate bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
+              </div>
+              
+              {/* Profile Info */}
+              <div className="flex-1 w-full md:w-auto text-center md:text-left space-y-3 sm:space-y-4">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-center md:justify-start gap-3 flex-wrap">
+                    <h2 className="text-xl sm:text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">
                       {profile?.username || t("dashboard.welcome")}
                     </h2>
                     {currentLevelInfo && (
-                      <Badge className="bg-gradient-to-r from-primary/20 to-secondary/20 text-primary border-primary/30 hover:scale-105 transition-transform">
+                      <Badge className="bg-gradient-to-r from-primary/20 to-secondary/20 text-primary border-primary/30 px-3 py-1 text-sm">
                         {getLevelName(currentLevelInfo.number)}
                       </Badge>
                     )}
                   </div>
                   
-                  {/* Extra Profile Info Row */}
-                  <div className="flex items-center gap-3 sm:gap-4 mt-2 flex-wrap text-xs sm:text-sm">
-                    {profile?.rank && (
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div className="flex items-center gap-1 text-muted-foreground hover:text-accent transition-colors cursor-help">
-                            <Medal className="w-3 h-3 sm:w-4 sm:h-4" />
-                            <span>#{profile.rank}</span>
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Global Leaderboard Position</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    )}
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="flex items-center gap-1 text-muted-foreground hover:text-secondary transition-colors cursor-help">
-                          <Award className="w-3 h-3 sm:w-4 sm:h-4" />
-                          <span>{completedChallengesCount} completed</span>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Total Challenges Completed</p>
-                      </TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="flex items-center gap-1 text-muted-foreground hover:text-accent transition-colors cursor-help">
-                          <Flame className="w-3 h-3 sm:w-4 sm:h-4" />
-                          <span>0 day streak</span>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Current Daily Streak</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
-                  
-                  {/* Mobile: XP Progress Info */}
-                  <div className="md:hidden mt-2">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
-                      <span>{profile?.xp || 0} / {nextLevelXP || "∞"} XP</span>
-                      <span>{Math.round(xpProgress)}%</span>
+                  {profile?.rank && (
+                    <div className="flex items-center justify-center md:justify-start gap-2 text-sm sm:text-base text-muted-foreground">
+                      <Medal className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
+                      <span>Rank #{profile.rank}</span>
                     </div>
+                  )}
+                </div>
+                
+                {/* XP Progress */}
+                <div className="space-y-2 pt-2 border-t border-border/50">
+                  <div className="flex items-center justify-between text-sm sm:text-base">
+                    <span className="text-muted-foreground">XP Progress</span>
+                    <span className="font-semibold text-primary">{Math.round(xpProgress)}%</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground">
+                    <span>{profile?.xp || 0} / {nextLevelXP || "∞"} XP</span>
+                    <span>{nextLevelInfo ? `→ ${getLevelName(nextLevelInfo.number)}` : 'Max Level'}</span>
                   </div>
                 </div>
               </div>
-
-              {/* Desktop: Level Progress Info */}
-              <div className="hidden md:flex flex-col gap-2 flex-1 max-w-md">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-muted-foreground flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4 text-primary" />
-                    Progress to {nextLevelInfo ? getLevelName(nextLevelInfo.number) : 'Next Level'}
-                  </span>
-                  <span className="font-semibold text-primary">
-                    {Math.round(xpProgress)}%
-                  </span>
-                </div>
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>{profile?.xp || 0} / {nextLevelXP || "∞"} XP</span>
-                  <span>{nextLevelXP - (profile?.xp || 0)} XP remaining</span>
-                </div>
-              </div>
-
-              {/* Stats Grid */}
-              <div className="grid grid-cols-3 md:grid-cols-3 gap-2 sm:gap-4 w-full md:w-auto">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="flex flex-col items-center gap-1 p-2 sm:p-3 rounded-lg bg-primary/5 hover:bg-primary/10 border border-primary/20 hover:scale-105 transition-all cursor-help group">
-                      <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-accent group-hover:scale-110 transition-transform" />
-                      <span className="text-base sm:text-xl font-bold text-accent group-hover:text-accent/80 transition-colors">{profile?.xp || 0}</span>
-                      <span className="text-xs text-muted-foreground hidden sm:block">XP</span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Total Experience Points</p>
-                    <p className="text-xs text-muted-foreground">Earned from completing challenges</p>
-                  </TooltipContent>
-                </Tooltip>
-                
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="flex flex-col items-center gap-1 p-2 sm:p-3 rounded-lg bg-secondary/5 hover:bg-secondary/10 border border-secondary/20 hover:scale-105 transition-all cursor-help group">
-                      <Target className="w-4 h-4 sm:w-5 sm:h-5 text-secondary group-hover:scale-110 transition-transform" />
-                      <span className="text-base sm:text-xl font-bold text-secondary group-hover:text-secondary/80 transition-colors">{activeChallengesCount}</span>
-                      <span className="text-xs text-muted-foreground hidden sm:block">Active</span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Active Challenges</p>
-                    <p className="text-xs text-muted-foreground">Challenges you're currently participating in</p>
-                  </TooltipContent>
-                </Tooltip>
-                
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="flex flex-col items-center gap-1 p-2 sm:p-3 rounded-lg bg-accent/5 hover:bg-accent/10 border border-accent/20 hover:scale-105 transition-all cursor-help group">
-                      <Coins className="w-4 h-4 sm:w-5 sm:h-5 text-accent group-hover:scale-110 transition-transform" />
-                      <span className="text-base sm:text-xl font-bold text-accent group-hover:text-accent/80 transition-colors">{currency}</span>
-                      <span className="text-xs text-muted-foreground hidden sm:block">Coins</span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Currency</p>
-                    <p className="text-xs text-muted-foreground">Earned from completing challenges</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-            </div>
-            
-            {/* Quick Action Buttons */}
-            <div className="flex items-center gap-2 sm:gap-3 mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-border/50">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="flex-1 hover:bg-primary/10 hover:text-primary transition-all"
-                    onClick={() => navigate("/profile")}
-                  >
-                    <Package className="w-4 h-4 mr-2" />
-                    <span className="hidden sm:inline">Inventory</span>
-                    <span className="sm:hidden">Items</span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>View your inventory</p>
-                </TooltipContent>
-              </Tooltip>
-              
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="flex-1 hover:bg-secondary/10 hover:text-secondary transition-all"
-                    onClick={() => navigate("/leaderboard")}
-                  >
-                    <UserPlus className="w-4 h-4 mr-2" />
-                    <span className="hidden sm:inline">Friends</span>
-                    <span className="sm:hidden">Social</span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Manage friends</p>
-                </TooltipContent>
-              </Tooltip>
-              
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="flex-1 hover:bg-accent/10 hover:text-accent transition-all"
-                    onClick={() => navigate("/profile")}
-                  >
-                    <Settings className="w-4 h-4 mr-2" />
-                    <span className="hidden sm:inline">Settings</span>
-                    <span className="sm:hidden">Setup</span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Account settings</p>
-                </TooltipContent>
-              </Tooltip>
             </div>
           </div>
         </div>
 
         {/* Filters and Search */}
-        <div className="flex flex-col md:flex-row gap-2 sm:gap-4 mb-4 sm:mb-8">
+        <div className="flex flex-col md:flex-row gap-3 sm:gap-4 mb-6 sm:mb-10">
           <div className="relative flex-1">
-            <Search className="absolute left-2 sm:left-3 top-2.5 sm:top-3 h-3.5 sm:h-4 w-3.5 sm:w-4 text-muted-foreground" />
+            <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 h-4 sm:h-5 w-4 sm:w-5 text-muted-foreground" />
             <Input
               placeholder={t("dashboard.searchChallenges")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 sm:pl-10 h-9 sm:h-10 text-sm"
+              className="pl-10 sm:pl-12 h-11 sm:h-12 text-sm sm:text-base rounded-xl border-2 shadow-sm focus:shadow-md focus:border-primary/50 transition-all"
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <Select
               value={categoryFilter}
               onValueChange={setCategoryFilter}
               disabled={categoriesLoading || challengesLoading}>
-              <SelectTrigger className="md:w-[200px] h-9 sm:h-10 text-xs sm:text-sm">
-                <SelectValue placeholder={t("dashboard.category")} />
+              <SelectTrigger className="md:w-[220px] h-11 sm:h-12 text-sm sm:text-base rounded-xl border-2 shadow-sm hover:shadow-md focus:shadow-md focus:border-primary/50 transition-all">
+                <SelectValue placeholder={t("dashboard.category")}>
+                  {categoryFilter !== "all" && allCategories.find(c => c.name === categoryFilter) ? (
+                    <>
+                      {allCategories.find(c => c.name === categoryFilter)?.icon && (
+                        <span className="mr-2">{allCategories.find(c => c.name === categoryFilter)?.icon}</span>
+                      )}
+                      {allCategories.find(c => c.name === categoryFilter)?.name}
+                    </>
+                  ) : (
+                    t("dashboard.category")
+                  )}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">
@@ -545,8 +410,19 @@ const Dashboard = () => {
               </SelectContent>
             </Select>
             <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
-              <SelectTrigger className="md:w-[200px] h-9 sm:h-10 text-xs sm:text-sm">
-                <SelectValue placeholder={t("dashboard.difficulty")} />
+              <SelectTrigger className="md:w-[220px] h-11 sm:h-12 text-sm sm:text-base rounded-xl border-2 shadow-sm hover:shadow-md focus:shadow-md focus:border-primary/50 transition-all">
+                <SelectValue placeholder={t("dashboard.difficulty")}>
+                  {difficultyFilter !== "all" ? (
+                    <>
+                      <span className="mr-2">
+                        {difficultyFilter === "easy" ? "🟢" : difficultyFilter === "medium" ? "🟡" : difficultyFilter === "hard" ? "🔴" : ""}
+                      </span>
+                      {difficultyFilter === "easy" ? t("dashboard.easy") : difficultyFilter === "medium" ? t("dashboard.medium") : difficultyFilter === "hard" ? t("dashboard.hard") : t("dashboard.difficulty")}
+                    </>
+                  ) : (
+                    t("dashboard.difficulty")
+                  )}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">
@@ -561,25 +437,34 @@ const Dashboard = () => {
         </div>
 
         {/* Challenges Tabs */}
-        <Tabs defaultValue="all" className="space-y-3 sm:space-y-6">
+        <Tabs defaultValue="all" className="space-y-4 sm:space-y-8">
           <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
-            <TabsList className="glass-card w-max sm:w-auto inline-flex h-9 sm:h-10 p-1">
-              <TabsTrigger value="all" className="text-xs sm:text-sm px-3 sm:px-4 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none">
+            <TabsList className="glass-card w-max sm:w-auto inline-flex h-auto p-1.5 sm:p-2 gap-2 rounded-2xl border border-primary/20 shadow-lg">
+              <TabsTrigger 
+                value="all" 
+                className="text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/20 data-[state=active]:to-secondary/20 data-[state=active]:text-primary data-[state=active]:shadow-[0_0_20px_rgba(139,92,246,0.4)] data-[state=active]:border data-[state=active]:border-primary/40 transition-all duration-200 font-semibold"
+              >
                 {t("dashboard.availableChallenges")}
               </TabsTrigger>
-              <TabsTrigger value="active" className="text-xs sm:text-sm px-3 sm:px-4 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none">
+              <TabsTrigger 
+                value="active" 
+                className="text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/20 data-[state=active]:to-secondary/20 data-[state=active]:text-primary data-[state=active]:shadow-[0_0_20px_rgba(139,92,246,0.4)] data-[state=active]:border data-[state=active]:border-primary/40 transition-all duration-200 font-semibold"
+              >
                 {t("dashboard.activeChallenges")} <span className="hidden sm:inline">({activeChallengesCount})</span>
               </TabsTrigger>
-              <TabsTrigger value="completed" className="text-xs sm:text-sm px-3 sm:px-4 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none">
+              <TabsTrigger 
+                value="completed" 
+                className="text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary/20 data-[state=active]:to-secondary/20 data-[state=active]:text-primary data-[state=active]:shadow-[0_0_20px_rgba(139,92,246,0.4)] data-[state=active]:border data-[state=active]:border-primary/40 transition-all duration-200 font-semibold"
+              >
                 {t("dashboard.completedChallenges")}
               </TabsTrigger>
             </TabsList>
           </div>
 
-          <TabsContent value="all" className="space-y-3 sm:space-y-6 mt-3 sm:mt-6">
+          <TabsContent value="all" className="mt-4 sm:mt-8">
             {challengesLoading ? (
-              <div className="text-center py-8 sm:py-12">
-                <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin mx-auto mb-3 sm:mb-4" />
+              <div className="text-center py-12 sm:py-16">
+                <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 animate-spin mx-auto mb-4 sm:mb-6" />
                 <p className="text-sm sm:text-base text-muted-foreground">
                   {t("dashboard.loadingChallenges")}
                 </p>
@@ -591,7 +476,7 @@ const Dashboard = () => {
                 </AlertDescription>
               </Alert>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
                 {filteredChallenges.map((challenge) => {
                   const userProgress = userChallenges?.find(
                     (uc) => uc.challengeId === challenge.id
@@ -639,8 +524,8 @@ const Dashboard = () => {
             )}
           </TabsContent>
 
-          <TabsContent value="active" className="mt-3 sm:mt-6">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+          <TabsContent value="active" className="mt-4 sm:mt-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {userChallenges
                 ?.filter((uc) => uc.status === "ACTIVE")
                 .map((userChallenge) => {
@@ -684,8 +569,8 @@ const Dashboard = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="available" className="mt-3 sm:mt-6">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+          <TabsContent value="available" className="mt-4 sm:mt-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {filteredChallenges
                 .filter((challenge) => {
                   // Not already joined
@@ -725,8 +610,8 @@ const Dashboard = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="completed" className="mt-3 sm:mt-6">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+          <TabsContent value="completed" className="mt-4 sm:mt-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {userChallenges
                 ?.filter((uc) => uc.status === "COMPLETED")
                 .map((userChallenge) => {

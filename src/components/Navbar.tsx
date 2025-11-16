@@ -101,30 +101,30 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
   if (variant === 'client') {
     return (
       <header className="border-b border-border/50 backdrop-blur-sm bg-background/80 sticky top-0 z-50 shadow-sm">
-        <div className="container mx-auto px-1.5 sm:px-4 h-12 sm:h-16 flex items-center justify-between gap-0.5 sm:gap-2">
+        <div className="container mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3 sm:gap-4">
           {/* Logo/Title */}
           <div
-            className="flex items-center gap-0.5 sm:gap-2 min-w-0 flex-shrink transition-all duration-200 cursor-pointer hover:opacity-80 active:scale-95"
+            className="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink transition-all duration-200 cursor-pointer hover:opacity-80 active:scale-95"
             onClick={() => navigate('/dashboard')}
           >
             <div className="relative">
-              <Crown className="w-4 h-4 sm:w-8 sm:h-8 text-primary flex-shrink-0 drop-shadow-sm" />
+              <Crown className="w-5 h-5 sm:w-10 sm:h-10 text-primary flex-shrink-0 drop-shadow-sm hover:drop-shadow-lg transition-all" />
               <div className="absolute inset-0 bg-primary/20 blur-xl opacity-50 -z-10" />
             </div>
-            <span className="text-xs sm:text-lg md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">
+            <span className="text-sm sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">
               SwipeRush
             </span>
           </div>
 
           {/* Right side actions */}
-          <div className="flex items-center gap-0 sm:gap-2 md:gap-3 flex-shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 flex-shrink-0">
             {/* Dashboard Button - Desktop */}
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
                   onClick={() => navigate("/dashboard")}
-                  className="hidden sm:inline-flex text-sm hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                  className="hidden sm:inline-flex text-sm px-4 py-2 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                 >
                   <LayoutDashboard className="w-4 h-4 mr-2" />
                   Dashboard
@@ -141,7 +141,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                   variant="ghost"
                   size="icon"
                   onClick={() => navigate("/dashboard")}
-                  className="sm:hidden h-7 w-7 hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                  className="sm:hidden h-9 w-9 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                 >
                   <LayoutDashboard className="w-3 h-3" />
                 </Button>
@@ -157,7 +157,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                 <Button
                   variant="ghost"
                   onClick={() => navigate("/leaderboard")}
-                  className="hidden sm:inline-flex text-sm hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                  className="hidden sm:inline-flex text-sm px-4 py-2 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                 >
                   <Trophy className="w-4 h-4 mr-2" />
                   Leaderboard
@@ -174,7 +174,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                   variant="ghost"
                   size="icon"
                   onClick={() => navigate("/leaderboard")}
-                  className="sm:hidden h-7 w-7 hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                  className="sm:hidden h-9 w-9 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                 >
                   <Trophy className="w-3 h-3" />
                 </Button>
@@ -191,7 +191,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                   <Button
                     variant="ghost"
                     onClick={() => navigate("/admin")}
-                    className="hidden sm:inline-flex text-sm hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                    className="hidden sm:inline-flex text-sm px-4 py-2 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                   >
                     <ShieldCheck className="w-4 h-4 mr-2" />
                     Admin
@@ -210,9 +210,9 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                     variant="ghost"
                     size="icon"
                     onClick={() => navigate("/admin")}
-                    className="sm:hidden h-8 w-8 hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                    className="sm:hidden h-9 w-9 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                   >
-                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <ShieldCheck className="w-4 h-4" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -235,9 +235,9 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                     variant="ghost"
                     size="icon"
                     onClick={() => navigate("/profile")}
-                    className="h-7 w-7 sm:h-10 sm:w-10 hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                    className="h-9 w-9 sm:h-11 sm:w-11 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                   >
-                    <UserIcon className="w-3 h-3 sm:w-5 sm:h-5" />
+                    <UserIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -254,9 +254,9 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                     variant="ghost"
                     size="icon"
                     onClick={handleLogout}
-                    className="h-7 w-7 sm:h-10 sm:w-10 hover:bg-destructive/10 hover:text-destructive dark:hover:bg-destructive/20 transition-all duration-200"
+                    className="h-9 w-9 sm:h-11 sm:w-11 hover:bg-destructive/10 hover:text-destructive dark:hover:bg-destructive/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all duration-200 rounded-lg"
                   >
-                    <LogOut className="w-3 h-3 sm:w-5 sm:h-5" />
+                    <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -274,14 +274,14 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
   if (variant === 'admin') {
     return (
       <header className="border-b border-border/50 backdrop-blur-sm bg-background/80 sticky top-0 z-50 shadow-sm">
-        <div className="container mx-auto px-1.5 sm:px-4 h-12 sm:h-16 flex items-center justify-between gap-0.5 sm:gap-2">
+        <div className="container mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3 sm:gap-4">
           {/* Logo/Title */}
           <div
             className="flex items-center gap-1 sm:gap-2 min-w-0 flex-shrink transition-all duration-200 cursor-pointer hover:opacity-80 active:scale-95"
             onClick={() => navigate('/admin')}
           >
             <div className="relative">
-              <Crown className="w-4 h-4 sm:w-8 sm:h-8 text-primary flex-shrink-0 drop-shadow-sm" />
+              <Crown className="w-5 h-5 sm:w-10 sm:h-10 text-primary flex-shrink-0 drop-shadow-sm hover:drop-shadow-lg transition-all" />
               <div className="absolute inset-0 bg-primary/20 blur-xl opacity-50 -z-10" />
             </div>
             <span className="text-xs sm:text-base md:text-lg lg:text-xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">
@@ -291,14 +291,14 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
           </div>
 
           {/* Right side actions */}
-          <div className="flex items-center gap-0 sm:gap-2 md:gap-3 flex-shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 flex-shrink-0">
             {/* Dashboard Button - Desktop */}
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
                   onClick={() => navigate("/dashboard")}
-                  className="hidden sm:inline-flex text-sm hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                  className="hidden sm:inline-flex text-sm px-4 py-2 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                 >
                   <LayoutDashboard className="w-4 h-4 mr-2" />
                   Dashboard
@@ -315,7 +315,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                   variant="ghost"
                   size="icon"
                   onClick={() => navigate("/dashboard")}
-                  className="sm:hidden h-7 w-7 hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                  className="sm:hidden h-9 w-9 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                 >
                   <LayoutDashboard className="w-3 h-3" />
                 </Button>
@@ -331,7 +331,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                 <Button
                   variant="ghost"
                   onClick={() => navigate("/leaderboard")}
-                  className="hidden sm:inline-flex text-sm hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                  className="hidden sm:inline-flex text-sm px-4 py-2 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                 >
                   <Trophy className="w-4 h-4 mr-2" />
                   Leaderboard
@@ -348,7 +348,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                   variant="ghost"
                   size="icon"
                   onClick={() => navigate("/leaderboard")}
-                  className="sm:hidden h-7 w-7 hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                  className="sm:hidden h-9 w-9 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                 >
                   <Trophy className="w-3 h-3" />
                 </Button>
@@ -364,7 +364,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                 <Button
                   variant="ghost"
                   onClick={() => navigate("/admin")}
-                  className="hidden sm:inline-flex text-sm hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                  className="hidden sm:inline-flex text-sm px-4 py-2 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                 >
                   <ShieldCheck className="w-4 h-4 mr-2" />
                   Admin
@@ -381,7 +381,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                   variant="ghost"
                   size="icon"
                   onClick={() => navigate("/admin")}
-                  className="sm:hidden h-7 w-7 hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                  className="sm:hidden h-9 w-9 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                 >
                   <ShieldCheck className="w-3 h-3" />
                 </Button>
@@ -405,9 +405,9 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                     variant="ghost"
                     size="icon"
                     onClick={() => navigate("/profile")}
-                    className="h-7 w-7 sm:h-10 sm:w-10 hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                    className="h-9 w-9 sm:h-11 sm:w-11 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                   >
-                    <UserIcon className="w-3 h-3 sm:w-5 sm:h-5" />
+                    <UserIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -424,9 +424,9 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                     variant="ghost"
                     size="icon"
                     onClick={handleLogout}
-                    className="h-7 w-7 sm:h-10 sm:w-10 hover:bg-destructive/10 hover:text-destructive dark:hover:bg-destructive/20 transition-all duration-200"
+                    className="h-9 w-9 sm:h-11 sm:w-11 hover:bg-destructive/10 hover:text-destructive dark:hover:bg-destructive/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all duration-200 rounded-lg"
                   >
-                    <LogOut className="w-3 h-3 sm:w-5 sm:h-5" />
+                    <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -444,7 +444,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
   if (variant === 'create-challenge') {
     return (
       <header className="border-b border-border/50 backdrop-blur-sm bg-background/80 sticky top-0 z-50">
-        <div className="container mx-auto px-1.5 sm:px-4 h-12 sm:h-16 flex items-center justify-between gap-0.5 sm:gap-2">
+        <div className="container mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3 sm:gap-4">
           <Tooltip>
             <TooltipTrigger asChild>
                 <Button
@@ -506,7 +506,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                   <Button
                     variant="ghost"
                     onClick={() => navigate("/login")}
-                    className="hidden sm:inline-flex text-sm hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                    className="hidden sm:inline-flex text-sm px-4 py-2 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                   >
                     {t("navigation.login")}
                   </Button>
@@ -555,7 +555,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                     <Button
                       variant="ghost"
                       onClick={() => navigate("/admin")}
-                      className="hidden sm:inline-flex text-sm hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                      className="hidden sm:inline-flex text-sm px-4 py-2 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                     >
                       <ShieldCheck className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-2" />
                       <span className="hidden sm:inline">Admin Panel</span>
@@ -589,9 +589,9 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                     variant="ghost"
                     size="icon"
                     onClick={() => navigate("/profile")}
-                    className="h-7 w-7 sm:h-10 sm:w-10 hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                    className="h-9 w-9 sm:h-11 sm:w-11 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                   >
-                    <UserIcon className="w-3 h-3 sm:w-5 sm:h-5" />
+                    <UserIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -665,7 +665,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
                   <Button
                     variant="ghost"
                     onClick={() => navigate("/dashboard")}
-                    className="hidden sm:inline-flex text-sm hover:bg-primary/10 hover:text-primary dark:hover:text-primary transition-all duration-200"
+                    className="hidden sm:inline-flex text-sm px-4 py-2 hover:bg-primary/10 hover:text-primary dark:hover:text-primary hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all duration-200 rounded-lg"
                   >
                     Dashboard
                   </Button>

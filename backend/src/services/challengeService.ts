@@ -128,6 +128,8 @@ export const createChallengeSchema = z.object({
   image: z.string().optional(),
   requiredLevel: z.number().min(1, 'Required level must be at least 1').optional().default(1),
   maxParticipants: z.number().optional(),
+  latitude: z.number().min(-90).max(90).optional(),
+  longitude: z.number().min(-180).max(180).optional(),
   stages: z.array(z.object({
     title: z.string().min(1, 'Stage title is required'),
     description: z.string().min(1, 'Stage description is required'),
@@ -248,6 +250,8 @@ export class ChallengeService {
         image: challengeImagePath,
         requiredLevel: validatedData.requiredLevel ?? 1,
         maxParticipants: validatedData.maxParticipants,
+        latitude: validatedData.latitude,
+        longitude: validatedData.longitude,
         stages: {
           create: stagesData
         }
@@ -475,6 +479,8 @@ static async updateChallenge(id: string, data: z.infer<typeof updateChallengeSch
     requiredLevel: validatedData.requiredLevel ?? existingChallenge.requiredLevel,
     maxParticipants: validatedData.maxParticipants ?? existingChallenge.maxParticipants,
     isActive: typeof validatedData.isActive === 'boolean' ? validatedData.isActive : existingChallenge.isActive,
+    latitude: validatedData.latitude !== undefined ? validatedData.latitude : existingChallenge.latitude,
+    longitude: validatedData.longitude !== undefined ? validatedData.longitude : existingChallenge.longitude,
   };
 
   // If stages are provided, replace them
@@ -669,12 +675,28 @@ static async deleteChallenge(id: string) {
       }
     }
 
+    // Get all stages for this challenge, ordered by order
+    const stages = await prisma.stage.findMany({
+      where: { challengeId },
+      orderBy: { order: 'asc' }
+    });
+
+    if (stages.length === 0) {
+      throw new Error('Challenge has no stages');
+    }
+
     // Create challenge progress
     const progress = await prisma.challengeProgress.create({
       data: {
         userId,
         challengeId,
-        status: 'ACTIVE'
+        status: 'ACTIVE',
+        stages: {
+          create: {
+            stageId: stages[0].id, // First stage
+            status: 'PENDING' // First stage is automatically unlocked
+          }
+        }
       },
       include: {
         challenge: {
@@ -682,6 +704,11 @@ static async deleteChallenge(id: string) {
             stages: {
               orderBy: { order: 'asc' }
             }
+          }
+        },
+        stages: {
+          include: {
+            stage: true
           }
         }
       }

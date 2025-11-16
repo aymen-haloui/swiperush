@@ -11,7 +11,7 @@ interface CircularProgressProps {
 const CircularProgress = ({
   value,
   size = 80,
-  strokeWidth = 4,
+  strokeWidth = 3.2,
   className = "",
   children
 }: CircularProgressProps) => {

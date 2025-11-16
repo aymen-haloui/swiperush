@@ -72,8 +72,11 @@ const ChallengeDetail = () => {
       return stageProgress.status as 'PENDING' | 'COMPLETED' | 'SKIPPED';
     }
     
-    // For the first stage, if user has joined but no progress, it's pending
+    // For the first stage (index 0), if user has joined, it should be PENDING
+    // This is handled by the backend when joining - first stage gets PENDING status
     if (stageIndex === 0) {
+      // If user has joined but no progress entry exists yet, it's still pending
+      // The backend should have created it, but handle edge case
       return 'PENDING';
     }
     
@@ -339,9 +342,27 @@ const ChallengeDetail = () => {
                     )}
                     <p>Status: {isChallengeUpcoming ? 'Upcoming' : isChallengeActive ? 'Active' : 'Ended'}</p>
                   </div>
-                  <Button variant="hero" className="w-full">
-                    View Map
-                  </Button>
+                  {challenge.latitude && challenge.longitude ? (
+                    <Button 
+                      variant="hero" 
+                      className="w-full"
+                      onClick={() => {
+                        window.open(
+                          `https://www.openstreetmap.org/?mlat=${challenge.latitude}&mlon=${challenge.longitude}&zoom=15`,
+                          '_blank',
+                          'noopener,noreferrer'
+                        );
+                      }}
+                    >
+                      <MapPin className="w-4 h-4 mr-2" />
+                      View Map
+                    </Button>
+                  ) : (
+                    <Button variant="hero" className="w-full" disabled>
+                      <MapPin className="w-4 h-4 mr-2" />
+                      No Location Set
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             </div>
