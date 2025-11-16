@@ -212,6 +212,16 @@ const Dashboard = () => {
   // Get completed challenges count
   const completedChallengesCount =
     userChallenges?.filter((cp) => cp.status === "COMPLETED").length || 0;
+
+  // Get available challenges count (challenges user can join)
+  const availableChallengesCount = filteredChallenges?.filter((challenge) => {
+    const now = new Date();
+    const startDate = new Date(challenge.startDate);
+    const endDate = new Date(challenge.endDate);
+    const isAvailable = now >= startDate && now <= endDate && challenge.isActive;
+    const userHasJoined = userChallenges?.some((uc) => uc.challengeId === challenge.id);
+    return isAvailable && !userHasJoined;
+  }).length || 0;
   
   // Calculate currency (using XP as currency for now, can be extended)
   const currency = profile?.xp || 0;
@@ -292,26 +302,33 @@ const Dashboard = () => {
 
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 flex-1">
         {/* Simplified User Stats Card */}
-        <div className="relative rounded-2xl p-6 sm:p-10 mb-6 sm:mb-10 bg-gradient-to-br from-background via-background/95 to-background border-2 border-primary/30 shadow-xl dark:shadow-2xl overflow-hidden">
+        <div className="relative rounded-2xl p-6 sm:p-10 mb-6 sm:mb-10 bg-gradient-to-br from-background/95 via-background/90 to-background/95 border-2 border-primary/30 shadow-xl dark:shadow-2xl overflow-hidden hover:border-primary/50 transition-all duration-300 group/card">
           {/* Enhanced background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-50" />
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-transparent to-secondary/3 opacity-30" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-50 group-hover/card:opacity-70 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-transparent to-secondary/3 opacity-30 group-hover/card:opacity-50 transition-opacity duration-300" />
           
           {/* Enhanced border glow */}
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-secondary/20 opacity-0 hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl" />
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/20 via-transparent to-secondary/20 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 -z-10 blur-xl" />
+          
+          {/* Neon border effect for high-rank players */}
+          {profile?.rank && profile.rank <= 10 && (
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/40 via-secondary/40 to-primary/40 opacity-0 group-hover/card:opacity-30 transition-opacity duration-500 -z-10 blur-2xl animate-pulse" />
+          )}
           
           <div className="relative z-10">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-8 sm:gap-10">
               {/* Avatar with Circular Progress */}
               <div className="flex flex-col items-center gap-5">
-                <div className="relative">
+                <div className="relative group">
                   <CircularProgress
                     value={xpProgress}
-                    size={100}
-                    strokeWidth={3.2}
-                    className="sm:w-32 sm:h-32"
+                    size={120}
+                    strokeWidth={4}
+                    className="sm:w-40 sm:h-40"
+                    currentColor="text-primary"
+                    remainingColor="text-muted/30"
                   >
-                    <div className={`w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center overflow-hidden border-2 border-background flex-shrink-0 shadow-lg ${profile?.rank && profile.rank <= 10 ? 'shadow-[0_0_30px_rgba(139,92,246,0.6)] ring-2 ring-primary/50' : 'shadow-[0_0_15px_rgba(139,92,246,0.2)]'}`}>
+                    <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center overflow-hidden border-[3px] border-background flex-shrink-0 shadow-lg transition-all duration-300 group-hover:scale-105 ${profile?.rank && profile.rank <= 10 ? 'shadow-[0_0_40px_rgba(139,92,246,0.7)] ring-[3px] ring-primary/60 animate-pulse' : 'shadow-[0_0_20px_rgba(139,92,246,0.3)]'}`}>
                       {profile?.avatar ? (
                         <img
                           src={profile.avatar}
@@ -319,7 +336,7 @@ const Dashboard = () => {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <Trophy className="w-10 h-10 sm:w-14 sm:h-14 text-primary-foreground" />
+                        <Trophy className="w-12 h-12 sm:w-16 sm:h-16 text-primary-foreground" />
                       )}
                     </div>
                   </CircularProgress>
@@ -340,23 +357,36 @@ const Dashboard = () => {
                     )}
                   </div>
                   
-                  {profile?.rank && (
-                    <div className="flex items-center justify-center md:justify-start gap-2.5 text-base sm:text-lg text-muted-foreground">
-                      <Medal className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
-                      <span className="font-medium">Rank #{profile.rank}</span>
+                  {/* Extra Profile Info Row */}
+                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm sm:text-base">
+                    {profile?.rank && (
+                      <div className="flex items-center gap-2 text-muted-foreground hover:text-accent transition-colors duration-200 cursor-default group/rank">
+                        <Medal className="w-4 h-4 sm:w-5 sm:h-5 text-accent group-hover/rank:scale-110 transition-transform duration-200" />
+                        <span className="font-medium">Rank #{profile.rank}</span>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-200 cursor-default group/challenges">
+                      <Target className="w-4 h-4 sm:w-5 sm:h-5 text-primary group-hover/challenges:scale-110 transition-transform duration-200" />
+                      <span className="font-medium">{availableChallengesCount} Available</span>
                     </div>
-                  )}
+                    {profile?.rank && (
+                      <div className="flex items-center gap-2 text-muted-foreground hover:text-secondary transition-colors duration-200 cursor-default group/leaderboard">
+                        <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-secondary group-hover/leaderboard:scale-110 transition-transform duration-200" />
+                        <span className="font-medium">#{profile.rank} Leaderboard</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 
                 {/* XP Progress */}
-                <div className="space-y-3 pt-3 border-t-2 border-border/60">
+                <div className="space-y-3 pt-3 border-t-2 border-border/60 group/xp">
                   <div className="flex items-center justify-between text-base sm:text-lg">
-                    <span className="text-muted-foreground font-medium">XP Progress</span>
-                    <span className="font-bold text-primary text-lg sm:text-xl">{Math.round(xpProgress)}%</span>
+                    <span className="text-muted-foreground font-medium group-hover/xp:text-foreground transition-colors duration-200">XP Progress</span>
+                    <span className="font-bold text-primary text-lg sm:text-xl group-hover/xp:scale-110 transition-transform duration-200">{Math.round(xpProgress)}%</span>
                   </div>
-                  <div className="flex items-center justify-between text-sm sm:text-base text-muted-foreground">
-                    <span className="font-semibold">{profile?.xp || 0} / {nextLevelXP || "∞"} XP</span>
-                    <span className="font-medium">{nextLevelInfo ? `→ ${getLevelName(nextLevelInfo.number)}` : 'Max Level'}</span>
+                  <div className="flex items-center justify-between text-sm sm:text-base">
+                    <span className="font-semibold text-foreground group-hover/xp:text-primary transition-colors duration-200">{profile?.xp || 0} / {nextLevelXP || "∞"} XP</span>
+                    <span className="font-medium text-muted-foreground group-hover/xp:text-foreground transition-colors duration-200">{nextLevelInfo ? `→ ${getLevelName(nextLevelInfo.number)}` : 'Max Level'}</span>
                   </div>
                 </div>
               </div>

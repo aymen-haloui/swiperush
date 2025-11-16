@@ -6,6 +6,8 @@ interface CircularProgressProps {
   strokeWidth?: number;
   className?: string;
   children?: React.ReactNode;
+  currentColor?: string; // Color for current progress
+  remainingColor?: string; // Color for remaining progress
 }
 
 const CircularProgress = ({
@@ -13,7 +15,9 @@ const CircularProgress = ({
   size = 80,
   strokeWidth = 3.2,
   className = "",
-  children
+  children,
+  currentColor = "text-primary",
+  remainingColor = "text-muted/20"
 }: CircularProgressProps) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
@@ -26,7 +30,7 @@ const CircularProgress = ({
         width={size}
         height={size}
       >
-        {/* Background circle */}
+        {/* Background circle (remaining progress) */}
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -34,9 +38,9 @@ const CircularProgress = ({
           stroke="currentColor"
           strokeWidth={strokeWidth}
           fill="none"
-          className="text-muted/20"
+          className={remainingColor}
         />
-        {/* Progress circle */}
+        {/* Progress circle (current progress) */}
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -47,7 +51,7 @@ const CircularProgress = ({
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          className="text-primary transition-all duration-500"
+          className={`${currentColor} transition-all duration-500`}
         />
       </svg>
       {children && (

@@ -48,6 +48,15 @@ const ChallengeDetail = () => {
       try {
         setLoading(true);
         const response = await getChallengeById(id);
+        console.log('Challenge data received:', response);
+        console.log('Location data:', { 
+          latitude: response.latitude, 
+          longitude: response.longitude,
+          hasLat: response.latitude != null,
+          hasLng: response.longitude != null,
+          latType: typeof response.latitude,
+          lngType: typeof response.longitude
+        });
         setChallenge(response); // ✅ set the state with the fetched data
       } catch (err) {
         console.error(err);
@@ -264,9 +273,13 @@ const ChallengeDetail = () => {
             {challenge.image && (
               <div className="md:w-80 h-64 md:h-auto flex-shrink-0">
                 <img
-                  src={challenge.image.startsWith('http') ? challenge.image : `${UPLOADS_BASE}/uploads/${challenge.image}`}
+                  src={challenge.image.startsWith('data:image') || challenge.image.startsWith('http') ? challenge.image : `${UPLOADS_BASE}/uploads/${challenge.image}`}
                   alt={challenge.title}
                   className="w-full h-full object-cover rounded-lg shadow-lg"
+                  onError={(e) => {
+                    console.error('Image load error:', challenge.image);
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
                 />
               </div>
             )}
@@ -318,6 +331,26 @@ const ChallengeDetail = () => {
                   <Calendar className="w-4 h-4" />
                   <span>End: {new Date(challenge.endDate).toLocaleDateString()}</span>
                 </div>
+                {challenge.latitude != null && challenge.longitude != null && challenge.latitude !== 0 && challenge.longitude !== 0 && (
+                  <div className="flex items-center gap-2 col-span-2">
+                    <MapPin className="w-4 h-4 text-success" />
+                    <span>Location: {challenge.latitude.toFixed(6)}, {challenge.longitude.toFixed(6)}</span>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      className="h-6 px-2 text-xs"
+                      onClick={() => {
+                        window.open(
+                          `https://www.openstreetmap.org/?mlat=${challenge.latitude}&mlon=${challenge.longitude}&zoom=15`,
+                          '_blank',
+                          'noopener,noreferrer'
+                        );
+                      }}
+                    >
+                      View on Map
+                    </Button>
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2 mb-6">
@@ -342,7 +375,7 @@ const ChallengeDetail = () => {
                     )}
                     <p>Status: {isChallengeUpcoming ? 'Upcoming' : isChallengeActive ? 'Active' : 'Ended'}</p>
                   </div>
-                  {challenge.latitude && challenge.longitude ? (
+                  {challenge.latitude != null && challenge.longitude != null && challenge.latitude !== 0 && challenge.longitude !== 0 ? (
                     <Button 
                       variant="hero" 
                       className="w-full"
