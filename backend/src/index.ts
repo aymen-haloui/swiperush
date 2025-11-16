@@ -51,7 +51,8 @@ app.use(helmet({
 const defaultOrigins = [
   'http://localhost:8081',
   'http://localhost:5173',
-  'https://challengequest-frontend.vercel.app'
+  'https://challengequest-frontend.vercel.app',
+  'https://swiperush.vercel.app'
 ];
 
 const envOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',').map((s) => s.trim()) : [];
