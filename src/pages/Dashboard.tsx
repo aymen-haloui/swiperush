@@ -334,7 +334,7 @@ const Dashboard = () => {
                       {profile?.username || t("dashboard.welcome")}
                     </h2>
                     {currentLevelInfo && (
-                      <Badge className="bg-gradient-to-r from-primary/25 to-secondary/25 text-primary border-2 border-primary/40 px-4 py-1.5 text-sm font-semibold shadow-md">
+                      <Badge className="bg-gradient-to-r from-primary/25 to-secondary/25 text-foreground border-2 border-primary/40 px-4 py-1.5 text-sm font-semibold shadow-md">
                         {getLevelName(currentLevelInfo.number)}
                       </Badge>
                     )}

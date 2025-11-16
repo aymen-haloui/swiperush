@@ -402,7 +402,7 @@ const AdminDashboard = () => {
           <Card className="glass-card border-primary/20">
             <CardHeader className="pb-2 sm:pb-3 p-3 sm:p-6">
               <CardDescription className="text-xs sm:text-sm">Active Challenges</CardDescription>
-              <CardTitle className="text-2xl sm:text-3xl font-bold">{stats.activeChallenges}</CardTitle>
+              <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold">{stats.activeChallenges}</CardTitle>
             </CardHeader>
             <CardContent className="p-3 sm:p-6 pt-0">
               <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-success">
@@ -415,7 +415,7 @@ const AdminDashboard = () => {
           <Card className="glass-card border-secondary/20">
             <CardHeader className="pb-2 sm:pb-3 p-3 sm:p-6">
               <CardDescription className="text-xs sm:text-sm">Total Players</CardDescription>
-              <CardTitle className="text-2xl sm:text-3xl font-bold">{stats.totalPlayers}</CardTitle>
+              <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold">{stats.totalPlayers}</CardTitle>
             </CardHeader>
             <CardContent className="p-3 sm:p-6 pt-0">
               <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-secondary">
@@ -428,7 +428,7 @@ const AdminDashboard = () => {
           <Card className="glass-card border-accent/20">
             <CardHeader className="pb-2 sm:pb-3 p-3 sm:p-6">
               <CardDescription className="text-xs sm:text-sm">Active Players</CardDescription>
-              <CardTitle className="text-2xl sm:text-3xl font-bold">{stats.activePlayers}</CardTitle>
+              <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold">{stats.activePlayers}</CardTitle>
             </CardHeader>
             <CardContent className="p-3 sm:p-6 pt-0">
               <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-accent">
@@ -441,7 +441,7 @@ const AdminDashboard = () => {
           <Card className="glass-card border-border/50">
             <CardHeader className="pb-2 sm:pb-3 p-3 sm:p-6">
               <CardDescription className="text-xs sm:text-sm">Top Performers</CardDescription>
-              <CardTitle className="text-2xl sm:text-3xl font-bold">{stats.topPerformers}</CardTitle>
+              <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold">{stats.topPerformers}</CardTitle>
             </CardHeader>
             <CardContent className="p-3 sm:p-6 pt-0">
               <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
@@ -454,7 +454,7 @@ const AdminDashboard = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
-          <TabsList className="glass-card w-full overflow-x-auto flex-nowrap justify-start sm:justify-center">
+          <TabsList className="glass-card w-full sm:w-auto overflow-x-auto flex-nowrap justify-start sm:justify-center">
             <TabsTrigger value="overview" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Overview</TabsTrigger>
             <TabsTrigger value="challenges" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Challenges</TabsTrigger>
             <TabsTrigger value="categories" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Categories</TabsTrigger>
@@ -464,14 +464,14 @@ const AdminDashboard = () => {
             <TabsTrigger value="analytics" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Analytics</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-4 sm:space-y-6">
+          <TabsContent value="overview" className="space-y-6">
             {/* Active Challenges */}
             <Card className="glass-card border-border/50">
               <CardHeader className="p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
-                    <CardTitle className="text-lg sm:text-xl">Active Challenges</CardTitle>
-                    <CardDescription className="text-xs sm:text-sm">Currently running challenges</CardDescription>
+                    <CardTitle>Active Challenges</CardTitle>
+                    <CardDescription>Currently running challenges</CardDescription>
                   </div>
                   <Button variant="hero" size="sm" className="text-xs sm:text-sm h-8 sm:h-10" onClick={() => navigate("/admin/create-challenge")}>
                     <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -482,7 +482,7 @@ const AdminDashboard = () => {
               <CardContent className="p-4 sm:p-6 pt-0">
                 <div className="space-y-2 sm:space-y-3">
                   {activeChallenges.length === 0 && (
-                    <div className="text-xs sm:text-sm text-muted-foreground py-3 sm:py-4">No active challenges.</div>
+                    <div className="text-sm text-muted-foreground py-4">No active challenges.</div>
                   )}
                   {activeChallenges.map((challenge) => (
                     <div key={challenge.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 rounded-lg bg-muted/20 border border-border/50">
@@ -507,13 +507,13 @@ const AdminDashboard = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="challenges" className="space-y-4 sm:space-y-6">
+          <TabsContent value="challenges" className="space-y-6">
             <Card className="glass-card border-border/50">
               <CardHeader className="p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
-                    <CardTitle className="text-lg sm:text-xl">Challenge Management</CardTitle>
-                    <CardDescription className="text-xs sm:text-sm">View, edit, and delete challenges</CardDescription>
+                    <CardTitle>Challenge Management</CardTitle>
+                    <CardDescription>View, edit, and delete challenges</CardDescription>
                   </div>
                   <Button variant="hero" size="sm" className="text-xs sm:text-sm h-8 sm:h-10" onClick={() => navigate("/admin/create-challenge")}>
                     <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -523,20 +523,20 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent className="p-4 sm:p-6 pt-0">
                 {challengesLoading ? (
-                  <div className="flex items-center justify-center py-8 sm:py-12">
-                    <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin text-muted-foreground" />
+                  <div className="flex items-center justify-center py-12">
+                    <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
                   </div>
                 ) : !challengesData?.challenges || challengesData.challenges.length === 0 ? (
-                  <div className="text-center py-8 sm:py-12 text-muted-foreground">
-                    <Trophy className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 opacity-50" />
-                    <p className="mb-3 sm:mb-4 text-sm sm:text-base">No challenges created yet</p>
+                  <div className="text-center py-12 text-muted-foreground">
+                    <Trophy className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                    <p className="mb-4">No challenges created yet</p>
                     <Button variant="hero" size="sm" className="text-xs sm:text-sm h-8 sm:h-10" onClick={() => navigate("/admin/create-challenge")}>
                       <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
                       <span className="ml-1.5 sm:ml-2">Create First Challenge</span>
                     </Button>
                   </div>
                 ) : (
-                  <div className="space-y-2 sm:space-y-3">
+                  <div className="space-y-3">
                     {challengesData.challenges.map((challenge) => {
                       const now = new Date();
                       const startDate = new Date(challenge.startDate);
@@ -565,8 +565,19 @@ const AdminDashboard = () => {
                               <img 
                                 src={imageUrl} 
                                 alt={challenge.title}
+                                style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }}
+                                className="flex-shrink-0 hidden sm:block"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).style.display = 'none';
+                                }}
+                              />
+                            )}
+                            {imageUrl && (
+                              <img 
+                                src={imageUrl} 
+                                alt={challenge.title}
                                 style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px' }}
-                                className="flex-shrink-0"
+                                className="flex-shrink-0 sm:hidden"
                                 onError={(e) => {
                                   (e.target as HTMLImageElement).style.display = 'none';
                                 }}
