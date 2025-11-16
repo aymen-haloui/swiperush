@@ -61,6 +61,19 @@ export const errorHandler = (
     return;
   }
 
+  // Prisma database connection errors
+  if (error.code === 'P1001' || error.code === 'P1002' || error.code === 'P1003' || 
+      error.code === 'P1017' || error.message?.includes('Can\'t reach database') ||
+      error.message?.includes('database server') || error.message?.includes('connection')) {
+    logger.error('Database connection error:', error);
+    res.status(503).json({
+      error: 'Service Unavailable',
+      message: 'Database connection failed. Please check the database configuration.',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+    return;
+  }
+
   if (error.code === 'P2002') {
     res.status(409).json({
       error: 'Conflict',

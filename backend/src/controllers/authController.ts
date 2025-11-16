@@ -20,6 +20,21 @@ export class AuthController {
     });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Unknown error';
+    const error = err as any;
+    
+    // Check for database connection errors
+    if (error?.code === 'P1001' || error?.code === 'P1002' || error?.code === 'P1003' || 
+        error?.code === 'P1017' || message?.includes('Can\'t reach database') ||
+        message?.includes('database server') || message?.includes('connection')) {
+      logger.error('Database connection error during registration:', error);
+      res.status(503).json({
+        success: false,
+        error: 'Database connection failed. Please check the database configuration.',
+        message: process.env.NODE_ENV === 'development' ? message : 'Service temporarily unavailable'
+      });
+      return;
+    }
+    
     res.status(400).json({
       success: false,
       error: message,
@@ -54,7 +69,23 @@ export class AuthController {
       });
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Unknown error';
+      const error = err as any;
+      
+      // Check for database connection errors
+      if (error?.code === 'P1001' || error?.code === 'P1002' || error?.code === 'P1003' || 
+          error?.code === 'P1017' || message?.includes('Can\'t reach database') ||
+          message?.includes('database server') || message?.includes('connection')) {
+        logger.error('Database connection error during login:', error);
+        res.status(503).json({
+          success: false,
+          error: 'Database connection failed. Please check the database configuration.',
+          message: process.env.NODE_ENV === 'development' ? message : 'Service temporarily unavailable'
+        });
+        return;
+      }
+      
       console.error('Login error:', message, err);
+      // Only return 401 for actual authentication failures
       res.status(401).json({
         success: false,
         error: message

@@ -284,15 +284,21 @@ if (this.token) {
       }
 
       if (!response.ok) {
-        // Check for database connection errors
+        // Check for database connection errors (503 Service Unavailable)
+        if (response.status === 503) {
+          const errorMessage = data.error || data.message || 'Service temporarily unavailable';
+          throw new Error(errorMessage);
+        }
+        
+        // Check for database connection errors in error message
         const errorMessage = data.error || data.message || 'Request failed';
         
         // Provide user-friendly message for database connection errors
         if (errorMessage.includes('database server') || 
             errorMessage.includes('Can\'t reach database') ||
-            errorMessage.includes('localhost:5433') ||
-            errorMessage.includes('localhost:5432')) {
-          throw new Error('Database connection failed. Please ensure the PostgreSQL database server is running on port 5432 or 5433.');
+            errorMessage.includes('Database connection failed') ||
+            errorMessage.includes('database configuration')) {
+          throw new Error('Database connection failed. The backend cannot connect to the database. Please check the database configuration on the server.');
         }
         
         throw new Error(errorMessage);
