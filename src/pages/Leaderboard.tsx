@@ -71,34 +71,34 @@ const Leaderboard = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar variant="client" />
 
-      <div className="container mx-auto px-4 py-8 flex-1">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 flex-1">
         {isLoading && (
-          <div className="text-center py-16">
-            <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
-            <p className="text-muted-foreground">Loading leaderboard...</p>
+          <div className="text-center py-8 sm:py-16">
+            <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin mx-auto mb-3 sm:mb-4" />
+            <p className="text-sm sm:text-base text-muted-foreground">Loading leaderboard...</p>
           </div>
         )}
         {error && !isLoading && (
-          <div className="text-center py-16 text-muted-foreground">
+          <div className="text-center py-8 sm:py-16 text-muted-foreground text-sm sm:text-base">
             Failed to load leaderboard.
           </div>
         )}
         {/* Hero Section */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-4">
-            <Trophy className="w-4 h-4 text-accent" />
-            <span className="text-sm font-semibold text-primary">
+        <div className="text-center mb-6 sm:mb-12">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 border border-primary/20 mb-3 sm:mb-4">
+            <Trophy className="w-3 h-3 sm:w-4 sm:h-4 text-accent" />
+            <span className="text-xs sm:text-sm font-semibold text-primary">
               Global Rankings
             </span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+          <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold mb-2 sm:mb-4">
             <span className="bg-gradient-to-r from-[hsl(263,70%,60%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent">
               Leaderboard
             </span>
           </h1>
 
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-sm sm:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
             Compete with the best challengers worldwide and claim your spot at
             the top
           </p>
@@ -106,7 +106,7 @@ const Leaderboard = () => {
 
         {/* Top 3 Podium */}
         {!!globalLeaderboard.length && (
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid md:grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-12">
             {globalLeaderboard.slice(0, 3).map((player, index) => {
               const positions = [1, 0, 2]; // Reorder for podium effect (2nd, 1st, 3rd)
               const actualIndex = positions.indexOf(index);
@@ -149,12 +149,20 @@ const Leaderboard = () => {
         )}
 
         {/* Leaderboard Tabs */}
-        <Tabs defaultValue="all" className="space-y-6">
-          <TabsList className="glass-card">
-            <TabsTrigger value="all">All Time</TabsTrigger>
-            <TabsTrigger value="weekly">This Week</TabsTrigger>
-            <TabsTrigger value="challenge">Current Challenge</TabsTrigger>
-          </TabsList>
+        <Tabs defaultValue="all" className="space-y-3 sm:space-y-6">
+          <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
+            <TabsList className="glass-card w-max sm:w-auto inline-flex h-9 sm:h-10 p-1">
+              <TabsTrigger value="all" className="text-xs sm:text-sm px-3 sm:px-4 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none">
+                All Time
+              </TabsTrigger>
+              <TabsTrigger value="weekly" className="text-xs sm:text-sm px-3 sm:px-4 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none">
+                This Week
+              </TabsTrigger>
+              <TabsTrigger value="challenge" className="text-xs sm:text-sm px-3 sm:px-4 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none">
+                Current Challenge
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="all" className="space-y-3">
             {globalLeaderboard.slice(3).map((player) => (
@@ -213,16 +221,17 @@ const Leaderboard = () => {
         </Tabs>
 
         {/* CTA */}
-        <div className="glass-card rounded-2xl p-8 text-center mt-12 border-2 border-primary/20">
-          <h2 className="text-2xl font-bold mb-4">
+        <div className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-8 text-center mt-6 sm:mt-12 border-2 border-primary/20">
+          <h2 className="text-lg sm:text-2xl font-bold mb-2 sm:mb-4">
             Think you can <span className="text-primary">compete?</span>
           </h2>
-          <p className="text-muted-foreground mb-6">
+          <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">
             Join now and start climbing the ranks!
           </p>
           <Button
             variant="hero"
-            size="lg"
+            size="default"
+            className="text-sm sm:text-base h-9 sm:h-10"
             onClick={() => navigate(isAuthenticated ? "/dashboard" : "/register")}>
             {isAuthenticated ? "Go to Dashboard" : "Start Competing"}
           </Button>

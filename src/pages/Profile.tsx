@@ -426,35 +426,35 @@ const Profile = () => {
       <Navbar variant="client" />
 
       {/* Profile Content */}
-      <main className="container mx-auto px-4 py-10 space-y-8 max-w-6xl">
+      <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-10 space-y-4 sm:space-y-8 max-w-6xl">
         {/* Profile Header */}
         <Card className="glass-card border border-primary/20 rounded-xl">
-          <CardContent className="p-8">
-            <div className="flex flex-col md:flex-row items-center gap-6 mb-6">
-              <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[var(--shadow-glow-primary)] border-4 border-background">
+          <CardContent className="p-4 sm:p-8">
+            <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6 mb-4 sm:mb-6">
+              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[var(--shadow-glow-primary)] border-2 sm:border-4 border-background">
                 {profile.avatar ? (
                   <img
                     src={profile.avatar}
                     alt="avatar"
-                    className="w-32 h-32 rounded-full object-cover"
+                    className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover"
                   />
                 ) : (
-                  <User className="w-16 h-16 text-primary-foreground" />
+                  <User className="w-12 h-12 sm:w-16 sm:h-16 text-primary-foreground" />
                 )}
               </div>
               <div className="flex-1 text-center md:text-left">
-                <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
-                  <h1 className="text-4xl font-bold">
+                <div className="flex items-center justify-center md:justify-start gap-2 sm:gap-3 mb-1 sm:mb-2 flex-wrap">
+                  <h1 className="text-2xl sm:text-4xl font-bold">
                     {profile.firstName} {profile.lastName}
                   </h1>
                   {profile.isAdmin && (
-                    <Badge className="bg-accent text-accent-foreground">
+                    <Badge className="bg-accent text-accent-foreground text-xs sm:text-sm">
                       <Shield className="w-3 h-3 mr-1" />
                       Admin
                     </Badge>
                   )}
                 </div>
-                <p className="text-muted-foreground text-lg mb-3">@{profile.username}</p>
+                <p className="text-muted-foreground text-sm sm:text-lg mb-2 sm:mb-3">@{profile.username}</p>
                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <Mail className="w-4 h-4" />
@@ -495,41 +495,41 @@ const Profile = () => {
         </Card>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
           <Card className="glass-card border-primary/20">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-2">
-                <Zap className="w-5 h-5 text-accent" />
-                <span className="text-2xl font-bold">{stats.totalXP}</span>
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex items-center justify-between mb-1 sm:mb-2">
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
+                <span className="text-lg sm:text-2xl font-bold">{stats.totalXP}</span>
               </div>
-              <p className="text-sm text-muted-foreground">Total XP</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Total XP</p>
             </CardContent>
           </Card>
           <Card className="glass-card border-secondary/20">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-2">
-                <Award className="w-5 h-5 text-secondary" />
-                <span className="text-2xl font-bold">{stats.level}</span>
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex items-center justify-between mb-1 sm:mb-2">
+                <Award className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />
+                <span className="text-lg sm:text-2xl font-bold">{stats.level}</span>
               </div>
-              <p className="text-sm text-muted-foreground">Level</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Level</p>
             </CardContent>
           </Card>
           <Card className="glass-card border-accent/20">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-2">
-                <Target className="w-5 h-5 text-accent" />
-                <span className="text-2xl font-bold">{stats.activeChallenges}</span>
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex items-center justify-between mb-1 sm:mb-2">
+                <Target className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
+                <span className="text-lg sm:text-2xl font-bold">{stats.activeChallenges}</span>
               </div>
-              <p className="text-sm text-muted-foreground">Active</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Active</p>
             </CardContent>
           </Card>
           <Card className="glass-card border-success/20">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-2">
-                <Trophy className="w-5 h-5 text-success" />
-                <span className="text-2xl font-bold">{stats.completedChallenges}</span>
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex items-center justify-between mb-1 sm:mb-2">
+                <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-success" />
+                <span className="text-lg sm:text-2xl font-bold">{stats.completedChallenges}</span>
               </div>
-              <p className="text-sm text-muted-foreground">Completed</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Completed</p>
             </CardContent>
           </Card>
         </div>
