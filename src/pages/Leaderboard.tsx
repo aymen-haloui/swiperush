@@ -15,6 +15,7 @@ import {
   Loader2,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { useLeaderboard } from "@/hooks/useApi";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
@@ -67,10 +68,10 @@ const Leaderboard = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Navbar variant="client" />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 flex-1">
         {isLoading && (
           <div className="text-center py-16">
             <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
@@ -227,6 +228,7 @@ const Leaderboard = () => {
           </Button>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

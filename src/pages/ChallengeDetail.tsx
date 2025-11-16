@@ -16,6 +16,7 @@ import {
   ScanLine,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -249,7 +250,7 @@ const ChallengeDetail = () => {
   const isChallengeActive = new Date() >= startDate && new Date() <= endDate;
   const isChallengeUpcoming = new Date() < startDate;
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Navbar variant="challenge-detail" />
 
       <div className="container mx-auto px-4 py-8">
@@ -469,6 +470,7 @@ const ChallengeDetail = () => {
         onScanSuccess={handleQRScanSuccess}
         stageTitle={currentStageId ? challenge?.stages.find(s => s.id === currentStageId)?.title : undefined}
       />
+      <Footer />
     </div>
   );
 };

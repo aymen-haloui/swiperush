@@ -21,6 +21,7 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import logger from "@/lib/logger";
 import { API_BASE_URL } from '@/lib/config';
 
@@ -421,7 +422,7 @@ const Profile = () => {
     ((profile.xp - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Navbar variant="client" />
 
       {/* Profile Content */}
@@ -991,6 +992,7 @@ const Profile = () => {
           </TabsContent>
         </Tabs>
       </main>
+      <Footer />
     </div>
   );
 };

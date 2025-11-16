@@ -12,6 +12,7 @@ import {
 import ChallengeCard from "@/components/ChallengeCard";
 import { Search, Trophy, Zap, Target, LogOut, Loader2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { useNavigate } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -271,15 +272,15 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Navbar variant="client" />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 flex-1">
         {/* User Stats */}
-        <div className="glass-card rounded-xl p-6 mb-8 border border-primary/20">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[var(--shadow-glow-primary)] overflow-hidden border-2 border-background">
+        <div className="glass-card rounded-xl p-3 sm:p-6 mb-4 sm:mb-8 border border-primary/20">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 sm:gap-6">
+            <div className="flex items-center gap-2 sm:gap-4 w-full md:w-auto">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[var(--shadow-glow-primary)] overflow-hidden border-2 border-background flex-shrink-0">
                 {profile?.avatar ? (
                   <img
                     src={profile.avatar}
@@ -287,24 +288,32 @@ const Dashboard = () => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <Trophy className="w-8 h-8 text-primary-foreground" />
+                  <Trophy className="w-6 h-6 sm:w-8 sm:h-8 text-primary-foreground" />
                 )}
               </div>
-              <div>
-                <h2 className="text-2xl font-bold">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg sm:text-2xl font-bold truncate">
                   {profile?.username || t("dashboard.welcome")}
                 </h2>
-                <p className="text-muted-foreground">
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">
                   {profile?.rank
-                    ? `${t("leaderboard.rank")} #${profile.rank} ${t(
-                        "leaderboard.globalRankings"
-                      )}`
+                    ? `${t("leaderboard.rank")} #${profile.rank}`
                     : t("leaderboard.unranked")}
                 </p>
+                {/* Mobile: Level Progress inline */}
+                <div className="md:hidden mt-1">
+                  {currentLevelInfo && (
+                    <span className="text-xs text-muted-foreground">
+                      Level {currentLevelInfo.number}: {profile?.xp || 0}/{nextLevelXP || "∞"} XP
+                    </span>
+                  )}
+                  <Progress value={xpProgress} className="h-1.5 mt-1" />
+                </div>
               </div>
             </div>
 
-            <div className="flex-1 max-w-md space-y-2">
+            {/* Desktop: Level Progress */}
+            <div className="hidden md:flex flex-1 max-w-md space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">
                   {t("dashboard.levelProgress")}
@@ -322,103 +331,103 @@ const Dashboard = () => {
               <Progress value={xpProgress} className="h-3" />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-1 text-accent mb-1">
-                  <Zap className="w-4 h-4" />
-                  <span className="text-2xl font-bold">{profile?.xp || 0}</span>
-                </div>
-                <p className="text-xs text-muted-foreground">
+            {/* XP and Active Challenges - Inline on mobile */}
+            <div className="flex md:grid md:grid-cols-2 gap-2 sm:gap-4 w-full md:w-auto">
+              <div className="flex items-center gap-1 sm:gap-2 text-accent flex-1 md:flex-col md:text-center">
+                <Zap className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                <span className="text-base sm:text-2xl font-bold">{profile?.xp || 0}</span>
+                <span className="text-xs text-muted-foreground hidden sm:inline md:block">
                   {t("dashboard.totalXP")}
-                </p>
+                </span>
               </div>
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-1 text-secondary mb-1">
-                  <Target className="w-4 h-4" />
-                  <span className="text-2xl font-bold">
-                    {activeChallengesCount}
-                  </span>
-                </div>
-                <p className="text-xs text-muted-foreground">
+              <div className="flex items-center gap-1 sm:gap-2 text-secondary flex-1 md:flex-col md:text-center">
+                <Target className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                <span className="text-base sm:text-2xl font-bold">
+                  {activeChallengesCount}
+                </span>
+                <span className="text-xs text-muted-foreground hidden sm:inline md:block">
                   {t("dashboard.activeChallenges")}
-                </p>
+                </span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters and Search */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
+        <div className="flex flex-col md:flex-row gap-2 sm:gap-4 mb-4 sm:mb-8">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-2 sm:left-3 top-2.5 sm:top-3 h-3.5 sm:h-4 w-3.5 sm:w-4 text-muted-foreground" />
             <Input
               placeholder={t("dashboard.searchChallenges")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
+              className="pl-8 sm:pl-10 h-9 sm:h-10 text-sm"
             />
           </div>
-          <Select
-            value={categoryFilter}
-            onValueChange={setCategoryFilter}
-            disabled={categoriesLoading || challengesLoading}>
-            <SelectTrigger className="md:w-[200px]">
-              <SelectValue placeholder={t("dashboard.category")} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">
-                {t("dashboard.allCategories")}
-              </SelectItem>
-              {allCategories.length > 0
-                ? allCategories.map((cat) => (
-                    <SelectItem key={cat.name} value={cat.name}>
-                      {cat.icon && <span className="mr-2">{cat.icon}</span>}
-                      {cat.name}
-                    </SelectItem>
-                  ))
-                : !categoriesLoading &&
-                  !challengesLoading && (
-                    <div className="flex items-center justify-center p-4 text-sm text-muted-foreground">
-                      No levels available
-                    </div>
-                  )}
-            </SelectContent>
-          </Select>
-          <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
-            <SelectTrigger className="md:w-[200px]">
-              <SelectValue placeholder={t("dashboard.difficulty")} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">
-                {t("dashboard.allDifficulties")}
-              </SelectItem>
-              <SelectItem value="easy">{t("dashboard.easy")}</SelectItem>
-              <SelectItem value="medium">{t("dashboard.medium")}</SelectItem>
-              <SelectItem value="hard">{t("dashboard.hard")}</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex gap-2">
+            <Select
+              value={categoryFilter}
+              onValueChange={setCategoryFilter}
+              disabled={categoriesLoading || challengesLoading}>
+              <SelectTrigger className="md:w-[200px] h-9 sm:h-10 text-xs sm:text-sm">
+                <SelectValue placeholder={t("dashboard.category")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">
+                  {t("dashboard.allCategories")}
+                </SelectItem>
+                {allCategories.length > 0
+                  ? allCategories.map((cat) => (
+                      <SelectItem key={cat.name} value={cat.name}>
+                        {cat.icon && <span className="mr-2">{cat.icon}</span>}
+                        {cat.name}
+                      </SelectItem>
+                    ))
+                  : !categoriesLoading &&
+                    !challengesLoading && (
+                      <div className="flex items-center justify-center p-4 text-sm text-muted-foreground">
+                        No levels available
+                      </div>
+                    )}
+              </SelectContent>
+            </Select>
+            <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
+              <SelectTrigger className="md:w-[200px] h-9 sm:h-10 text-xs sm:text-sm">
+                <SelectValue placeholder={t("dashboard.difficulty")} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">
+                  {t("dashboard.allDifficulties")}
+                </SelectItem>
+                <SelectItem value="easy">{t("dashboard.easy")}</SelectItem>
+                <SelectItem value="medium">{t("dashboard.medium")}</SelectItem>
+                <SelectItem value="hard">{t("dashboard.hard")}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {/* Challenges Tabs */}
-        <Tabs defaultValue="all" className="space-y-6">
-          <TabsList className="glass-card">
-            <TabsTrigger value="all">
-              {t("dashboard.availableChallenges")}
-            </TabsTrigger>
-            <TabsTrigger value="active">
-              {t("dashboard.activeChallenges")} ({activeChallengesCount})
-            </TabsTrigger>
+        <Tabs defaultValue="all" className="space-y-3 sm:space-y-6">
+          <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
+            <TabsList className="glass-card w-max sm:w-auto inline-flex h-9 sm:h-10 p-1">
+              <TabsTrigger value="all" className="text-xs sm:text-sm px-3 sm:px-4 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none">
+                {t("dashboard.availableChallenges")}
+              </TabsTrigger>
+              <TabsTrigger value="active" className="text-xs sm:text-sm px-3 sm:px-4 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none">
+                {t("dashboard.activeChallenges")} <span className="hidden sm:inline">({activeChallengesCount})</span>
+              </TabsTrigger>
+              <TabsTrigger value="completed" className="text-xs sm:text-sm px-3 sm:px-4 data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none">
+                {t("dashboard.completedChallenges")}
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
-            <TabsTrigger value="completed">
-              {t("dashboard.completedChallenges")}
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="all" className="space-y-6">
+          <TabsContent value="all" className="space-y-3 sm:space-y-6 mt-3 sm:mt-6">
             {challengesLoading ? (
-              <div className="text-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
-                <p className="text-muted-foreground">
+              <div className="text-center py-8 sm:py-12">
+                <Loader2 className="w-6 h-6 sm:w-8 sm:h-8 animate-spin mx-auto mb-3 sm:mb-4" />
+                <p className="text-sm sm:text-base text-muted-foreground">
                   {t("dashboard.loadingChallenges")}
                 </p>
               </div>
@@ -429,7 +438,7 @@ const Dashboard = () => {
                 </AlertDescription>
               </Alert>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                 {filteredChallenges.map((challenge) => {
                   const userProgress = userChallenges?.find(
                     (uc) => uc.challengeId === challenge.id
@@ -477,8 +486,8 @@ const Dashboard = () => {
             )}
           </TabsContent>
 
-          <TabsContent value="active">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <TabsContent value="active" className="mt-3 sm:mt-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
               {userChallenges
                 ?.filter((uc) => uc.status === "ACTIVE")
                 .map((userChallenge) => {
@@ -522,8 +531,8 @@ const Dashboard = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="available">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <TabsContent value="available" className="mt-3 sm:mt-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
               {filteredChallenges
                 .filter((challenge) => {
                   // Not already joined
@@ -563,8 +572,8 @@ const Dashboard = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="completed">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <TabsContent value="completed" className="mt-3 sm:mt-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
               {userChallenges
                 ?.filter((uc) => uc.status === "COMPLETED")
                 .map((userChallenge) => {
@@ -602,6 +611,7 @@ const Dashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
+      <Footer />
     </div>
   );
 };

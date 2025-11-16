@@ -12,6 +12,7 @@ import {
   Users,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useApi";
@@ -211,11 +212,7 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 mt-20">
-        <div className="container mx-auto px-4 py-8 text-center text-muted-foreground">
-          <p>&copy; 2025 SwipeRush. {t("footer.copyright")}</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
