@@ -178,9 +178,9 @@ export class ChallengeService {
     }
 
     // Validate that all stages have QR codes before processing
-    const stagesWithoutQR = validatedData.stages.filter(stage => !stage.qrCode || stage.qrCode.trim() === '');
-    if (stagesWithoutQR.length > 0) {
-      throw new Error(`The following stages are missing QR codes: ${stagesWithoutQR.map(s => `Stage ${s.order}`).join(', ')}. Please upload QR code images for all stages.`);
+    const missingQRStagesUpdate = validatedData.stages.filter(stage => !stage.qrCode || stage.qrCode.trim() === '');
+    if (missingQRStagesUpdate.length > 0) {
+      throw new Error(`The following stages are missing QR codes: ${missingQRStagesUpdate.map(s => `Stage ${s.order}`).join(', ')}. Please upload QR code images for all stages.`);
     }
 
     // Process stages and handle QR code uploads
@@ -270,9 +270,9 @@ export class ChallengeService {
 
     // QR codes must be uploaded by admin - no auto-generation
     // Verify all stages have QR codes
-    const stagesWithoutQR = challenge.stages.filter(stage => !stage.qrCode);
-    if (stagesWithoutQR.length > 0) {
-      throw new Error(`The following stages are missing QR codes: ${stagesWithoutQR.map(s => `Stage ${s.order}`).join(', ')}. Please upload QR code images for all stages.`);
+    const missingQRStagesAfterCreate = challenge.stages.filter(stage => !stage.qrCode);
+    if (missingQRStagesAfterCreate.length > 0) {
+      throw new Error(`The following stages are missing QR codes: ${missingQRStagesAfterCreate.map(s => `Stage ${s.order}`).join(', ')}. Please upload QR code images for all stages.`);
     }
 
     // Fetch challenge with uploaded QR codes
@@ -491,9 +491,9 @@ static async updateChallenge(id: string, data: z.infer<typeof updateChallengeSch
     });
 
     // Validate that all stages have QR codes before processing
-    const stagesWithoutQR = validatedData.stages.filter(stage => !stage.qrCode || stage.qrCode.trim() === '');
-    if (stagesWithoutQR.length > 0) {
-      throw new Error(`The following stages are missing QR codes: ${stagesWithoutQR.map(s => `Stage ${s.order}`).join(', ')}. Please upload QR code images for all stages.`);
+    const missingQRStagesUpdate = validatedData.stages.filter(stage => !stage.qrCode || stage.qrCode.trim() === '');
+    if (missingQRStagesUpdate.length > 0) {
+      throw new Error(`The following stages are missing QR codes: ${missingQRStagesUpdate.map(s => `Stage ${s.order}`).join(', ')}. Please upload QR code images for all stages.`);
     }
 
     // Process stages and handle QR code uploads
@@ -554,9 +554,9 @@ static async updateChallenge(id: string, data: z.infer<typeof updateChallengeSch
   });
 
   // QR codes must be uploaded by admin - verify all stages have QR codes
-  const stagesWithoutQR = updatedChallenge.stages.filter(stage => !stage.qrCode);
-  if (stagesWithoutQR.length > 0) {
-    throw new Error(`The following stages are missing QR codes: ${stagesWithoutQR.map(s => `Stage ${s.order}`).join(', ')}. Please upload QR code images for all stages.`);
+  const missingQRStagesFinal = updatedChallenge.stages.filter(stage => !stage.qrCode);
+  if (missingQRStagesFinal.length > 0) {
+    throw new Error(`The following stages are missing QR codes: ${missingQRStagesFinal.map(s => `Stage ${s.order}`).join(', ')}. Please upload QR code images for all stages.`);
   }
 
   // Fetch updated challenge with uploaded QR codes
