@@ -89,6 +89,7 @@ const CreateChallenge = () => {
   const [maxParticipants, setMaxParticipants] = useState<number | undefined>(undefined);
   const [challengeImage, setChallengeImage] = useState<File | null>(null);
   const [existingImageUrl, setExistingImageUrl] = useState<string | undefined>(undefined);
+  const [challengeLocation, setChallengeLocation] = useState<{ lat: number; lng: number } | null>(null);
   
   // Stages state
   const [stages, setStages] = useState<Stage[]>([
@@ -418,6 +419,75 @@ const handleSubmit = async (e: React.FormEvent) => {
                   onChange={(e) => setDescription(e.target.value)}
                   required 
                 />
+              </div>
+
+              {/* Challenge Location Map */}
+              <div className="space-y-2">
+                <Label>Challenge Location (Optional)</Label>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="challenge-lat" className="text-sm">Latitude</Label>
+                    <Input
+                      id="challenge-lat"
+                      type="number"
+                      step="any"
+                      placeholder="e.g., 40.7128"
+                      value={challengeLocation?.lat || ""}
+                      onChange={(e) => {
+                        const lat = parseFloat(e.target.value);
+                        if (!isNaN(lat)) {
+                          setChallengeLocation(prev => ({ lat, lng: prev?.lng || 0 }));
+                        } else {
+                          setChallengeLocation(null);
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="challenge-lng" className="text-sm">Longitude</Label>
+                    <Input
+                      id="challenge-lng"
+                      type="number"
+                      step="any"
+                      placeholder="e.g., -74.0060"
+                      value={challengeLocation?.lng || ""}
+                      onChange={(e) => {
+                        const lng = parseFloat(e.target.value);
+                        if (!isNaN(lng)) {
+                          setChallengeLocation(prev => ({ lat: prev?.lat || 0, lng }));
+                        } else {
+                          setChallengeLocation(null);
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+                {challengeLocation && challengeLocation.lat !== 0 && challengeLocation.lng !== 0 && (
+                  <div className="mt-2 rounded-lg overflow-hidden border border-border/50">
+                    <iframe
+                      width="100%"
+                      height="300"
+                      style={{ border: 0 }}
+                      loading="lazy"
+                      allowFullScreen
+                      referrerPolicy="no-referrer-when-downgrade"
+                      src={`https://www.openstreetmap.org/export/embed.html?bbox=${challengeLocation.lng - 0.01},${challengeLocation.lat - 0.01},${challengeLocation.lng + 0.01},${challengeLocation.lat + 0.01}&layer=mapnik&marker=${challengeLocation.lat},${challengeLocation.lng}`}
+                    />
+                    <div className="p-2 bg-muted/20 text-xs text-center text-muted-foreground">
+                      <a
+                        href={`https://www.openstreetmap.org/?mlat=${challengeLocation.lat}&mlon=${challengeLocation.lng}&zoom=15`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        View larger map
+                      </a>
+                    </div>
+                  </div>
+                )}
+                <p className="text-xs text-muted-foreground">
+                  Add the main location for this challenge. This helps participants understand where the challenge takes place.
+                </p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">

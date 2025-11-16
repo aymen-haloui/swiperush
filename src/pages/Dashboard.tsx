@@ -279,8 +279,16 @@ const Dashboard = () => {
         <div className="glass-card rounded-xl p-6 mb-8 border border-primary/20">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[var(--shadow-glow-primary)]">
-                <Trophy className="w-8 h-8 text-primary-foreground" />
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[var(--shadow-glow-primary)] overflow-hidden border-2 border-background">
+                {profile?.avatar ? (
+                  <img
+                    src={profile.avatar}
+                    alt={profile.username || "User"}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <Trophy className="w-8 h-8 text-primary-foreground" />
+                )}
               </div>
               <div>
                 <h2 className="text-2xl font-bold">
