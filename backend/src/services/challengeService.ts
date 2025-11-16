@@ -135,7 +135,7 @@ export const createChallengeSchema = z.object({
     latitude: z.number().min(-90).max(90).optional(),
     longitude: z.number().min(-180).max(180).optional(),
     radius: z.number().min(1).max(1000).default(50).optional(),
-    qrCode: z.string().optional()
+    qrCode: z.string().min(1, 'QR code image is required. Please upload a QR code for this stage.')
   })).min(1, 'At least one stage is required')
 });
 
@@ -175,12 +175,18 @@ export class ChallengeService {
       throw new Error('Start date cannot be in the past');
     }
 
+    // Validate that all stages have QR codes before processing
+    const stagesWithoutQR = validatedData.stages.filter(stage => !stage.qrCode || stage.qrCode.trim() === '');
+    if (stagesWithoutQR.length > 0) {
+      throw new Error(`The following stages are missing QR codes: ${stagesWithoutQR.map(s => `Stage ${s.order}`).join(', ')}. Please upload QR code images for all stages.`);
+    }
+
     // Process stages and handle QR code uploads
     const stagesData = await Promise.all(
       validatedData.stages.map(async (stage) => {
         let qrCodePath: string | undefined = undefined;
 
-        // If qrCode is provided, check if it's base64 or already a file path
+        // QR code is required and validated above
         if (stage.qrCode) {
           // Check if it's a base64 string (starts with data:image/)
           if (stage.qrCode.startsWith('data:image/')) {
@@ -258,22 +264,14 @@ export class ChallengeService {
       }
     });
 
-    // Generate QR codes for stages that don't have them yet
-    await Promise.all(
-      challenge.stages.map(async (stage) => {
-        if (!stage.qrCode) {
-          // Generate QR code with stage ID
-          const qrCodePath = await generateQRCode(stage.id, `qr-stage-${stage.order}`);
-          // Update stage with generated QR code
-          await prisma.stage.update({
-            where: { id: stage.id },
-            data: { qrCode: qrCodePath }
-          });
-        }
-      })
-    );
+    // QR codes must be uploaded by admin - no auto-generation
+    // Verify all stages have QR codes
+    const stagesWithoutQR = challenge.stages.filter(stage => !stage.qrCode);
+    if (stagesWithoutQR.length > 0) {
+      throw new Error(`The following stages are missing QR codes: ${stagesWithoutQR.map(s => `Stage ${s.order}`).join(', ')}. Please upload QR code images for all stages.`);
+    }
 
-    // Fetch updated challenge with generated QR codes
+    // Fetch challenge with uploaded QR codes
     const updatedChallenge = await prisma.challenge.findUnique({
       where: { id: challenge.id },
       include: {
@@ -486,12 +484,18 @@ static async updateChallenge(id: string, data: z.infer<typeof updateChallengeSch
       where: { challengeId: id },
     });
 
+    // Validate that all stages have QR codes before processing
+    const stagesWithoutQR = validatedData.stages.filter(stage => !stage.qrCode || stage.qrCode.trim() === '');
+    if (stagesWithoutQR.length > 0) {
+      throw new Error(`The following stages are missing QR codes: ${stagesWithoutQR.map(s => `Stage ${s.order}`).join(', ')}. Please upload QR code images for all stages.`);
+    }
+
     // Process stages and handle QR code uploads
     const stagesData = await Promise.all(
       validatedData.stages.map(async (stage) => {
         let qrCodePath: string | undefined = undefined;
 
-        // If qrCode is provided, check if it's base64 or already a file path
+        // QR code is required and validated above
         if (stage.qrCode) {
           // Check if it's a base64 string (starts with data:image/)
           if (stage.qrCode.startsWith('data:image/')) {
@@ -543,22 +547,13 @@ static async updateChallenge(id: string, data: z.infer<typeof updateChallengeSch
     },
   });
 
-  // Generate QR codes for stages that don't have them yet
-  await Promise.all(
-    updatedChallenge.stages.map(async (stage) => {
-      if (!stage.qrCode) {
-        // Generate QR code with stage ID
-        const qrCodePath = await generateQRCode(stage.id, `qr-stage-${stage.order}`);
-        // Update stage with generated QR code
-        await prisma.stage.update({
-          where: { id: stage.id },
-          data: { qrCode: qrCodePath }
-        });
-      }
-    })
-  );
+  // QR codes must be uploaded by admin - verify all stages have QR codes
+  const stagesWithoutQR = updatedChallenge.stages.filter(stage => !stage.qrCode);
+  if (stagesWithoutQR.length > 0) {
+    throw new Error(`The following stages are missing QR codes: ${stagesWithoutQR.map(s => `Stage ${s.order}`).join(', ')}. Please upload QR code images for all stages.`);
+  }
 
-  // Fetch updated challenge with generated QR codes
+  // Fetch updated challenge with uploaded QR codes
   const finalChallenge = await prisma.challenge.findUnique({
     where: { id },
     include: {
