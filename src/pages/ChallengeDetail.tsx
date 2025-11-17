@@ -271,11 +271,12 @@ const ChallengeDetail = () => {
           <div className="flex flex-col md:flex-row gap-6">
             {/* Challenge Image */}
             {challenge.image && (
-              <div className="md:w-80 h-64 md:h-auto flex-shrink-0">
+              <div className="md:w-1/2 h-64 md:h-auto flex-shrink-0">
                 <img
                   src={challenge.image.startsWith('data:image') || challenge.image.startsWith('http') ? challenge.image : `${UPLOADS_BASE}/uploads/${challenge.image}`}
                   alt={challenge.title}
-                  className="w-full h-full object-cover rounded-lg shadow-lg"
+                  className="w-full h-full object-contain bg-muted/10 rounded-lg shadow-lg"
+                  style={{ display: 'block' }}
                   onError={(e) => {
                     console.error('Image load error:', challenge.image);
                     (e.target as HTMLImageElement).style.display = 'none';
