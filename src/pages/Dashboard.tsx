@@ -328,16 +328,19 @@ const Dashboard = () => {
                     currentColor="text-primary"
                     remainingColor="text-muted-foreground/30"
                   >
-                    <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center overflow-hidden border-[3px] border-background flex-shrink-0 shadow-lg transition-all duration-300 group-hover:scale-105 ${profile?.rank && profile.rank <= 10 ? 'shadow-[0_0_40px_rgba(139,92,246,0.7)] ring-[3px] ring-primary/60' : 'shadow-[0_0_20px_rgba(139,92,246,0.3)]'}`}>
-                      {profile?.avatar ? (
-                        <img
-                          src={profile.avatar}
-                          alt={profile.username || "User"}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <Trophy className="w-12 h-12 sm:w-16 sm:h-16 text-primary-foreground" />
-                      )}
+                    <div className="flex flex-col items-center">
+                      <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center overflow-hidden border-[3px] border-background flex-shrink-0 shadow-lg transition-all duration-300 group-hover:scale-105 ${profile?.rank && profile.rank <= 10 ? 'shadow-[0_0_40px_rgba(139,92,246,0.7)] ring-[3px] ring-primary/60' : 'shadow-[0_0_20px_rgba(139,92,246,0.3)]'}`}>
+                        {profile?.avatar ? (
+                          <img
+                            src={profile.avatar}
+                            alt={profile.username || "User"}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <Trophy className="w-12 h-12 sm:w-16 sm:h-16 text-primary-foreground" />
+                        )}
+                      </div>
+                      <div className="mt-2 text-sm sm:text-base font-semibold text-foreground">{profile?.xp || 0} XP</div>
                     </div>
                   </CircularProgress>
                 </div>
