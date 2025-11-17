@@ -52,6 +52,8 @@
     "loginFailed": "Login failed. Please check your credentials.",
     "registrationFailed": "Registration failed. Please try again.",
     "passwordsDontMatch": "Passwords don't match!",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
     "signingIn": "Signing In...",
     "creatingAccount": "Creating Account...",
     "enterCredentials": "Enter your credentials to continue your adventure",
@@ -243,5 +245,164 @@
     "termsOfService": "Terms of Service",
     "contactUs": "Contact Us",
     "aboutUs": "About Us"
+  }
+  ,
+  "notifications": {
+    "logoutSuccess": {
+      "title": "✅ Successfully logged out",
+      "description": "Hope to see you again soon!"
+    },
+    "joinSuccess": {
+      "title": "🎯 Challenge joined successfully!",
+      "description": "You’ve joined the challenge and can start progressing."
+    },
+    "joinFailed": {
+      "title": "⚠️ Failed to join challenge",
+      "description": "{{error}}"
+    },
+    "loginFailed": {
+      "title": "❌ Login failed",
+      "description": "{{error}}"
+    },
+    "loginSuccess": {
+      "title": "✅ Login successful",
+      "description": ""
+    },
+    "welcomeAdmin": {
+      "title": "👑 Welcome Admin",
+      "description": ""
+    },
+    "categoryUpdated": {
+      "title": "✅ Category Updated!",
+      "description": "Category has been successfully updated."
+    },
+    "categoryUpdateError": {
+      "title": "❌ Error Updating Category",
+      "description": "{{error}}"
+    },
+    "categoryDeleted": {
+      "title": "✅ Category Deleted!",
+      "description": "Category has been successfully deleted."
+    },
+    "categoryDeleteError": {
+      "title": "❌ Error Deleting Category",
+      "description": "{{error}}"
+    },
+    "userStatusUpdated": {
+      "title": "✅ User Status Updated!",
+      "description": "User status has been successfully updated."
+    },
+    "userStatusUpdateError": {
+      "title": "❌ Error Updating User Status",
+      "description": "{{error}}"
+    },
+    "levelCreated": {
+      "title": "✅ Level Created!",
+      "description": "Level has been successfully created."
+    },
+    "levelCreateError": {
+      "title": "❌ Error Creating Level",
+      "description": "{{error}}"
+    },
+    "levelUpdated": {
+      "title": "✅ Level Updated!",
+      "description": "Level has been successfully updated."
+    },
+    "levelUpdateError": {
+      "title": "❌ Error Updating Level",
+      "description": "{{error}}"
+    },
+    "levelDeleted": {
+      "title": "✅ Level Deleted!",
+      "description": "Level has been successfully deleted."
+    },
+    "levelDeleteError": {
+      "title": "❌ Error Deleting Level",
+      "description": "{{error}}"
+    },
+    "validationError": {
+      "title": "❌ Validation Error",
+      "description": "{{error}}"
+    },
+    "challengeDeleted": {
+      "title": "✅ Challenge Deleted!",
+      "description": "Challenge has been successfully deleted."
+    },
+    "challengeDeleteError": {
+      "title": "❌ Error Deleting Challenge",
+      "description": "{{error}}"
+    },
+    "missingFields": {
+      "title": "⚠️ Missing fields",
+      "description": "{{error}}"
+    },
+    "passwordsDontMatch": {
+      "title": "❌ Passwords do not match",
+      "description": ""
+    },
+    "passwordChanged": {
+      "title": "✅ Password changed successfully!",
+      "description": ""
+    },
+    "passwordChangeFailed": {
+      "title": "❌ Failed to change password",
+      "description": "{{error}}"
+    },
+    "networkError": {
+      "title": "⚠️ Network error",
+      "description": "Please check your connection."
+    },
+    "profilePicUpdated": {
+      "title": "✅ Profile picture updated!",
+      "description": ""
+    },
+    "uploadFailed": {
+      "title": "❌ Failed to upload profile picture",
+      "description": "{{error}}"
+    },
+    "usernameChanged": {
+      "title": "✅ Username changed successfully!",
+      "description": ""
+    },
+    "usernameChangeFailed": {
+      "title": "❌ Failed to change username",
+      "description": "{{error}}"
+    },
+    "emailChanged": {
+      "title": "✅ Email changed successfully!",
+      "description": ""
+    },
+    "emailChangeFailed": {
+      "title": "❌ Failed to change email",
+      "description": "{{error}}"
+    },
+    "challengeUpdated": {
+      "title": "🎯 Challenge Updated!",
+      "description": "Challenge has been successfully updated."
+    },
+    "challengeUpdateError": {
+      "title": "❌ Error Updating Challenge",
+      "description": "{{error}}"
+    },
+    "challengeCreated": {
+      "title": "🎯 Challenge Created!",
+      "description": "Challenge created successfully"
+    },
+    "challengeCreateError": {
+      "title": "❌ Error Creating Challenge",
+      "description": "{{error}}"
+    },
+    "stageCompleted": {
+      "title": "🎯 Stage Completed!",
+      "description": "You earned {{xp}} XP"
+    },
+    "stageError": {
+      "title": "❌ Error",
+      "description": "{{error}}"
+    },
+    "genericError": {
+      "title": "❌ Error",
+      "description": "Something went wrong. Please try again."
+    }
   }
 }

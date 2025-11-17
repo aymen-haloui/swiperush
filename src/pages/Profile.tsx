@@ -102,8 +102,8 @@ const Profile = () => {
       !passwordData.confirmPassword
     ) {
       toast({
-        title: "⚠️ Missing fields",
-        description: "Please fill in all password fields.",
+        title: t('notifications.missingFields.title'),
+        description: t('notifications.missingFields.description', { error: 'Please fill in all password fields.' }),
         variant: "destructive",
         duration: 3000,
       });
@@ -112,8 +112,8 @@ const Profile = () => {
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       toast({
-        title: "❌ Passwords do not match",
-        description: "Make sure the new and confirm passwords are identical.",
+        title: t('notifications.passwordsDontMatch.title'),
+        description: t('notifications.passwordsDontMatch.description') || 'Make sure the new and confirm passwords are identical.',
         variant: "destructive",
         duration: 3000,
       });
@@ -140,8 +140,8 @@ const Profile = () => {
       const data = await res.json();
       if (res.ok) {
         toast({
-          title: "✅ Password changed successfully!",
-          description: "Your password has been updated securely.",
+          title: t('notifications.passwordChanged.title'),
+          description: t('notifications.passwordChanged.description') || 'Your password has been updated securely.',
           duration: 3000,
           className:
             "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
@@ -154,16 +154,16 @@ const Profile = () => {
         });
       } else {
         toast({
-          title: "❌ Failed to change password",
-          description: data.message || "An unknown error occurred.",
+          title: t('notifications.passwordChangeFailed.title'),
+          description: data.message || t('notifications.passwordChangeFailed.description'),
           variant: "destructive",
           duration: 3000,
         });
       }
     } catch {
       toast({
-        title: "⚠️ Network error",
-        description: "Something went wrong. Please try again later.",
+        title: t('notifications.networkError.title'),
+        description: t('notifications.networkError.description'),
         variant: "destructive",
         duration: 3000,
       });
@@ -175,8 +175,8 @@ const Profile = () => {
   const handleChangeEmail = async () => {
     if (!emailData.newEmail || !emailData.confirmEmail) {
       toast({
-        title: "⚠️ Missing fields",
-        description: "Please fill in both email fields.",
+        title: t('notifications.missingFields.title'),
+        description: t('notifications.missingFields.description', { error: 'Please fill in both email fields.' }),
         variant: "destructive",
         duration: 3000,
       });
@@ -185,8 +185,8 @@ const Profile = () => {
 
     if (emailData.newEmail !== emailData.confirmEmail) {
       toast({
-        title: "❌ Emails do not match",
-        description: "Make sure both email addresses are identical.",
+        title: t('notifications.passwordsDontMatch.title'),
+        description: t('notifications.passwordsDontMatch.description') || 'Make sure both email addresses are identical.',
         variant: "destructive",
         duration: 3000,
       });
@@ -197,8 +197,8 @@ const Profile = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(emailData.newEmail)) {
       toast({
-        title: "❌ Invalid email",
-        description: "Please enter a valid email address.",
+        title: t('notifications.genericError.title'),
+        description: t('notifications.genericError.description') || 'Please enter a valid email address.',
         variant: "destructive",
         duration: 3000,
       });
@@ -207,8 +207,8 @@ const Profile = () => {
 
     if (emailData.newEmail === profile?.email) {
       toast({
-        title: "⚠️ Same email",
-        description: "This is already your current email address.",
+        title: t('notifications.genericError.title'),
+        description: t('notifications.genericError.description') || 'This is already your current email address.',
         variant: "destructive",
         duration: 3000,
       });
@@ -220,8 +220,8 @@ const Profile = () => {
       await updateProfileMutation.mutateAsync({ email: emailData.newEmail });
       
       toast({
-        title: "✅ Email changed successfully!",
-        description: "Your email address has been updated.",
+        title: t('notifications.emailChanged.title'),
+        description: t('notifications.emailChanged.description') || 'Your email address has been updated.',
         duration: 3000,
         className:
           "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
@@ -233,8 +233,8 @@ const Profile = () => {
       });
     } catch (error: any) {
       toast({
-        title: "❌ Failed to change email",
-        description: error?.response?.data?.message || error?.message || "An unknown error occurred.",
+        title: t('notifications.emailChangeFailed.title'),
+        description: error?.response?.data?.message || error?.message || t('notifications.emailChangeFailed.description'),
         variant: "destructive",
         duration: 3000,
       });
@@ -261,8 +261,8 @@ const Profile = () => {
     const validImageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
     if (!validImageTypes.includes(file.type)) {
       toast({
-        title: "❌ Invalid file type",
-        description: "Please select an image file (PNG, JPG, GIF, or WEBP).",
+        title: t('notifications.genericError.title'),
+        description: t('notifications.genericError.description') || 'Please select an image file (PNG, JPG, GIF, or WEBP).',
         variant: "destructive",
         duration: 3000,
       });
@@ -272,8 +272,8 @@ const Profile = () => {
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       toast({
-        title: "❌ File too large",
-        description: "Profile picture must be smaller than 5MB.",
+        title: t('notifications.fileTooLarge.title'),
+        description: t('notifications.fileTooLarge.description'),
         variant: "destructive",
         duration: 3000,
       });
@@ -293,8 +293,8 @@ const Profile = () => {
   const handleUploadProfilePicture = async () => {
     if (!profilePicture) {
       toast({
-        title: "⚠️ No file selected",
-        description: "Please select a profile picture to upload.",
+        title: t('notifications.genericError.title'),
+        description: t('notifications.genericError.description') || 'Please select a profile picture to upload.',
         variant: "destructive",
         duration: 3000,
       });
@@ -307,8 +307,8 @@ const Profile = () => {
       await updateProfileMutation.mutateAsync({ avatar: imageData });
       
       toast({
-        title: "✅ Profile picture updated!",
-        description: "Your profile picture has been updated successfully.",
+        title: t('notifications.profilePicUpdated.title'),
+        description: t('notifications.profilePicUpdated.description') || 'Your profile picture has been updated successfully.',
         duration: 3000,
         className:
           "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
@@ -323,8 +323,8 @@ const Profile = () => {
       if (fileInput) fileInput.value = '';
     } catch (error: any) {
       toast({
-        title: "❌ Failed to upload profile picture",
-        description: error?.response?.data?.message || error?.message || "An unknown error occurred.",
+        title: t('notifications.uploadFailed.title'),
+        description: error?.response?.data?.message || error?.message || t('notifications.uploadFailed.description'),
         variant: "destructive",
         duration: 3000,
       });
@@ -336,8 +336,8 @@ const Profile = () => {
   const handleChangeUsername = async () => {
     if (!usernameData.newUsername) {
       toast({
-        title: "⚠️ Missing field",
-        description: "Please enter a new username.",
+        title: t('notifications.missingFields.title'),
+        description: t('notifications.missingFields.description', { error: 'Please enter a new username.' }),
         variant: "destructive",
         duration: 3000,
       });
@@ -347,8 +347,8 @@ const Profile = () => {
     // Basic username validation
     if (usernameData.newUsername.length < 3) {
       toast({
-        title: "❌ Invalid username",
-        description: "Username must be at least 3 characters long.",
+        title: t('notifications.genericError.title'),
+        description: t('notifications.genericError.description') || 'Username must be at least 3 characters long.',
         variant: "destructive",
         duration: 3000,
       });
@@ -357,8 +357,8 @@ const Profile = () => {
 
     if (usernameData.newUsername === profile?.username) {
       toast({
-        title: "⚠️ Same username",
-        description: "This is already your current username.",
+        title: t('notifications.genericError.title'),
+        description: t('notifications.genericError.description') || 'This is already your current username.',
         variant: "destructive",
         duration: 3000,
       });
@@ -370,8 +370,8 @@ const Profile = () => {
       await updateProfileMutation.mutateAsync({ username: usernameData.newUsername });
       
       toast({
-        title: "✅ Username changed successfully!",
-        description: "Your username has been updated.",
+        title: t('notifications.usernameChanged.title'),
+        description: t('notifications.usernameChanged.description') || 'Your username has been updated.',
         duration: 3000,
         className:
           "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
@@ -382,8 +382,8 @@ const Profile = () => {
       });
     } catch (error: any) {
       toast({
-        title: "❌ Failed to change username",
-        description: error?.response?.data?.message || error?.message || "An unknown error occurred.",
+        title: t('notifications.usernameChangeFailed.title'),
+        description: error?.response?.data?.message || error?.message || t('notifications.usernameChangeFailed.description'),
         variant: "destructive",
         duration: 3000,
       });
@@ -789,7 +789,7 @@ const Profile = () => {
           <CardContent className="p-8 space-y-8">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold flex items-center gap-2">
-                <KeyRound className="w-5 h-5 text-primary" /> Change Password
+                <KeyRound className="w-5 h-5 text-primary" /> {t("profile.changePassword")}
               </h2>
               {changing && (
                 <Loader2 className="w-5 h-5 text-primary animate-spin" />
@@ -803,17 +803,17 @@ const Profile = () => {
               {[
                 {
                   key: "current",
-                  placeholder: "Current Password",
+                  placeholder: t("profile.currentPassword"),
                   value: passwordData.currentPassword,
                 },
                 {
                   key: "new",
-                  placeholder: "New Password",
+                  placeholder: t("profile.newPassword"),
                   value: passwordData.newPassword,
                 },
                 {
                   key: "confirm",
-                  placeholder: "Confirm Password",
+                  placeholder: t("profile.confirmNewPassword"),
                   value: passwordData.confirmPassword,
                 },
               ].map((field) => (

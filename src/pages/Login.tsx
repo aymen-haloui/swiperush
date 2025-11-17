@@ -36,11 +36,11 @@ const Login = () => {
   useEffect(() => {
     if (loginError) {
       toast({
-        title: "❌ Login failed",
+        title: t('notifications.loginFailed.title'),
         description:
           loginError.message ||
           (loginError instanceof Error ? loginError.message : undefined) ||
-          t("auth.loginFailed"),
+          t('notifications.loginFailed.description'),
         duration: 3000,
         className:
           "border-red-500 bg-red-50 text-red-700 dark:bg-red-900 dark:text-red-100",
@@ -71,8 +71,8 @@ const Login = () => {
       // ✅ Redirect based on admin status
       if (res?.user?.isAdmin) {
         toast({
-          title: "👑 Welcome Admin",
-          description: "Redirecting you to the admin dashboard...",
+          title: t('notifications.welcomeAdmin.title'),
+          description: t('notifications.welcomeAdmin.description') || 'Redirecting you to the admin dashboard...',
           duration: 2500,
           className:
             "border-purple-500 bg-purple-50 text-purple-700 dark:bg-purple-900 dark:text-purple-100",
@@ -80,8 +80,8 @@ const Login = () => {
         navigate("/admin");
       } else {
         toast({
-          title: "✅ Login successful",
-          description: "Welcome back!",
+          title: t('notifications.loginSuccess.title'),
+          description: t('notifications.loginSuccess.description') || 'Welcome back!',
           duration: 2500,
           className:
             "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
@@ -94,8 +94,8 @@ const Login = () => {
         ? error.message 
         : "Invalid email or password.";
       toast({
-        title: "❌ Login failed",
-        description: errorMessage,
+        title: t('notifications.loginFailed.title'),
+        description: errorMessage || t('notifications.loginFailed.description'),
         duration: 3000,
         variant: "destructive",
       });
@@ -187,7 +187,7 @@ const Login = () => {
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/70 hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-sm"
                     onClick={() => setShowPassword(!showPassword)}
                     tabIndex={-1}
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={showPassword ? t("auth.hidePassword") : t("auth.showPassword")}
                   >
                     {showPassword ? (
                       <EyeOff className="w-4 h-4" />

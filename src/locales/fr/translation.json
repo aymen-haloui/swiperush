@@ -52,6 +52,8 @@
     "loginFailed": "Échec de la connexion. Vérifiez vos identifiants.",
     "registrationFailed": "Échec de l'inscription. Veuillez réessayer.",
     "passwordsDontMatch": "Les mots de passe ne correspondent pas !",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe",
     "signingIn": "Connexion...",
     "creatingAccount": "Création du compte...",
     "enterCredentials": "Saisissez vos identifiants pour continuer l'aventure",
