@@ -296,49 +296,71 @@ const ChallengeDetail = () => {
                 {challenge.description}
               </p>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div className="flex items-center gap-2 text-sm">
-                  <Trophy className="w-4 h-4 text-accent" />
-                  <span>{challenge.xpReward} XP</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <h4 className="text-sm font-semibold mb-3">Challenge Stats</h4>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Trophy className="w-4 h-4 text-accent" />
+                      <div>
+                        <div className="font-semibold">{challenge.xpReward} XP</div>
+                        <div className="text-xs text-muted-foreground">Reward</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Users className="w-4 h-4 text-secondary" />
+                      <div>
+                        <div className="font-semibold">{challenge._count?.progress || 0}{challenge.maxParticipants ? ` / ${challenge.maxParticipants}` : ''}</div>
+                        <div className="text-xs text-muted-foreground">Players</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-success" />
+                      <div>
+                        <div className="font-semibold">{challenge.stages?.length || 0}</div>
+                        <div className="text-xs text-muted-foreground">Stages</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-primary" />
+                      <div>
+                        <div className="font-semibold">{durationDays > 0 ? `${durationDays} days` : `${durationHours} hours`}</div>
+                        <div className="text-xs text-muted-foreground">Duration</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Users className="w-4 h-4 text-secondary" />
-                  <span>
-                    {challenge._count?.progress || 0} 
-                    {challenge.maxParticipants ? ` / ${challenge.maxParticipants}` : ''} players
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Clock className="w-4 h-4 text-primary" />
-                  <span>
-                    {durationDays > 0 ? `${durationDays} days` : `${durationHours} hours`}
-                    {isChallengeActive && ` • ${daysLeft} days left`}
-                    {isChallengeUpcoming && ` • Starts ${Math.ceil((startDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days`}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <MapPin className="w-4 h-4 text-success" />
-                  <span>{challenge.stages?.length || 0} stages</span>
+
+                <div>
+                  <h4 className="text-sm font-semibold mb-3">Schedule</h4>
+                  <div className="text-sm text-muted-foreground space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      <span>Start: {new Date(challenge.startDate).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      <span>End: {new Date(challenge.endDate).toLocaleDateString()}</span>
+                    </div>
+                    {isChallengeActive && <div className="text-sm text-muted-foreground">{daysLeft} days left</div>}
+                    {isChallengeUpcoming && <div className="text-sm text-muted-foreground">Starts in {Math.ceil((startDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days</div>}
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-6 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>Start: {new Date(challenge.startDate).toLocaleDateString()}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>End: {new Date(challenge.endDate).toLocaleDateString()}</span>
-                </div>
-                {challenge.latitude != null && challenge.longitude != null && challenge.latitude !== 0 && challenge.longitude !== 0 && (
-                  <div className="flex items-center gap-2 col-span-2">
+              <div className="mb-6">
+                <h4 className="text-sm font-semibold mb-3">Location</h4>
+                {challenge.latitude != null && challenge.longitude != null && challenge.latitude !== 0 && challenge.longitude !== 0 ? (
+                  <div className="flex items-center gap-3">
                     <MapPin className="w-4 h-4 text-success" />
-                    <span>Location: {challenge.latitude.toFixed(6)}, {challenge.longitude.toFixed(6)}</span>
+                    <div className="flex-1 text-sm">
+                      <div className="font-semibold">Location Available</div>
+                      <div className="text-xs text-muted-foreground">Exact coordinates hidden here for clarity</div>
+                    </div>
                     <Button 
                       variant="ghost" 
                       size="sm"
-                      className="h-6 px-2 text-xs"
+                      className="h-8 px-3 text-xs"
                       onClick={() => {
                         window.open(
                           `https://www.openstreetmap.org/?mlat=${challenge.latitude}&mlon=${challenge.longitude}&zoom=15`,
@@ -350,14 +372,14 @@ const ChallengeDetail = () => {
                       View on Map
                     </Button>
                   </div>
+                ) : (
+                  <div className="text-sm text-muted-foreground">No location set</div>
                 )}
               </div>
 
               <div className="space-y-2 mb-6">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">
-                    Overall Progress
-                  </span>
+                  <span className="text-muted-foreground">Overall Progress</span>
                   <span className="font-semibold">{Math.round(progress)}%</span>
                 </div>
                 <Progress value={progress} className="h-3" />
@@ -373,29 +395,8 @@ const ChallengeDetail = () => {
                     {challenge.maxParticipants && (
                       <p>Max Participants: {challenge.maxParticipants}</p>
                     )}
-                    <p>Status: {isChallengeUpcoming ? 'Upcoming' : isChallengeActive ? 'Active' : 'Ended'}</p>
+                    <p>Status: <span className="font-semibold">{isChallengeUpcoming ? 'Upcoming' : isChallengeActive ? 'Active' : 'Ended'}</span></p>
                   </div>
-                  {challenge.latitude != null && challenge.longitude != null && challenge.latitude !== 0 && challenge.longitude !== 0 ? (
-                    <Button 
-                      variant="hero" 
-                      className="w-full"
-                      onClick={() => {
-                        window.open(
-                          `https://www.openstreetmap.org/?mlat=${challenge.latitude}&mlon=${challenge.longitude}&zoom=15`,
-                          '_blank',
-                          'noopener,noreferrer'
-                        );
-                      }}
-                    >
-                      <MapPin className="w-4 h-4 mr-2" />
-                      View Map
-                    </Button>
-                  ) : (
-                    <Button variant="hero" className="w-full" disabled>
-                      <MapPin className="w-4 h-4 mr-2" />
-                      No Location Set
-                    </Button>
-                  )}
                 </CardContent>
               </Card>
             </div>
