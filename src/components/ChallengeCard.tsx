@@ -58,25 +58,23 @@ const ChallengeCard = ({
   ) : null;
 
   return (
-    <Card className="group relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-background via-background/95 to-background shadow-lg hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] hover:border-primary/40 transition-all duration-300">
+    <Card className="group relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-background via-background/95 to-background shadow-lg hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] hover:border-primary/40 transition-all duration-300 flex flex-col min-h-[360px]">
       {/* Subtle border glow */}
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
       
       {imageUrl && (
-        <div className="relative w-full h-40 sm:h-56 overflow-hidden bg-muted/20">
+        <div className="relative w-full overflow-hidden h-[60%]">
           <img 
             src={imageUrl} 
             alt={title}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
-            className="group-hover:scale-110 transition-transform duration-500"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             onError={(e) => {
               // Hide image on error
               (e.target as HTMLImageElement).style.display = 'none';
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
-          
-          {/* Top badges */}
+
+          {/* Top badges (kept in place) */}
           <div className="absolute top-3 sm:top-4 right-3 sm:right-4">
             <Badge className={`${difficultyColors[difficulty]} text-foreground text-xs sm:text-sm px-2 sm:px-3 py-1 rounded-lg font-semibold shadow-md`}>
               {difficulty.toUpperCase()}
