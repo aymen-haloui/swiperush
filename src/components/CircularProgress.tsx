@@ -17,7 +17,7 @@ const CircularProgress = ({
   className = "",
   children,
   currentColor = "text-primary",
-  remainingColor = "text-muted/20"
+  remainingColor = "text-muted-foreground/20"
 }: CircularProgressProps) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
