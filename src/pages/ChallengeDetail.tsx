@@ -387,18 +387,7 @@ const ChallengeDetail = () => {
             </div>
 
             <div className="md:w-80">
-              <Card className="glass-card">
-                <CardContent className="p-6">
-                  <h3 className="font-bold mb-4">Challenge Info</h3>
-                  <div className="space-y-2 text-sm text-muted-foreground mb-4">
-                    <p>Created: {new Date(challenge.createdAt).toLocaleDateString()}</p>
-                    {challenge.maxParticipants && (
-                      <p>Max Participants: {challenge.maxParticipants}</p>
-                    )}
-                    <p>Status: <span className="font-semibold">{isChallengeUpcoming ? 'Upcoming' : isChallengeActive ? 'Active' : 'Ended'}</span></p>
-                  </div>
-                </CardContent>
-              </Card>
+                {/* Right-side info card removed per request */}
             </div>
           </div>
         </div>
