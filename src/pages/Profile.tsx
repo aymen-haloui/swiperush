@@ -47,10 +47,10 @@ const Profile = () => {
     new: false,
     confirm: false,
   });
-  const [changing, setChanging] = useState(false);
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
-    newPassword: "",
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder={t("profile.newEmailPlaceholder")}
     confirmPassword: "",
   });
   const [message, setMessage] = useState<string | null>(null);
@@ -180,10 +180,10 @@ const Profile = () => {
         variant: "destructive",
         duration: 3000,
       });
-      return;
-    }
-
-    if (emailData.newEmail !== emailData.confirmEmail) {
+                  <Input
+                    id="confirmEmail"
+                    type="email"
+                    placeholder={t("profile.confirmNewEmailPlaceholder")}
       toast({
         title: t('notifications.passwordsDontMatch.title'),
         description: t('notifications.passwordsDontMatch.description') || 'Make sure both email addresses are identical.',
@@ -341,9 +341,9 @@ const Profile = () => {
         variant: "destructive",
         duration: 3000,
       });
-      return;
-    }
-
+                  <Input
+                    id="username"
+                    placeholder={t("profile.newUsernamePlaceholder")}
     // Basic username validation
     if (usernameData.newUsername.length < 3) {
       toast({

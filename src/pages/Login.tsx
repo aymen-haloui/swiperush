@@ -156,7 +156,7 @@ const Login = () => {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="your@email.com"
+                    placeholder={t("auth.emailPlaceholder")}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 h-11 text-sm focus:ring-2 focus:ring-primary/20 transition-all"

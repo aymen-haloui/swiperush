@@ -54,6 +54,9 @@
     "passwordsDontMatch": "Les mots de passe ne correspondent pas !",
     "showPassword": "Afficher le mot de passe",
     "hidePassword": "Masquer le mot de passe",
+    "usernamePlaceholder": "challenger123",
+    "emailPlaceholder": "votre@email.com",
+    "passwordMinChars": "Doit contenir au moins 8 caractères",
     "signingIn": "Connexion...",
     "creatingAccount": "Création du compte...",
     "enterCredentials": "Saisissez vos identifiants pour continuer l'aventure",
@@ -192,6 +195,16 @@
     "passwordsDontMatch": "Les mots de passe ne correspondent pas",
     "uploadAvatar": "Téléverser un avatar",
     "removeAvatar": "Supprimer l'avatar"
+    ,
+    "newEmailPlaceholder": "Saisir un nouvel email",
+    "confirmNewEmailPlaceholder": "Confirmer le nouvel email",
+    "newUsernamePlaceholder": "Saisir un nouveau nom d'utilisateur"
+  },
+  "createChallenge": {
+    "namePlaceholder": "Saisir le nom du défi",
+    "descriptionPlaceholder": "Décrivez votre défi",
+    "latExample": "ex. 40.7128",
+    "lngExample": "ex. -74.0060"
   },
   "admin": {
     "title": "Tableau de bord admin",
@@ -240,6 +253,7 @@
       "players": "Joueurs",
       "analytics": "Analytique"
     },
+    "searchPlayersPlaceholder": "Rechercher des joueurs par pseudo, email ou nom...",
     "activeChallengesTitle": "Défis actifs",
     "activeChallengesDescription": "Défis en cours",
     "createNew": "Créer",

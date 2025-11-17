@@ -107,10 +107,10 @@ const Register = () => {
                 </Label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
-                  <Input
-                    id="username"
-                    type="text"
-                    placeholder="challenger123"
+                    <Input
+                      id="username"
+                      type="text"
+                      placeholder={t("auth.usernamePlaceholder")}
                     value={formData.username}
                     onChange={(e) =>
                       setFormData({ ...formData, username: e.target.value })
@@ -128,10 +128,10 @@ const Register = () => {
                 </Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/70" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="your@email.com"
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder={t("auth.emailPlaceholder")}
                     value={formData.email}
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
@@ -176,7 +176,7 @@ const Register = () => {
                   </button>
                 </div>
                 <p className="text-xs text-muted-foreground/70 pl-1">
-                  Must be at least 8 characters
+                  {t("auth.passwordMinChars")}
                 </p>
               </div>
 

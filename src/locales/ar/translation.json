@@ -54,6 +54,9 @@
     "passwordsDontMatch": "كلمات المرور غير متطابقة!",
     "showPassword": "عرض كلمة المرور",
     "hidePassword": "إخفاء كلمة المرور",
+    "usernamePlaceholder": "challenger123",
+    "emailPlaceholder": "your@email.com",
+    "passwordMinChars": "يجب أن تكون 8 أحرف على الأقل",
     "signingIn": "جاري تسجيل الدخول...",
     "creatingAccount": "جاري إنشاء الحساب...",
     "enterCredentials": "أدخل بيانات الاعتماد للمتابعة في مغامرتك",
@@ -192,6 +195,16 @@
     "passwordsDontMatch": "كلمات المرور غير متطابقة",
     "uploadAvatar": "رفع الصورة الشخصية",
     "removeAvatar": "إزالة الصورة الشخصية"
+    ,
+    "newEmailPlaceholder": "أدخل بريدًا إلكترونيًا جديدًا",
+    "confirmNewEmailPlaceholder": "تأكيد البريد الإلكتروني الجديد",
+    "newUsernamePlaceholder": "أدخل اسم مستخدم جديد"
+  },
+  "createChallenge": {
+    "namePlaceholder": "أدخل اسم التحدي",
+    "descriptionPlaceholder": "وصف التحدي",
+    "latExample": "مثال: 40.7128",
+    "lngExample": "مثال: -74.0060"
   },
   "admin": {
     "title": "لوحة الإدارة",
@@ -218,7 +231,6 @@
     "longitude": "خط الطول",
     "radius": "نصف القطر (بالأمتار)",
     "qrCode": "رمز الاستجابة السريعة",
-    "createChallenge": "إنشاء تحدٍ",
     "updateChallenge": "تحديث التحدي",
     "deleteChallenge": "حذف التحدي",
     "challengeCreated": "تم إنشاء التحدي بنجاح",
@@ -241,6 +253,7 @@
       "players": "اللاعبون",
       "analytics": "التحليلات"
     },
+    "searchPlayersPlaceholder": "ابحث عن لاعبين بالاسم، البريد الإلكتروني أو اسم المستخدم...",
     "activeChallengesTitle": "التحديات النشطة",
     "activeChallengesDescription": "التحديات الجارية",
     "createNew": "إنشاء جديد",

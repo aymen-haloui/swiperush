@@ -903,7 +903,7 @@ const AdminDashboard = () => {
                   <div className="flex gap-4">
                     <div className="flex-1">
                       <Input
-                        placeholder="Search players by username, email, or name..."
+                        placeholder={t("admin.searchPlayersPlaceholder")}
                         value={playerSearch}
                         onChange={(e) => setPlayerSearch(e.target.value)}
                         className="w-full"

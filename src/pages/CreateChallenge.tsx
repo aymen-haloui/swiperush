@@ -10,6 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Plus, MapPin, Save, Loader2, X, Trash2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { toast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 import { apiClient, CreateChallengeRequest } from "@/lib/api";
 import { useCategories, useCreateChallenge } from "@/hooks/useApi";
 import { UPLOADS_BASE } from '@/lib/config';
@@ -32,6 +33,7 @@ interface Stage {
 }
 
 const CreateChallenge = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams<{ id?: string }>();
   const isEditMode = !!id;
@@ -55,8 +57,8 @@ const CreateChallenge = () => {
       queryClient.invalidateQueries({ queryKey: ['challenges'] });
       queryClient.invalidateQueries({ queryKey: ['challenge', id] });
       toast({
-        title: "🎯 Challenge Updated!",
-        description: "Your challenge has been successfully updated.",
+        title: t('notifications.challengeUpdated.title'),
+        description: t('notifications.challengeUpdated.description'),
         duration: 3000,
       });
       navigate("/admin");
@@ -159,8 +161,8 @@ const CreateChallenge = () => {
       setStages(stages.filter(s => s.id !== stageId));
     } else {
       toast({
-        title: "❌ Validation Error",
-        description: "At least one stage is required.",
+        title: t('notifications.validationError.title'),
+        description: t('notifications.validationError.description', { error: 'At least one stage is required.' }),
         variant: "destructive",
       });
     }
@@ -172,8 +174,8 @@ const handleSubmit = async (e: React.FormEvent) => {
   // Validation
   if (!title.trim() || !description.trim() || !category || !startDate) {
     toast({
-      title: "❌ Validation Error",
-      description: "Please fill in all required fields.",
+      title: t('notifications.validationError.title'),
+      description: t('notifications.validationError.description', { error: 'Please fill in all required fields.' }),
       variant: "destructive",
     });
     return;
@@ -181,8 +183,8 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   if (stages.length === 0) {
     toast({
-      title: "❌ Validation Error",
-      description: "Please add at least one stage.",
+      title: t('notifications.validationError.title'),
+      description: t('notifications.validationError.description', { error: 'Please add at least one stage.' }),
       variant: "destructive",
     });
     return;
@@ -246,8 +248,8 @@ const handleSubmit = async (e: React.FormEvent) => {
       const validImageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
       if (!validImageTypes.includes(challengeImage.type)) {
         toast({
-          title: "❌ Validation Error",
-          description: "Challenge image must be an image file (PNG, JPG, GIF, or WEBP)",
+          title: t('notifications.validationError.title'),
+          description: t('notifications.validationError.description', { error: 'Challenge image must be an image file (PNG, JPG, GIF, or WEBP)' }),
           variant: "destructive",
         });
         return;
@@ -255,8 +257,8 @@ const handleSubmit = async (e: React.FormEvent) => {
       // Validate file size (max 5MB)
       if (challengeImage.size > 5 * 1024 * 1024) {
         toast({
-          title: "❌ Validation Error",
-          description: "Challenge image must be smaller than 5MB",
+          title: t('notifications.validationError.title'),
+          description: t('notifications.validationError.description', { error: 'Challenge image must be smaller than 5MB' }),
           variant: "destructive",
         });
         return;
@@ -284,16 +286,16 @@ const handleSubmit = async (e: React.FormEvent) => {
     } else {
       await createChallengeMutation.mutateAsync(challengeData);
       toast({
-        title: "🎯 Challenge Created!",
-        description: "Your challenge has been successfully created.",
+        title: t('notifications.challengeCreated.title'),
+        description: t('notifications.challengeCreated.description'),
         duration: 3000,
       });
       navigate("/admin");
     }
   } catch (err) {
     toast({
-      title: isEditMode ? "❌ Error Updating Challenge" : "❌ Error Creating Challenge",
-      description: err instanceof Error ? err.message : "An unexpected error occurred.",
+      title: isEditMode ? t('notifications.challengeUpdateError.title') : t('notifications.challengeCreateError.title'),
+      description: err instanceof Error ? err.message : t('notifications.challengeCreateError.description'),
       duration: 4000,
       variant: "destructive",
     });
@@ -367,9 +369,9 @@ const handleSubmit = async (e: React.FormEvent) => {
                     <Input
                       id="challenge-image"
                       type="file"
-                      accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
+                        <Input 
+                          id="name" 
+                          placeholder={t("createChallenge.namePlaceholder")} 
                         if (file) setChallengeImage(file);
                       }}
                       className="hidden"
@@ -378,9 +380,9 @@ const handleSubmit = async (e: React.FormEvent) => {
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={() => document.getElementById('challenge-image')?.click()}
-                    >
-                      Change
+                        <Textarea 
+                          id="description" 
+                          placeholder={t("createChallenge.descriptionPlaceholder")} 
                     </Button>
                   </div>
                 ) : (
@@ -391,10 +393,10 @@ const handleSubmit = async (e: React.FormEvent) => {
                     className="cursor-pointer"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
-                      if (file) {
-                        setChallengeImage(file);
-                      }
-                    }}
+                          <Input
+                            id="challenge-lat"
+                            type="number"
+                            placeholder={t("createChallenge.latExample")}
                   />
                 )}
                 <p className="text-xs text-muted-foreground">
@@ -408,10 +410,10 @@ const handleSubmit = async (e: React.FormEvent) => {
                   id="name" 
                   placeholder="Enter challenge name" 
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required 
-                />
-              </div>
+                          <Input
+                            id="challenge-lng"
+                            type="number"
+                            placeholder={t("createChallenge.lngExample")}
               
               <div className="space-y-2">
                 <Label htmlFor="description">Description</Label>
