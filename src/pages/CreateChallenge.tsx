@@ -275,6 +275,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       endDate: endDateTime.toISOString(),
       ...(challengeImageData && { image: challengeImageData }),
       ...(maxParticipants && maxParticipants > 0 && { maxParticipants }),
+      ...(challengeLocation && challengeLocation.lat !== 0 && challengeLocation.lng !== 0 && { latitude: challengeLocation.lat, longitude: challengeLocation.lng }),
       stages: validatedStages,
     };
 

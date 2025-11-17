@@ -111,8 +111,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
               <Crown className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-primary flex-shrink-0 drop-shadow-sm hover:drop-shadow-lg transition-all" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               <div className="absolute inset-0 bg-primary/20 blur-xl opacity-50 -z-10" />
             </div>
-            <span className="sm:hidden text-sm font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">SR</span>
-            <span className="hidden sm:inline text-sm sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">SwipeRush</span>
+            <span className="text-sm sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">SwipeRush</span>
           </div>
 
           {/* Right side actions */}
@@ -285,8 +284,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
               <Crown className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-primary flex-shrink-0 drop-shadow-sm hover:drop-shadow-lg transition-all" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               <div className="absolute inset-0 bg-primary/20 blur-xl opacity-50 -z-10" />
             </div>
-            <span className="sm:hidden text-sm font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">ADM</span>
-            <span className="hidden sm:inline text-xs sm:text-base md:text-lg lg:text-xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">Admin Dashboard</span>
+            <span className="text-xs sm:text-base md:text-lg lg:text-xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">Admin Dashboard</span>
           </div>
 
           {/* Right side actions */}
@@ -483,8 +481,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
             <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-primary flex-shrink-0 drop-shadow-sm" />
             <div className="absolute inset-0 bg-primary/20 blur-xl opacity-50 -z-10" />
           </div>
-          <span className="sm:hidden text-sm font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">{navbarTitle.split(' ')[0].slice(0,3).toUpperCase()}</span>
-          <span className="hidden sm:inline text-base sm:text-lg md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">{navbarTitle}</span>
+          <span className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">{navbarTitle}</span>
         </div>
 
         {/* Right side actions */}
