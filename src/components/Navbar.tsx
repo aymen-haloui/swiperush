@@ -101,7 +101,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
   if (variant === 'client') {
     return (
       <header className="border-b border-border/50 backdrop-blur-sm bg-background/80 sticky top-0 z-50 shadow-sm">
-        <div className="container mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3 sm:gap-4">
+        <div className="w-full max-w-full px-3 sm:px-6 h-12 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
           {/* Logo/Title */}
           <div
             className="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink transition-all duration-200 cursor-pointer hover:opacity-80 active:scale-95"
@@ -111,9 +111,8 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
               <Crown className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-primary flex-shrink-0 drop-shadow-sm hover:drop-shadow-lg transition-all" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               <div className="absolute inset-0 bg-primary/20 blur-xl opacity-50 -z-10" />
             </div>
-            <span className="text-sm sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">
-              SwipeRush
-            </span>
+            <span className="sm:hidden text-sm font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">SR</span>
+            <span className="hidden sm:inline text-sm sm:text-xl md:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">SwipeRush</span>
           </div>
 
           {/* Right side actions */}
@@ -221,8 +220,10 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
               </Tooltip>
             )}
 
-            {/* Language Switcher */}
-            <LanguageSwitcher />
+            {/* Language Switcher (hidden on very small screens) */}
+            <div className="hidden sm:inline-block">
+              <LanguageSwitcher />
+            </div>
 
             {/* Theme Toggle */}
             <ThemeToggle />
@@ -274,7 +275,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
   if (variant === 'admin') {
     return (
       <header className="border-b border-border/50 backdrop-blur-sm bg-background/80 sticky top-0 z-50 shadow-sm">
-        <div className="container mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3 sm:gap-4">
+        <div className="w-full max-w-full px-3 sm:px-6 h-12 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
           {/* Logo/Title */}
           <div
             className="flex items-center gap-1 sm:gap-2 min-w-0 flex-shrink transition-all duration-200 cursor-pointer hover:opacity-80 active:scale-95"
@@ -284,10 +285,8 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
               <Crown className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-primary flex-shrink-0 drop-shadow-sm hover:drop-shadow-lg transition-all" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               <div className="absolute inset-0 bg-primary/20 blur-xl opacity-50 -z-10" />
             </div>
-            <span className="text-xs sm:text-base md:text-lg lg:text-xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">
-              <span className="hidden sm:inline">Admin Dashboard</span>
-              <span className="sm:hidden">Admin</span>
-            </span>
+            <span className="sm:hidden text-sm font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">ADM</span>
+            <span className="hidden sm:inline text-xs sm:text-base md:text-lg lg:text-xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">Admin Dashboard</span>
           </div>
 
           {/* Right side actions */}
@@ -391,8 +390,10 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
               </TooltipContent>
             </Tooltip>
 
-            {/* Language Switcher */}
-            <LanguageSwitcher />
+            {/* Language Switcher (hidden on very small screens) */}
+            <div className="hidden sm:inline-block">
+              <LanguageSwitcher />
+            </div>
 
             {/* Theme Toggle */}
             <ThemeToggle />
@@ -444,7 +445,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
   if (variant === 'create-challenge') {
     return (
       <header className="border-b border-border/50 backdrop-blur-sm bg-background/80 sticky top-0 z-50">
-        <div className="container mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3 sm:gap-4">
+        <div className="w-full max-w-full px-3 sm:px-6 h-12 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
           <Tooltip>
             <TooltipTrigger asChild>
                 <Button
@@ -472,7 +473,7 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
 
   return (
     <header className="border-b border-border/50 backdrop-blur-sm bg-background/80 sticky top-0 z-50 shadow-sm">
-      <div className="container mx-auto px-3 sm:px-4 h-16 flex items-center justify-between gap-2">
+      <div className="w-full max-w-full px-3 sm:px-4 h-12 sm:h-16 flex items-center justify-between gap-2">
         {/* Logo/Title */}
         <div
           className={`flex items-center gap-1 sm:gap-2 min-w-0 flex-shrink transition-all duration-200 ${titleIsClickable ? 'cursor-pointer hover:opacity-80 active:scale-95' : ''}`}
@@ -482,9 +483,8 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
             <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-primary flex-shrink-0 drop-shadow-sm" />
             <div className="absolute inset-0 bg-primary/20 blur-xl opacity-50 -z-10" />
           </div>
-          <span className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">
-            {navbarTitle}
-          </span>
+          <span className="sm:hidden text-sm font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">{navbarTitle.split(' ')[0].slice(0,3).toUpperCase()}</span>
+          <span className="hidden sm:inline text-base sm:text-lg md:text-xl lg:text-2xl font-bold bg-gradient-to-r from-[hsl(263,70%,60%)] via-[hsl(263,70%,65%)] to-[hsl(190,95%,60%)] bg-clip-text text-transparent truncate drop-shadow-sm">{navbarTitle}</span>
         </div>
 
         {/* Right side actions */}
@@ -492,7 +492,9 @@ const Navbar = ({ variant = 'default', title, onTitleClick }: NavbarProps) => {
           {/* Language Switcher & Theme Toggle - shown for most variants */}
           {(variant === 'default' || variant === 'dashboard' || variant === 'profile' || variant === 'leaderboard') && (
             <>
-              <LanguageSwitcher />
+              <div className="hidden sm:inline-block">
+                <LanguageSwitcher />
+              </div>
               <ThemeToggle />
             </>
           )}
