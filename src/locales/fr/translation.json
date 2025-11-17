@@ -225,6 +225,11 @@
     "challengeDeleted": "Défi supprimé avec succès",
     "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce défi ?",
     "thisActionCannotBeUndone": "Cette action est irréversible."
+    ,
+    "categoryNameRequired": "Le nom de la catégorie est requis.",
+    "statusActive": "Actif",
+    "activeOnly": "Actifs seulement",
+    "inactiveOnly": "Inactifs seulement"
   },
   "errors": {
     "generic": "Une erreur est survenue. Veuillez réessayer.",

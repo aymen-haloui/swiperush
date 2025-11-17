@@ -226,6 +226,11 @@
     "challengeDeleted": "Challenge deleted successfully",
     "confirmDelete": "Are you sure you want to delete this challenge?",
     "thisActionCannotBeUndone": "This action cannot be undone."
+    ,
+    "categoryNameRequired": "Category name is required.",
+    "statusActive": "Active",
+    "activeOnly": "Active Only",
+    "inactiveOnly": "Inactive Only"
   },
   "errors": {
     "generic": "Something went wrong. Please try again.",

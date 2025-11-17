@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useNavigate } from "react-router-dom";
 import { Crown, Users, Trophy, Activity, Plus, Eye, Loader2, User as UserIcon, Tag, Edit, Trash2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { useTranslation } from "react-i18next";
 import { useChallenges, useLeaderboardStats } from "@/hooks/useApi";
 import { Badge } from "@/components/ui/badge";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -33,6 +34,7 @@ import {
 } from "@/components/ui/tooltip";
 
 const AdminDashboard = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   
   // Category dialog state
@@ -67,8 +69,8 @@ const AdminDashboard = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       toast({
-        title: "✅ Category Updated!",
-        description: "Category has been successfully updated.",
+        title: t('notifications.categoryUpdated.title'),
+        description: t('notifications.categoryUpdated.description'),
         duration: 3000,
       });
       setIsCategoryDialogOpen(false);
@@ -76,8 +78,8 @@ const AdminDashboard = () => {
     },
     onError: (err: Error) => {
       toast({
-        title: "❌ Error Updating Category",
-        description: err.message || "An unexpected error occurred.",
+        title: t('notifications.categoryUpdateError.title'),
+        description: err.message || t('notifications.categoryUpdateError.description'),
         variant: "destructive",
       });
     },
@@ -89,15 +91,15 @@ const AdminDashboard = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
       toast({
-        title: "✅ Category Deleted!",
-        description: "Category has been successfully deleted.",
+        title: t('notifications.categoryDeleted.title'),
+        description: t('notifications.categoryDeleted.description'),
         duration: 3000,
       });
     },
     onError: (err: Error) => {
       toast({
-        title: "❌ Error Deleting Category",
-        description: err.message || "An unexpected error occurred.",
+        title: t('notifications.categoryDeleteError.title'),
+        description: err.message || t('notifications.categoryDeleteError.description'),
         variant: "destructive",
       });
     },
@@ -146,15 +148,15 @@ const AdminDashboard = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       toast({
-        title: "✅ User Status Updated!",
-        description: "User status has been successfully updated.",
+        title: t('notifications.userStatusUpdated.title'),
+        description: t('notifications.userStatusUpdated.description'),
         duration: 3000,
       });
     },
     onError: (err: Error) => {
       toast({
-        title: "❌ Error Updating User Status",
-        description: err.message || "An unexpected error occurred.",
+        title: t('notifications.userStatusUpdateError.title'),
+        description: err.message || t('notifications.userStatusUpdateError.description'),
         variant: "destructive",
       });
     },
@@ -172,8 +174,8 @@ const AdminDashboard = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['levels'] });
       toast({
-        title: "✅ Level Created!",
-        description: "Level has been successfully created.",
+        title: t('notifications.levelCreated.title'),
+        description: t('notifications.levelCreated.description'),
         duration: 3000,
       });
       setIsLevelDialogOpen(false);
@@ -181,8 +183,8 @@ const AdminDashboard = () => {
     },
     onError: (err: Error) => {
       toast({
-        title: "❌ Error Creating Level",
-        description: err.message || "An unexpected error occurred.",
+        title: t('notifications.levelCreateError.title'),
+        description: err.message || t('notifications.levelCreateError.description'),
         variant: "destructive",
       });
     },
@@ -194,8 +196,8 @@ const AdminDashboard = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['levels'] });
       toast({
-        title: "✅ Level Updated!",
-        description: "Level has been successfully updated.",
+        title: t('notifications.levelUpdated.title'),
+        description: t('notifications.levelUpdated.description'),
         duration: 3000,
       });
       setIsLevelDialogOpen(false);
@@ -203,8 +205,8 @@ const AdminDashboard = () => {
     },
     onError: (err: Error) => {
       toast({
-        title: "❌ Error Updating Level",
-        description: err.message || "An unexpected error occurred.",
+        title: t('notifications.levelUpdateError.title'),
+        description: err.message || t('notifications.levelUpdateError.description'),
         variant: "destructive",
       });
     },
@@ -216,15 +218,15 @@ const AdminDashboard = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['levels'] });
       toast({
-        title: "✅ Level Deleted!",
-        description: "Level has been successfully deleted.",
+        title: t('notifications.levelDeleted.title'),
+        description: t('notifications.levelDeleted.description'),
         duration: 3000,
       });
     },
     onError: (err: Error) => {
       toast({
-        title: "❌ Error Deleting Level",
-        description: err.message || "An unexpected error occurred.",
+        title: t('notifications.levelDeleteError.title'),
+        description: err.message || t('notifications.levelDeleteError.description'),
         variant: "destructive",
       });
     },
@@ -254,8 +256,8 @@ const AdminDashboard = () => {
   const handleSaveLevel = () => {
     if (!levelNumber.trim() || !levelName.trim() || !levelMinXP.trim()) {
       toast({
-        title: "❌ Validation Error",
-        description: "Level number, name, and min XP are required.",
+        title: t('notifications.validationError.title'),
+        description: t('notifications.validationError.description', { error: 'Level number, name, and min XP are required.' }),
         variant: "destructive",
       });
       return;
@@ -267,8 +269,8 @@ const AdminDashboard = () => {
 
     if (isNaN(number) || number < 1) {
       toast({
-        title: "❌ Validation Error",
-        description: "Level number must be at least 1.",
+        title: t('notifications.validationError.title'),
+        description: t('notifications.validationError.description', { error: 'Level number must be at least 1.' }),
         variant: "destructive",
       });
       return;
@@ -276,8 +278,8 @@ const AdminDashboard = () => {
 
     if (isNaN(minXP) || minXP < 0) {
       toast({
-        title: "❌ Validation Error",
-        description: "Min XP must be non-negative.",
+        title: t('notifications.validationError.title'),
+        description: t('notifications.validationError.description', { error: 'Min XP must be non-negative.' }),
         variant: "destructive",
       });
       return;
@@ -285,8 +287,8 @@ const AdminDashboard = () => {
 
     if (maxXP !== undefined && (isNaN(maxXP) || maxXP <= minXP)) {
       toast({
-        title: "❌ Validation Error",
-        description: "Max XP must be greater than Min XP.",
+        title: t('notifications.validationError.title'),
+        description: t('notifications.validationError.description', { error: 'Max XP must be greater than Min XP.' }),
         variant: "destructive",
       });
       return;
@@ -324,15 +326,15 @@ const AdminDashboard = () => {
       setIsDeleteDialogOpen(false);
       setSelectedChallenge(null);
       toast({
-        title: "✅ Challenge Deleted!",
-        description: "Challenge has been successfully deleted.",
+        title: t('notifications.challengeDeleted.title'),
+        description: t('notifications.challengeDeleted.description'),
         duration: 3000,
       });
     },
     onError: (err: Error) => {
       toast({
-        title: "❌ Error Deleting Challenge",
-        description: err.message || "An unexpected error occurred.",
+        title: t('notifications.challengeDeleteError.title'),
+        description: err.message || t('notifications.challengeDeleteError.description'),
         variant: "destructive",
       });
     },
@@ -359,8 +361,8 @@ const AdminDashboard = () => {
   const handleSaveCategory = async () => {
     if (!categoryName.trim()) {
       toast({
-        title: "❌ Validation Error",
-        description: "Category name is required.",
+        title: t('notifications.validationError.title'),
+        description: t('notifications.validationError.description', { error: t('admin.categoryNameRequired') }),
         variant: "destructive",
       });
       return;
@@ -394,7 +396,7 @@ const AdminDashboard = () => {
     name: c.title,
     participants: c._count?.progress ?? 0,
     completionRate: 0,
-    status: "Active",
+    status: t('admin.statusActive'),
   }));
 
   return (
@@ -920,8 +922,8 @@ const AdminDashboard = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All Players</SelectItem>
-                        <SelectItem value="active">Active Only</SelectItem>
-                        <SelectItem value="inactive">Inactive Only</SelectItem>
+                        <SelectItem value="active">{t('admin.activeOnly')}</SelectItem>
+                        <SelectItem value="inactive">{t('admin.inactiveOnly')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

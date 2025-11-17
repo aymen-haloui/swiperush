@@ -226,6 +226,11 @@
     "challengeDeleted": "تم حذف التحدي بنجاح",
     "confirmDelete": "هل أنت متأكد من حذف هذا التحدي؟",
     "thisActionCannotBeUndone": "لا يمكن التراجع عن هذا الإجراء."
+    ,
+    "categoryNameRequired": "اسم الفئة مطلوب.",
+    "statusActive": "نشط",
+    "activeOnly": "النشطون فقط",
+    "inactiveOnly": "غير النشطين فقط"
   },
   "errors": {
     "generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
