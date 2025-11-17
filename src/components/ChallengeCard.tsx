@@ -81,11 +81,11 @@ const ChallengeCard = ({
             </Badge>
           </div>
           <div className="absolute top-3 sm:top-4 left-3 sm:left-4 flex flex-col gap-2">
-            <Badge className="text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 bg-background/90 backdrop-blur-sm border border-primary/30 rounded-lg font-medium shadow-md">
+            <Badge variant="outline" className="text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 bg-background/90 backdrop-blur-sm border border-primary/30 rounded-lg font-medium shadow-md">
               {category}
             </Badge>
             {requiredLevel && (
-              <Badge className="text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 bg-background/90 backdrop-blur-sm border border-primary/30 rounded-lg font-medium shadow-md">
+              <Badge variant="outline" className="text-xs sm:text-sm px-2.5 sm:px-3 py-1.5 bg-background/90 backdrop-blur-sm border border-primary/30 rounded-lg font-medium shadow-md">
                 <Award className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5 inline" />
                 {getLevelName(requiredLevel)}
               </Badge>
@@ -98,11 +98,11 @@ const ChallengeCard = ({
         {!imageUrl && (
           <div className="flex items-start justify-between mb-3 sm:mb-4 gap-3">
             <div className="flex flex-wrap gap-2">
-              <Badge className="text-xs sm:text-sm px-3 py-1.5 bg-primary/10 border-primary/30 rounded-lg font-medium">
+              <Badge variant="outline" className="text-xs sm:text-sm px-3 py-1.5 bg-primary/10 border-primary/30 rounded-lg font-medium">
                 {category}
               </Badge>
               {requiredLevel && (
-                <Badge className="text-xs sm:text-sm px-3 py-1.5 bg-primary/10 border-primary/30 rounded-lg font-medium">
+                <Badge variant="outline" className="text-xs sm:text-sm px-3 py-1.5 bg-primary/10 border-primary/30 rounded-lg font-medium">
                   <Award className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1.5 inline" />
                   {getLevelName(requiredLevel)}
                 </Badge>
