@@ -243,6 +243,166 @@
     "contactUs": "Contactez-nous",
     "aboutUs": "À propos"
   }
+
+    ,
+    "notifications": {
+      "logoutSuccess": {
+        "title": "✅ Déconnexion réussie",
+        "description": "À bientôt !"
+      },
+      "joinSuccess": {
+        "title": "🎯 Défi rejoint avec succès !",
+        "description": "Vous avez rejoint le défi et pouvez commencer à progresser."
+      },
+      "joinFailed": {
+        "title": "⚠️ Échec de l'inscription au défi",
+        "description": "{{error}}"
+      },
+      "loginFailed": {
+        "title": "❌ Échec de la connexion",
+        "description": "{{error}}"
+      },
+      "loginSuccess": {
+        "title": "✅ Connexion réussie",
+        "description": ""
+      },
+      "welcomeAdmin": {
+        "title": "👑 Bienvenue, administrateur",
+        "description": ""
+      },
+      "categoryUpdated": {
+        "title": "✅ Catégorie mise à jour !",
+        "description": "La catégorie a été mise à jour avec succès."
+      },
+      "categoryUpdateError": {
+        "title": "❌ Erreur lors de la mise à jour de la catégorie",
+        "description": "{{error}}"
+      },
+      "categoryDeleted": {
+        "title": "✅ Catégorie supprimée !",
+        "description": "La catégorie a été supprimée avec succès."
+      },
+      "categoryDeleteError": {
+        "title": "❌ Erreur lors de la suppression de la catégorie",
+        "description": "{{error}}"
+      },
+      "userStatusUpdated": {
+        "title": "✅ Statut utilisateur mis à jour !",
+        "description": "Le statut de l'utilisateur a été mis à jour avec succès."
+      },
+      "userStatusUpdateError": {
+        "title": "❌ Erreur lors de la mise à jour du statut utilisateur",
+        "description": "{{error}}"
+      },
+      "levelCreated": {
+        "title": "✅ Niveau créé !",
+        "description": "Le niveau a été créé avec succès."
+      },
+      "levelCreateError": {
+        "title": "❌ Erreur lors de la création du niveau",
+        "description": "{{error}}"
+      },
+      "levelUpdated": {
+        "title": "✅ Niveau mis à jour !",
+        "description": "Le niveau a été mis à jour avec succès."
+      },
+      "levelUpdateError": {
+        "title": "❌ Erreur lors de la mise à jour du niveau",
+        "description": "{{error}}"
+      },
+      "levelDeleted": {
+        "title": "✅ Niveau supprimé !",
+        "description": "Le niveau a été supprimé avec succès."
+      },
+      "levelDeleteError": {
+        "title": "❌ Erreur lors de la suppression du niveau",
+        "description": "{{error}}"
+      },
+      "validationError": {
+        "title": "❌ Erreur de validation",
+        "description": "{{error}}"
+      },
+      "challengeDeleted": {
+        "title": "✅ Défi supprimé !",
+        "description": "Le défi a été supprimé avec succès."
+      },
+      "challengeDeleteError": {
+        "title": "❌ Erreur lors de la suppression du défi",
+        "description": "{{error}}"
+      },
+      "missingFields": {
+        "title": "⚠️ Champs manquants",
+        "description": "{{error}}"
+      },
+      "passwordsDontMatch": {
+        "title": "❌ Les mots de passe ne correspondent pas",
+        "description": ""
+      },
+      "passwordChanged": {
+        "title": "✅ Mot de passe modifié avec succès !",
+        "description": ""
+      },
+      "passwordChangeFailed": {
+        "title": "❌ Échec du changement de mot de passe",
+        "description": "{{error}}"
+      },
+      "networkError": {
+        "title": "⚠️ Erreur réseau",
+        "description": "Veuillez vérifier votre connexion."
+      },
+      "profilePicUpdated": {
+        "title": "✅ Photo de profil mise à jour !",
+        "description": ""
+      },
+      "uploadFailed": {
+        "title": "❌ Échec du téléchargement de la photo",
+        "description": "{{error}}"
+      },
+      "usernameChanged": {
+        "title": "✅ Nom d'utilisateur modifié avec succès !",
+        "description": ""
+      },
+      "usernameChangeFailed": {
+        "title": "❌ Échec du changement de nom d'utilisateur",
+        "description": "{{error}}"
+      },
+      "emailChanged": {
+        "title": "✅ Email modifié avec succès !",
+        "description": ""
+      },
+      "emailChangeFailed": {
+        "title": "❌ Échec du changement d'email",
+        "description": "{{error}}"
+      },
+      "challengeUpdated": {
+        "title": "🎯 Défi mis à jour !",
+        "description": "Le défi a été mis à jour avec succès."
+      },
+      "challengeUpdateError": {
+        "title": "❌ Erreur lors de la mise à jour du défi",
+        "description": "{{error}}"
+      },
+      "challengeCreated": {
+        "title": "🎯 Défi créé !",
+        "description": "Le défi a été créé avec succès."
+      },
+      "challengeCreateError": {
+        "title": "❌ Erreur lors de la création du défi",
+        "description": "{{error}}"
+      },
+      "stageCompleted": {
+        "title": "🎯 Étape complétée !",
+        "description": "Vous avez gagné {{xp}} XP"
+      },
+      "stageError": {
+        "title": "❌ Erreur",
+        "description": "{{error}}"
+      },
+      "genericError": {
+        "title": "❌ Erreur",
+        "description": "Une erreur est survenue. Veuillez réessayer."
+      }
+    }
 }
 
 

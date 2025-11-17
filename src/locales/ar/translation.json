@@ -244,4 +244,164 @@
     "contactUs": "اتصل بنا",
     "aboutUs": "من نحن"
   }
+
+    ,
+    "notifications": {
+      "logoutSuccess": {
+        "title": "✅ تم تسجيل الخروج بنجاح",
+        "description": "نأمل رؤيتك قريباً!"
+      },
+      "joinSuccess": {
+        "title": "🎯 تم الانضمام إلى التحدي بنجاح!",
+        "description": "لقد انضممت إلى التحدي ويمكنك البدء بالتقدم."
+      },
+      "joinFailed": {
+        "title": "⚠️ فشل الانضمام إلى التحدي",
+        "description": "{{error}}"
+      },
+      "loginFailed": {
+        "title": "❌ فشل تسجيل الدخول",
+        "description": "{{error}}"
+      },
+      "loginSuccess": {
+        "title": "✅ تم تسجيل الدخول بنجاح",
+        "description": ""
+      },
+      "welcomeAdmin": {
+        "title": "👑 مرحباً أيها المسؤول",
+        "description": ""
+      },
+      "categoryUpdated": {
+        "title": "✅ تم تحديث الفئة!",
+        "description": "تم تحديث الفئة بنجاح."
+      },
+      "categoryUpdateError": {
+        "title": "❌ خطأ أثناء تحديث الفئة",
+        "description": "{{error}}"
+      },
+      "categoryDeleted": {
+        "title": "✅ تم حذف الفئة!",
+        "description": "تم حذف الفئة بنجاح."
+      },
+      "categoryDeleteError": {
+        "title": "❌ خطأ عند حذف الفئة",
+        "description": "{{error}}"
+      },
+      "userStatusUpdated": {
+        "title": "✅ تم تحديث حالة المستخدم!",
+        "description": "تم تحديث حالة المستخدم بنجاح."
+      },
+      "userStatusUpdateError": {
+        "title": "❌ خطأ أثناء تحديث حالة المستخدم",
+        "description": "{{error}}"
+      },
+      "levelCreated": {
+        "title": "✅ تم إنشاء المستوى!",
+        "description": "تم إنشاء المستوى بنجاح."
+      },
+      "levelCreateError": {
+        "title": "❌ خطأ أثناء إنشاء المستوى",
+        "description": "{{error}}"
+      },
+      "levelUpdated": {
+        "title": "✅ تم تحديث المستوى!",
+        "description": "تم تحديث المستوى بنجاح."
+      },
+      "levelUpdateError": {
+        "title": "❌ خطأ أثناء تحديث المستوى",
+        "description": "{{error}}"
+      },
+      "levelDeleted": {
+        "title": "✅ تم حذف المستوى!",
+        "description": "تم حذف المستوى بنجاح."
+      },
+      "levelDeleteError": {
+        "title": "❌ خطأ عند حذف المستوى",
+        "description": "{{error}}"
+      },
+      "validationError": {
+        "title": "❌ خطأ في التحقق",
+        "description": "{{error}}"
+      },
+      "challengeDeleted": {
+        "title": "✅ تم حذف التحدي!",
+        "description": "تم حذف التحدي بنجاح."
+      },
+      "challengeDeleteError": {
+        "title": "❌ خطأ عند حذف التحدي",
+        "description": "{{error}}"
+      },
+      "missingFields": {
+        "title": "⚠️ حقول مفقودة",
+        "description": "{{error}}"
+      },
+      "passwordsDontMatch": {
+        "title": "❌ كلمات المرور غير متطابقة",
+        "description": ""
+      },
+      "passwordChanged": {
+        "title": "✅ تم تغيير كلمة المرور بنجاح",
+        "description": ""
+      },
+      "passwordChangeFailed": {
+        "title": "❌ فشل تغيير كلمة المرور",
+        "description": "{{error}}"
+      },
+      "networkError": {
+        "title": "⚠️ خطأ في الشبكة",
+        "description": "يرجى التحقق من اتصالك."
+      },
+      "profilePicUpdated": {
+        "title": "✅ تم تحديث صورة الملف الشخصي!",
+        "description": ""
+      },
+      "uploadFailed": {
+        "title": "❌ فشل تحميل الصورة الشخصية",
+        "description": "{{error}}"
+      },
+      "usernameChanged": {
+        "title": "✅ تم تغيير اسم المستخدم بنجاح!",
+        "description": ""
+      },
+      "usernameChangeFailed": {
+        "title": "❌ فشل تغيير اسم المستخدم",
+        "description": "{{error}}"
+      },
+      "emailChanged": {
+        "title": "✅ تم تغيير البريد الإلكتروني بنجاح!",
+        "description": ""
+      },
+      "emailChangeFailed": {
+        "title": "❌ فشل تغيير البريد الإلكتروني",
+        "description": "{{error}}"
+      },
+      "challengeUpdated": {
+        "title": "🎯 تم تحديث التحدي!",
+        "description": "تم تحديث التحدي بنجاح."
+      },
+      "challengeUpdateError": {
+        "title": "❌ خطأ أثناء تحديث التحدي",
+        "description": "{{error}}"
+      },
+      "challengeCreated": {
+        "title": "🎯 تم إنشاء التحدي!",
+        "description": "تم إنشاء التحدي بنجاح."
+      },
+      "challengeCreateError": {
+        "title": "❌ خطأ أثناء إنشاء التحدي",
+        "description": "{{error}}"
+      },
+      "stageCompleted": {
+        "title": "🎯 تم إكمال المرحلة!",
+        "description": "لقد ربحت {{xp}} نقطة خبرة"
+      },
+      "stageError": {
+        "title": "❌ خطأ",
+        "description": "{{error}}"
+      },
+      "genericError": {
+        "title": "❌ خطأ",
+        "description": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+      }
+    }
 }
