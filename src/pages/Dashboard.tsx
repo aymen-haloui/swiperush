@@ -312,8 +312,8 @@ const Dashboard = () => {
           
           {/* Neon border effect for high-rank players */}
           {profile?.rank && profile.rank <= 10 && (
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/40 via-secondary/40 to-primary/40 opacity-0 group-hover/card:opacity-30 transition-opacity duration-500 -z-10 blur-2xl animate-pulse" />
-          )}
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/40 via-secondary/40 to-primary/40 opacity-0 group-hover/card:opacity-30 transition-opacity duration-500 -z-10 blur-2xl" />
+                  )}
           
           <div className="relative z-10">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-8 sm:gap-10">
@@ -328,7 +328,7 @@ const Dashboard = () => {
                     currentColor="text-primary"
                     remainingColor="text-muted/30"
                   >
-                    <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center overflow-hidden border-[3px] border-background flex-shrink-0 shadow-lg transition-all duration-300 group-hover:scale-105 ${profile?.rank && profile.rank <= 10 ? 'shadow-[0_0_40px_rgba(139,92,246,0.7)] ring-[3px] ring-primary/60 animate-pulse' : 'shadow-[0_0_20px_rgba(139,92,246,0.3)]'}`}>
+                    <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center overflow-hidden border-[3px] border-background flex-shrink-0 shadow-lg transition-all duration-300 group-hover:scale-105 ${profile?.rank && profile.rank <= 10 ? 'shadow-[0_0_40px_rgba(139,92,246,0.7)] ring-[3px] ring-primary/60' : 'shadow-[0_0_20px_rgba(139,92,246,0.3)]'}`}>
                       {profile?.avatar ? (
                         <img
                           src={profile.avatar}

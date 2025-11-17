@@ -313,11 +313,16 @@ const AdminDashboard = () => {
     }
   };
 
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
+
   // Delete challenge mutation
   const deleteChallengeMutation = useMutation({
     mutationFn: (id: string) => apiClient.deleteChallenge(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['challenges'] });
+      setIsDeleteDialogOpen(false);
+      setSelectedChallenge(null);
       toast({
         title: "✅ Challenge Deleted!",
         description: "Challenge has been successfully deleted.",
@@ -334,8 +339,13 @@ const AdminDashboard = () => {
   });
 
   const handleDeleteChallenge = (challenge: Challenge) => {
-    if (confirm(`Are you sure you want to delete "${challenge.title}"? This action cannot be undone.`)) {
-      deleteChallengeMutation.mutate(challenge.id);
+    setSelectedChallenge(challenge);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteChallenge = () => {
+    if (selectedChallenge) {
+      deleteChallengeMutation.mutate(selectedChallenge.id);
     }
   };
   
@@ -1185,6 +1195,37 @@ const AdminDashboard = () => {
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               )}
               {editingLevel ? 'Update Level' : 'Create Level'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Challenge Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={(open) => setIsDeleteDialogOpen(open)}>
+        <DialogContent className="sm:max-w-[480px]">
+          <DialogHeader>
+            <DialogTitle>Delete Challenge</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete "{selectedChallenge?.title}"? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => { setIsDeleteDialogOpen(false); setSelectedChallenge(null); }}
+              disabled={deleteChallengeMutation.isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmDeleteChallenge}
+              disabled={deleteChallengeMutation.isPending}
+            >
+              {deleteChallengeMutation.isPending && (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              )}
+              Delete Challenge
             </Button>
           </DialogFooter>
         </DialogContent>
