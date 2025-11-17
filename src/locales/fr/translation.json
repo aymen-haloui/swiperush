@@ -230,6 +230,37 @@
     "statusActive": "Actif",
     "activeOnly": "Actifs seulement",
     "inactiveOnly": "Inactifs seulement"
+    ,
+    "tabs": {
+      "overview": "Aperçu",
+      "challenges": "Défis",
+      "categories": "Catégories",
+      "difficulty": "Difficulté",
+      "levels": "Niveaux",
+      "players": "Joueurs",
+      "analytics": "Analytique"
+    },
+    "activeChallengesTitle": "Défis actifs",
+    "activeChallengesDescription": "Défis en cours",
+    "createNew": "Créer",
+    "noActiveChallenges": "Aucun défi actif.",
+    "stats": {
+      "activeChallenges": "Défis actifs",
+      "totalPlayers": "Joueurs totaux",
+      "activePlayers": "Joueurs actifs",
+      "topPerformers": "Meilleurs performeurs"
+    },
+    "activeNow": "Actifs maintenant",
+    "categories": {
+      "title": "Gestion des catégories",
+      "description": "Créer et gérer les catégories de défis",
+      "create": "Créer une catégorie",
+      "empty": "Aucune catégorie créée pour le moment",
+      "createFirst": "Créer la première catégorie",
+      "inactiveBadge": "Inactif",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer \"{{name}}\" ?"
+    },
+    "confirmDeleteLevel": "Êtes-vous sûr de vouloir supprimer {{name}} ?"
   },
   "errors": {
     "generic": "Une erreur est survenue. Veuillez réessayer.",

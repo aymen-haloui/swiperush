@@ -467,13 +467,13 @@ const AdminDashboard = () => {
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
           <TabsList className="glass-card w-full sm:w-auto overflow-x-auto flex-nowrap justify-start sm:justify-center">
-            <TabsTrigger value="overview" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Overview</TabsTrigger>
-            <TabsTrigger value="challenges" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Challenges</TabsTrigger>
-            <TabsTrigger value="categories" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Categories</TabsTrigger>
-            <TabsTrigger value="difficulty" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Difficulty</TabsTrigger>
-            <TabsTrigger value="levels" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Levels</TabsTrigger>
-            <TabsTrigger value="players" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Players</TabsTrigger>
-            <TabsTrigger value="analytics" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">Analytics</TabsTrigger>
+            <TabsTrigger value="overview" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">{t('admin.tabs.overview')}</TabsTrigger>
+            <TabsTrigger value="challenges" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">{t('admin.tabs.challenges')}</TabsTrigger>
+            <TabsTrigger value="categories" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">{t('admin.tabs.categories')}</TabsTrigger>
+            <TabsTrigger value="difficulty" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">{t('admin.tabs.difficulty')}</TabsTrigger>
+            <TabsTrigger value="levels" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">{t('admin.tabs.levels')}</TabsTrigger>
+            <TabsTrigger value="players" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">{t('admin.tabs.players')}</TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs sm:text-sm px-2 sm:px-3 py-1.5 sm:py-2 whitespace-nowrap">{t('admin.tabs.analytics')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -482,19 +482,19 @@ const AdminDashboard = () => {
               <CardHeader className="p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
-                    <CardTitle>Active Challenges</CardTitle>
-                    <CardDescription>Currently running challenges</CardDescription>
+                    <CardTitle>{t('admin.activeChallengesTitle')}</CardTitle>
+                    <CardDescription>{t('admin.activeChallengesDescription')}</CardDescription>
                   </div>
-                  <Button variant="hero" size="sm" className="text-xs sm:text-sm h-8 sm:h-10" onClick={() => navigate("/admin/create-challenge")}>
+                  <Button variant="hero" size="sm" className="text-xs sm:text-sm h-8 sm:h-10" onClick={() => navigate("/admin/create-challenge") }>
                     <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
-                    <span className="hidden sm:inline ml-2">Create New</span>
+                    <span className="hidden sm:inline ml-2">{t('admin.createNew')}</span>
                   </Button>
                 </div>
               </CardHeader>
               <CardContent className="p-4 sm:p-6 pt-0">
                 <div className="space-y-2 sm:space-y-3">
                   {activeChallenges.length === 0 && (
-                    <div className="text-sm text-muted-foreground py-4">No active challenges.</div>
+                    <div className="text-sm text-muted-foreground py-4">{t('admin.noActiveChallenges')}</div>
                   )}
                   {activeChallenges.map((challenge) => (
                     <div key={challenge.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 rounded-lg bg-muted/20 border border-border/50">
@@ -720,16 +720,16 @@ const AdminDashboard = () => {
                               variant="destructive"
                               size="sm"
                               onClick={() => {
-                                if (confirm(`Are you sure you want to delete ${level.name}?`)) {
-                                  deleteLevelMutation.mutate(level.id);
-                                }
-                              }}
+                                if (confirm(t('admin.confirmDeleteLevel', { name: level.name }))) {
+                                    deleteLevelMutation.mutate(level.id);
+                                  }
+                                }}
                               disabled={deleteLevelMutation.isPending}
                             >
                               {deleteLevelMutation.isPending ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />
                               ) : (
-                                'Delete'
+                                t('common.delete')
                               )}
                             </Button>
                           </div>
@@ -746,12 +746,12 @@ const AdminDashboard = () => {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle>Category Management</CardTitle>
-                    <CardDescription>Create and manage challenge categories</CardDescription>
+                    <CardTitle>{t('admin.categories.title')}</CardTitle>
+                    <CardDescription>{t('admin.categories.description')}</CardDescription>
                   </div>
                   <Button variant="hero" onClick={() => handleOpenCategoryDialog()}>
                     <Plus className="w-4 h-4 mr-2" />
-                    Create Category
+                    {t('admin.categories.create')}
                   </Button>
                 </div>
               </CardHeader>
@@ -763,10 +763,10 @@ const AdminDashboard = () => {
                 ) : categories.length === 0 ? (
                   <div className="text-center py-12 text-muted-foreground">
                     <Tag className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                    <p className="mb-4">No categories created yet</p>
+                    <p className="mb-4">{t('admin.categories.empty')}</p>
                     <Button variant="hero" onClick={() => handleOpenCategoryDialog()}>
                       <Plus className="w-4 h-4 mr-2" />
-                      Create First Category
+                      {t('admin.categories.createFirst')}
                     </Button>
                   </div>
                 ) : (
@@ -783,7 +783,7 @@ const AdminDashboard = () => {
                             )}
                             <h3 className="font-semibold text-lg">{category.name}</h3>
                             {!category.isActive && (
-                              <Badge variant="secondary">Inactive</Badge>
+                              <Badge variant="secondary">{t('admin.categories.inactiveBadge')}</Badge>
                             )}
                             {category.color && (
                               <div 
@@ -802,13 +802,13 @@ const AdminDashboard = () => {
                             size="sm"
                             onClick={() => handleOpenCategoryDialog(category)}
                           >
-                            Edit
+                            {t('common.edit')}
                           </Button>
                           <Button
                             variant="destructive"
                             size="sm"
                             onClick={() => {
-                              if (confirm(`Are you sure you want to delete "${category.name}"?`)) {
+                              if (confirm(t('admin.categories.confirmDelete', { name: category.name }))) {
                                 deleteCategoryMutation.mutate(category.id);
                               }
                             }}
@@ -817,7 +817,7 @@ const AdminDashboard = () => {
                             {deleteCategoryMutation.isPending ? (
                               <Loader2 className="w-4 h-4 animate-spin" />
                             ) : (
-                              'Delete'
+                              t('common.delete')
                             )}
                           </Button>
                         </div>

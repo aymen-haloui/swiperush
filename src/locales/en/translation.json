@@ -231,6 +231,37 @@
     "statusActive": "Active",
     "activeOnly": "Active Only",
     "inactiveOnly": "Inactive Only"
+    ,
+    "tabs": {
+      "overview": "Overview",
+      "challenges": "Challenges",
+      "categories": "Categories",
+      "difficulty": "Difficulty",
+      "levels": "Levels",
+      "players": "Players",
+      "analytics": "Analytics"
+    },
+    "activeChallengesTitle": "Active Challenges",
+    "activeChallengesDescription": "Currently running challenges",
+    "createNew": "Create New",
+    "noActiveChallenges": "No active challenges.",
+    "stats": {
+      "activeChallenges": "Active Challenges",
+      "totalPlayers": "Total Players",
+      "activePlayers": "Active Players",
+      "topPerformers": "Top Performers"
+    },
+    "activeNow": "Active Now",
+    "categories": {
+      "title": "Category Management",
+      "description": "Create and manage challenge categories",
+      "create": "Create Category",
+      "empty": "No categories created yet",
+      "createFirst": "Create First Category",
+      "inactiveBadge": "Inactive",
+      "confirmDelete": "Are you sure you want to delete \"{{name}}\"?"
+    },
+    "confirmDeleteLevel": "Are you sure you want to delete {{name}}?"
   },
   "errors": {
     "generic": "Something went wrong. Please try again.",

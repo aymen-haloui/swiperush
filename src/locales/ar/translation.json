@@ -231,6 +231,37 @@
     "statusActive": "نشط",
     "activeOnly": "النشطون فقط",
     "inactiveOnly": "غير النشطين فقط"
+    ,
+    "tabs": {
+      "overview": "نظرة عامة",
+      "challenges": "التحديات",
+      "categories": "الفئات",
+      "difficulty": "الصعوبة",
+      "levels": "المستويات",
+      "players": "اللاعبون",
+      "analytics": "التحليلات"
+    },
+    "activeChallengesTitle": "التحديات النشطة",
+    "activeChallengesDescription": "التحديات الجارية",
+    "createNew": "إنشاء جديد",
+    "noActiveChallenges": "لا توجد تحديات نشطة.",
+    "stats": {
+      "activeChallenges": "التحديات النشطة",
+      "totalPlayers": "إجمالي اللاعبين",
+      "activePlayers": "اللاعبون النشطون",
+      "topPerformers": "أفضل اللاعبين"
+    },
+    "activeNow": "نشط الآن",
+    "categories": {
+      "title": "إدارة الفئات",
+      "description": "إنشاء وإدارة فئات التحديات",
+      "create": "إنشاء فئة",
+      "empty": "لم يتم إنشاء أي فئات بعد",
+      "createFirst": "إنشاء أول فئة",
+      "inactiveBadge": "غير نشط",
+      "confirmDelete": "هل أنت متأكد من حذف \"{{name}}\"؟"
+    },
+    "confirmDeleteLevel": "هل أنت متأكد من حذف {{name}}؟"
   },
   "errors": {
     "generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
