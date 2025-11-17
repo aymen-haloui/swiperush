@@ -322,13 +322,13 @@ const Dashboard = () => {
                 <div className="relative group">
                   <CircularProgress
                     value={xpProgress}
-                    size={120}
+                    size={140}
                     strokeWidth={4}
-                    className="sm:w-40 sm:h-40"
+                    className="sm:w-44 sm:h-44"
                     currentColor="text-primary"
                     remainingColor="text-muted-foreground/30"
                   >
-                    <div className="flex flex-col items-center">
+                    <div>
                       <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center overflow-hidden border-[3px] border-background flex-shrink-0 shadow-lg transition-all duration-300 group-hover:scale-105 ${profile?.rank && profile.rank <= 10 ? 'shadow-[0_0_40px_rgba(139,92,246,0.7)] ring-[3px] ring-primary/60' : 'shadow-[0_0_20px_rgba(139,92,246,0.3)]'}`}>
                         {profile?.avatar ? (
                           <img
@@ -340,7 +340,6 @@ const Dashboard = () => {
                           <Trophy className="w-12 h-12 sm:w-16 sm:h-16 text-primary-foreground" />
                         )}
                       </div>
-                      <div className="mt-2 text-sm sm:text-base font-semibold text-foreground">{profile?.xp || 0} XP</div>
                     </div>
                   </CircularProgress>
                 </div>
