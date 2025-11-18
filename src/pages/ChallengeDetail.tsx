@@ -279,9 +279,25 @@ const ChallengeDetail = () => {
                   alt={challenge.title}
                   className="w-full h-full object-contain bg-muted/10 rounded-lg shadow-lg"
                   style={{ display: 'block' }}
-                  onError={(e) => {
-                    console.error('Image load error:', challenge.image);
-                    (e.target as HTMLImageElement).style.display = 'none';
+                  onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+                    try {
+                      const img = e.currentTarget as HTMLImageElement;
+                      console.warn('Image load error:', challenge.image);
+                      // Simple inline SVG placeholder to avoid external dependency
+                      const placeholderSvg = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'><rect fill='%23f8fafc' width='100%' height='100%'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-family='Arial, Helvetica, sans-serif' font-size='28'>Image not available</text></svg>`;
+
+                      // Prevent infinite loop: if placeholder already applied, hide the element
+                      if (img.dataset['fallbackApplied'] === '1') {
+                        img.style.display = 'none';
+                        return;
+                      }
+
+                      img.src = `data:image/svg+xml;utf8,${encodeURIComponent(placeholderSvg)}`;
+                      img.dataset['fallbackApplied'] = '1';
+                    } catch (err) {
+                      // Fallback: hide image if anything goes wrong
+                      (e.currentTarget as HTMLImageElement).style.display = 'none';
+                    }
                   }}
                 />
               </div>
