@@ -27,10 +27,19 @@ const AvatarWithProgress: React.FC<Props> = ({
   const circumference = 2 * Math.PI * radius;
   const clamped = Math.max(0, Math.min(100, progress));
   const dashoffset = circumference * (1 - clamped / 100);
+  const innerSize = Math.max(0, size - strokeWidth * 2);
 
   return (
     <div style={{ width: size, height: size, position: 'relative', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ position: 'absolute', top: 0, left: 0 }}>
+      <svg
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
+        style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
+        role="img"
+        aria-hidden={false}
+        preserveAspectRatio="xMidYMid meet"
+      >
         {/* background ring (subtle) */}
         <circle
           cx={cx}
@@ -39,6 +48,7 @@ const AvatarWithProgress: React.FC<Props> = ({
           stroke={bgColor}
           strokeWidth={strokeWidth}
           fill="none"
+          style={{ vectorEffect: 'non-scaling-stroke' }}
         />
 
         {/* progress ring */}
@@ -53,13 +63,29 @@ const AvatarWithProgress: React.FC<Props> = ({
           strokeDasharray={`${circumference} ${circumference}`}
           strokeDashoffset={dashoffset}
           transform={`rotate(-90 ${cx} ${cy})`} /* start at top */
+          style={{ vectorEffect: 'non-scaling-stroke', transition: 'stroke-dashoffset 350ms ease' }}
         />
       </svg>
 
       {/* Avatar image centered inside the ring. We size it to fit inside the ring by subtracting the strokeWidth. */}
-      <div style={{ width: size - strokeWidth * 2, height: size - strokeWidth * 2, borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
+      <div
+        style={{
+          width: innerSize,
+          height: innerSize,
+          borderRadius: '50%',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: '#fff',
+        }}
+      >
         {src ? (
-          <img src={src} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          <img
+            src={src}
+            alt={alt}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
         ) : (
           <div style={{ width: '60%', height: '60%', borderRadius: '50%', background: '#c7c7ff' }} />
         )}
