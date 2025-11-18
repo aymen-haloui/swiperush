@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate, useParams } from "react-router-dom";
-import { Plus, MapPin, Save, Loader2, X, Trash2 } from "lucide-react";
+import { Plus, MapPin, Save, Loader2, X, Trash2, Upload } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { toast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
@@ -332,16 +332,14 @@ const handleSubmit = async (e: React.FormEvent) => {
                 <Label htmlFor="challenge-image">Challenge Cover Image (optional)</Label>
                 {challengeImage ? (
                   <div className="flex items-center gap-2 p-3 border rounded-md bg-muted/20">
-                    <img 
-                      src={URL.createObjectURL(challengeImage)} 
-                      alt="Challenge preview" 
+                    <img
+                      src={URL.createObjectURL(challengeImage)}
+                      alt="Challenge preview"
                       className="w-20 h-20 object-cover rounded-md"
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{challengeImage.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {(challengeImage.size / 1024).toFixed(2)} KB
-                      </p>
+                      <p className="text-xs text-muted-foreground">{(challengeImage.size / 1024).toFixed(2)} KB</p>
                     </div>
                     <Button
                       type="button"
@@ -355,49 +353,47 @@ const handleSubmit = async (e: React.FormEvent) => {
                   </div>
                 ) : existingImageUrl && isEditMode ? (
                   <div className="flex items-center gap-2 p-3 border rounded-md bg-muted/20">
-                    <img 
+                    <img
                       src={existingImageUrl.startsWith('http') ? existingImageUrl : `${UPLOADS_BASE}/uploads/${existingImageUrl}`}
-                      alt="Current challenge image" 
+                      alt="Current challenge image"
                       className="w-20 h-20 object-cover rounded-md"
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium">Current image</p>
-                      <p className="text-xs text-muted-foreground">
-                        Upload a new image to replace
-                      </p>
+                      <p className="text-xs text-muted-foreground">Upload a new image to replace</p>
                     </div>
-                    <Input
+                    <label htmlFor="challenge-image" className="mr-2">
+                      <Button type="button" variant="outline" size="sm">Change</Button>
+                    </label>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => setExistingImageUrl(undefined)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div>
+                    <label htmlFor="challenge-image" className="cursor-pointer">
+                      <div className="flex items-center justify-center gap-2 px-3 py-2 border-2 border-dashed border-primary/50 rounded-md hover:border-primary">
+                        <Upload className="w-5 h-5 text-primary" />
+                        <span className="text-sm text-primary">{t('createChallenge.uploadPicture') || 'Upload Picture'}</span>
+                      </div>
+                    </label>
+                    <input
                       id="challenge-image"
                       type="file"
-                        <Input 
-                          id="name" 
-                          placeholder={t("createChallenge.namePlaceholder")} 
+                      accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
                         if (file) setChallengeImage(file);
                       }}
                       className="hidden"
                     />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                        <Textarea 
-                          id="description" 
-                          placeholder={t("createChallenge.descriptionPlaceholder")} 
-                    </Button>
                   </div>
-                ) : (
-                  <Input
-                    id="challenge-image"
-                    type="file"
-                    accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
-                    className="cursor-pointer"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                          <Input
-                            id="challenge-lat"
-                            type="number"
-                            placeholder={t("createChallenge.latExample")}
-                  />
                 )}
                 <p className="text-xs text-muted-foreground">
                   Upload a cover image for your challenge. Supported formats: PNG, JPG, GIF, WEBP (max 5MB)
@@ -405,16 +401,15 @@ const handleSubmit = async (e: React.FormEvent) => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="name">Challenge Name</Label>
-                <Input 
-                  id="name" 
-                  placeholder="Enter challenge name" 
+                <Label htmlFor="name">{t('createChallenge.nameLabel') || 'Challenge Name'}</Label>
+                <Input
+                  id="name"
+                  placeholder={t('createChallenge.namePlaceholder') || 'Enter challenge name'}
                   value={title}
-                          <Input
-                            id="challenge-lng"
-                            type="number"
-                            placeholder={t("createChallenge.lngExample")}
-              
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                />
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="description">Description</Label>
                 <Textarea 

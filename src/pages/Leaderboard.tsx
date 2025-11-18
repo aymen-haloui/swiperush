@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useTranslation } from "react-i18next";
 import { useLeaderboard } from "@/hooks/useApi";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
@@ -23,6 +24,7 @@ import { useToast } from "@/components/ui/use-toast";
 const Leaderboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
 
@@ -34,8 +36,8 @@ const Leaderboard = () => {
     setIsAuthenticated(false);
 
     toast({
-      title: "✅ Successfully logged out",
-      description: "Hope to see you again soon!",
+      title: t('notifications.logoutSuccess.title'),
+      description: t('notifications.logoutSuccess.description'),
       duration: 2500,
       className:
         "border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-100",

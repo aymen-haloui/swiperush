@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useTranslation } from 'react-i18next';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +31,7 @@ import {
 import { QRCodeScanner } from "@/components/QRCodeScanner";
 import { toast } from "@/hooks/use-toast";
 const ChallengeDetail = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -60,7 +62,7 @@ const ChallengeDetail = () => {
         setChallenge(response); // ✅ set the state with the fetched data
       } catch (err) {
         console.error(err);
-        setError("An error occurred while loading challenge data.");
+        setError(t('challenge.loadError'));
       } finally {
         setLoading(false);
       }
@@ -157,8 +159,8 @@ const ChallengeDetail = () => {
       await apiClient.submitStage(submitData);
 
       toast({
-        title: "🎯 Stage Completed!",
-        description: "QR code scanned successfully. Stage completed!",
+        title: t('notifications.stageCompleted.title'),
+        description: t('notifications.stageCompleted.description', { xp: 0 }) || 'QR code scanned successfully. Stage completed!',
         duration: 3000,
       });
 
@@ -166,10 +168,10 @@ const ChallengeDetail = () => {
       const response = await getChallengeById(id!);
       setChallenge(response);
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to submit stage. Please try again.";
+      const errorMessage = err instanceof Error ? err.message : t('challenge.submitFailed');
       toast({
-        title: "❌ Error",
-        description: errorMessage,
+        title: t('notifications.stageError.title'),
+        description: errorMessage || t('notifications.stageError.description'),
         variant: "destructive",
         duration: 4000,
       });
@@ -198,8 +200,8 @@ const ChallengeDetail = () => {
   const handleGPSSubmit = async (stageId: string) => {
     // This function is no longer used - all stages require QR codes
     toast({
-      title: "❌ Error",
-      description: "This stage requires QR code scanning. GPS submission is disabled.",
+      title: t('notifications.stageError.title'),
+      description: t('notifications.stageError.description', { error: 'This stage requires QR code scanning. GPS submission is disabled.' }),
       variant: "destructive",
       duration: 4000,
     });
@@ -219,7 +221,7 @@ const ChallengeDetail = () => {
   if (loading)
     return (
       <div className="flex justify-center items-center h-screen">
-        <p>Loading challenge...</p>
+        <p>{t('challenge.loading')}</p>
       </div>
     );
 
@@ -233,7 +235,7 @@ const ChallengeDetail = () => {
   if (!challenge)
     return (
       <div className="flex justify-center items-center h-screen text-muted-foreground">
-        Challenge not found.
+        {t('challenge.notFound')}
       </div>
     );
 
@@ -297,9 +299,9 @@ const ChallengeDetail = () => {
                 {challenge.description}
               </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <h4 className="text-sm font-semibold mb-3">Challenge Stats</h4>
+                  <h4 className="text-sm font-semibold mb-3">{t('challenge.statsTitle')}</h4>
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div className="flex items-center gap-2">
                       <Trophy className="w-4 h-4 text-accent" />
@@ -333,7 +335,7 @@ const ChallengeDetail = () => {
                 </div>
 
                 <div>
-                  <h4 className="text-sm font-semibold mb-3">Schedule</h4>
+                  <h4 className="text-sm font-semibold mb-3">{t('challenge.scheduleTitle')}</h4>
                   <div className="text-sm text-muted-foreground space-y-1">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4" />
@@ -350,13 +352,13 @@ const ChallengeDetail = () => {
               </div>
 
               <div className="mb-6">
-                <h4 className="text-sm font-semibold mb-3">Location</h4>
+                <h4 className="text-sm font-semibold mb-3">{t('challenge.locationTitle')}</h4>
                 {challenge.latitude != null && challenge.longitude != null && challenge.latitude !== 0 && challenge.longitude !== 0 ? (
                   <div className="flex items-center gap-3">
                     <MapPin className="w-4 h-4 text-success" />
                     <div className="flex-1 text-sm">
-                      <div className="font-semibold">Location Available</div>
-                      <div className="text-xs text-muted-foreground">Exact coordinates hidden here for clarity</div>
+                      <div className="font-semibold">{t('challenge.locationAvailable')}</div>
+                      <div className="text-xs text-muted-foreground">{t('challenge.coordinatesHidden')}</div>
                     </div>
                     <Button 
                       variant="ghost" 
@@ -370,11 +372,11 @@ const ChallengeDetail = () => {
                         );
                       }}
                     >
-                      View on Map
+                      {t('challenge.viewOnMap')}
                     </Button>
                   </div>
                 ) : (
-                  <div className="text-sm text-muted-foreground">No location set</div>
+                  <div className="text-sm text-muted-foreground">{t('challenge.noLocation')}</div>
                 )}
               </div>
 
@@ -395,7 +397,7 @@ const ChallengeDetail = () => {
 
         {/* Stages */}
         <div className="space-y-4">
-          <h2 className="text-2xl font-bold mb-6">Challenge Stages</h2>
+          <h2 className="text-2xl font-bold mb-6">{t('challenge.stagesTitle')}</h2>
 
           {challenge.stages?.length > 0 ? (
             challenge.stages.map((stage, index: number) => {
@@ -435,20 +437,20 @@ const ChallengeDetail = () => {
                             {hasQrCode && (
                               <>
                                 <QrCode className="w-4 h-4" />
-                                <span>QR Code</span>
+                                <span>{t('challenge.qrCodeLabel')}</span>
                               </>
                             )}
                             {!hasQrCode && (
                               <>
                                 <Navigation className="w-4 h-4" />
-                                <span>GPS Location</span>
+                                <span>{t('challenge.gpsLocationLabel')}</span>
                               </>
                             )}
                           </div>
 
                           {stageStatus === "COMPLETED" && (
                             <Badge className="bg-success text-success-foreground">
-                              Completed ✓
+                              {t('challenge.completedLabel')} ✓
                             </Badge>
                           )}
                           {stageStatus === "PENDING" && isChallengeActive && (
@@ -460,20 +462,20 @@ const ChallengeDetail = () => {
                               {hasQrCode ? (
                                 <>
                                   <ScanLine className="w-4 h-4 mr-2" />
-                                  Scan QR Code
+                                  {t('challenge.scanQrButton')}
                                 </>
                               ) : (
-                                "Submit Proof"
+                                t('challenge.submitProof')
                               )}
                             </Button>
                           )}
                           {stageStatus === "LOCKED" && (
                             <Button variant="ghost" disabled>
-                              Locked
+                              {t('challenge.lockedLabel')}
                             </Button>
                           )}
                           {stageStatus === "SKIPPED" && (
-                            <Badge variant="outline">Skipped</Badge>
+                            <Badge variant="outline">{t('challenge.skippedLabel')}</Badge>
                           )}
                         </div>
                       </div>
@@ -484,7 +486,7 @@ const ChallengeDetail = () => {
             })
           ) : (
             <p className="text-muted-foreground">
-              No stages found for this challenge.
+              {t('challenge.noStages')}
             </p>
           )}
         </div>
@@ -493,13 +495,13 @@ const ChallengeDetail = () => {
         <Card className="glass-card border-border/50 mt-8">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold">Challenge Leaderboard</h3>
+              <h3 className="text-xl font-bold">{t('challenge.leaderboardTitle')}</h3>
               <Button variant="ghost" onClick={() => navigate("/leaderboard")}>
-                View All →
+                {t('challenge.viewAll')}
               </Button>
             </div>
             <p className="text-muted-foreground">
-              Coming soon: leaderboard integration for this challenge.
+              {t('challenge.leaderboardComingSoon')}
             </p>
           </CardContent>
         </Card>

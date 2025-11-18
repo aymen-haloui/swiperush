@@ -158,6 +158,32 @@
     "challengeEnded": "Challenge has ended",
     "challengeNotStarted": "Challenge has not started yet",
     "alreadyJoined": "You have already joined this challenge"
+    ,
+    "loading": "Loading challenge...",
+    "loadError": "An error occurred while loading challenge data.",
+    "submitFailed": "Failed to submit stage. Please try again.",
+    "notFound": "Challenge not found.",
+    "statsTitle": "Challenge Stats",
+    "scheduleTitle": "Schedule",
+    "locationTitle": "Location",
+    "locationAvailable": "Location Available",
+    "coordinatesHidden": "Exact coordinates hidden here for clarity",
+    "viewOnMap": "View on Map",
+    "noLocation": "No location set",
+    "stagesTitle": "Challenge Stages",
+    "qrCodeLabel": "QR Code",
+    "gpsLocationLabel": "GPS Location",
+    "completedLabel": "Completed",
+    "scanQrButton": "Scan QR Code",
+    "submitProof": "Submit Proof",
+    "lockedLabel": "Locked",
+    "skippedLabel": "Skipped",
+    "noStages": "No stages found for this challenge.",
+    "leaderboardTitle": "Challenge Leaderboard",
+    "viewAll": "View All →",
+    "leaderboardComingSoon": "Coming soon: leaderboard integration for this challenge.",
+    "daysLeft": "days left",
+    "startsIn": "Starts in {{days}} days"
   },
   "leaderboard": {
     "title": "Leaderboard",
@@ -194,19 +220,17 @@
     "currentPasswordIncorrect": "Current password is incorrect",
     "passwordsDontMatch": "Passwords don't match",
     "uploadAvatar": "Upload Avatar",
-    "removeAvatar": "Remove Avatar"
-    ,
+    "removeAvatar": "Remove Avatar",
     "newEmailPlaceholder": "Enter new email",
     "confirmNewEmailPlaceholder": "Confirm new email",
     "newUsernamePlaceholder": "Enter new username"
   },
-  ,
   "createChallenge": {
     "namePlaceholder": "Enter challenge name",
     "descriptionPlaceholder": "Describe your challenge",
     "latExample": "e.g., 40.7128",
     "lngExample": "e.g., -74.0060"
-  }
+  },
   "admin": {
     "title": "Admin Dashboard",
     "createChallenge": "Create Challenge",

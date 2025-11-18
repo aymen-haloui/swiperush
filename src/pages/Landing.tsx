@@ -40,8 +40,8 @@ const Landing = () => {
 
     // ✅ Show animated success toast
     toast({
-      title: "✅ Successfully logged out",
-      description: "Hope to see you again soon!",
+      title: t('notifications.logoutSuccess.title'),
+      description: t('notifications.logoutSuccess.description'),
       duration: 2500,
       className:
         "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",

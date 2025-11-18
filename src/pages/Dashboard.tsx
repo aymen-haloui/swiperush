@@ -116,8 +116,8 @@ const Dashboard = () => {
   const handleLogout = () => {
     logout();
     toast({
-      title: "✅ Successfully logged out",
-      description: "Hope to see you again soon!",
+      title: t('notifications.logoutSuccess.title'),
+      description: t('notifications.logoutSuccess.description'),
       duration: 2500,
       className:
         "border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-100",
@@ -133,8 +133,8 @@ const Dashboard = () => {
       const response = await apiClient.joinChallenge(challengeId);
 
       toast({
-        title: "🎯 Challenge joined successfully!",
-        description: `You’ve joined the challenge and can start progressing.`,
+        title: t('notifications.joinSuccess.title'),
+        description: t('notifications.joinSuccess.description'),
         duration: 2500,
         className:
           "border-green-500 bg-green-50 text-green-700 dark:bg-green-900 dark:text-green-100",
@@ -150,8 +150,8 @@ const Dashboard = () => {
           ? error.message
           : "Something went wrong. Try again later.";
       toast({
-        title: "⚠️ Failed to join challenge",
-        description: errorMessage,
+        title: t('notifications.joinFailed.title'),
+        description: errorMessage || t('notifications.joinFailed.description'),
         duration: 3000,
         className:
           "border-red-500 bg-red-50 text-red-700 dark:bg-red-900 dark:text-red-100",
