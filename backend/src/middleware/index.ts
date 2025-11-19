@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import logger from '../utils/logger';
 import rateLimit from 'express-rate-limit';
+import { CONFIG } from '../config';
 
 // Rate limiting middleware (auto-adjusts based on environment)
 export const createRateLimit = (windowMs: number, max: number, message?: string) => {
-  const isDev = process.env.NODE_ENV !== 'production';
+  const isDev = !CONFIG.isProd;
 
   return rateLimit({
     windowMs,
@@ -18,8 +19,8 @@ export const createRateLimit = (windowMs: number, max: number, message?: string)
 
 // General rate limiting (relaxed for testing)
 export const generalRateLimit = createRateLimit(
-  parseInt(process.env.RATE_LIMIT_WINDOW_MS!) || 15 * 60 * 1000, // 15 minutes
-  parseInt(process.env.RATE_LIMIT_MAX_REQUESTS!) || 500 // 500 requests per 15 minutes
+  CONFIG.RATE_LIMIT_WINDOW_MS,
+  CONFIG.RATE_LIMIT_MAX_REQUESTS
 );
 
 // Relaxed rate limiting for auth endpoints (for testing)
@@ -69,7 +70,7 @@ export const errorHandler = (
     res.status(503).json({
       error: 'Service Unavailable',
       message: 'Database connection failed. Please check the database configuration.',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      details: !CONFIG.isProd ? error.message : undefined
     });
     return;
   }
@@ -84,7 +85,7 @@ export const errorHandler = (
 
   res.status(500).json({
     error: 'Internal Server Error',
-    message: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'
+    message: !CONFIG.isProd ? error.message : 'Something went wrong'
   });
 };
 
@@ -98,7 +99,7 @@ export const notFound = (req: Request, res: Response): void => {
 
 // CORS middleware
 export const corsOptions = {
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: CONFIG.CORS_ORIGINS.length > 0 ? CONFIG.CORS_ORIGINS : ['http://localhost:5173'],
   credentials: true,
   optionsSuccessStatus: 200
 };

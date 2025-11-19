@@ -2,9 +2,10 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { Request } from 'express';
+import { CONFIG } from '../config';
 
 // Ensure upload directory exists
-const uploadDir = process.env.UPLOAD_DIR || './uploads';
+const uploadDir = CONFIG.UPLOAD_DIR;
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -41,7 +42,7 @@ export const upload = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: parseInt(process.env.MAX_FILE_SIZE!) || 5 * 1024 * 1024, // 5MB default
+    fileSize: CONFIG.MAX_FILE_SIZE, // configured default
     files: 5 // Max 5 files per request
   }
 });

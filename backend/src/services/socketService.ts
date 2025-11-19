@@ -1,5 +1,6 @@
 import { Server as SocketIOServer, Socket } from "socket.io";
 import logger from '../utils/logger';
+import { CONFIG } from '../config';
 
 import { Server as HTTPServer } from 'http';
 import jwt from 'jsonwebtoken';
@@ -26,9 +27,8 @@ export class SocketService {
       'http://localhost:5173',
       'https://challengequest-frontend.vercel.app'
     ];
-
-    const socketEnv = process.env.SOCKET_CORS_ORIGIN ? process.env.SOCKET_CORS_ORIGIN.split(',').map(s => s.trim()) : [];
-    const commonEnv = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',').map(s => s.trim()) : [];
+    const socketEnv = CONFIG.SOCKET_CORS_ORIGINS || [];
+    const commonEnv = CONFIG.CORS_ORIGINS || [];
     const allowedOrigins = Array.from(new Set([...socketEnv, ...commonEnv, ...defaultOrigins])).filter(Boolean);
 
     this.io = new SocketIOServer(server, {
@@ -106,7 +106,7 @@ export class SocketService {
         return next(new Error('Authentication error'));
       }
 
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
+      const decoded = jwt.verify(token, CONFIG.JWT_SECRET) as any;
       
       const user = await prisma.user.findUnique({
         where: { id: decoded.userId },

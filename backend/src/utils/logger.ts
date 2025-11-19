@@ -1,4 +1,4 @@
-const isProd = process.env.NODE_ENV === 'production';
+import { CONFIG } from '../config';
 
 export const info = (...args: unknown[]) => {
   console.log('[INFO]', new Date().toISOString(), ...args);
@@ -13,7 +13,7 @@ export const error = (...args: unknown[]) => {
 };
 
 export const debug = (...args: unknown[]) => {
-  if (!isProd) {
+  if (!CONFIG.isProd) {
     console.debug('[DEBUG]', new Date().toISOString(), ...args);
   }
 };

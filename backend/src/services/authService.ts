@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import logger from '../utils/logger';
 import jwt, { SignOptions, Secret } from 'jsonwebtoken';
+import { CONFIG } from '../config';
 import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 
@@ -48,7 +49,7 @@ export class AuthService {
     // Hash password
     const hashedPassword = await bcrypt.hash(
       validatedData.password,
-      parseInt(process.env.BCRYPT_ROUNDS!) || 12
+      CONFIG.BCRYPT_ROUNDS
     );
 
     // Create user
@@ -154,7 +155,7 @@ export class AuthService {
     // Hash new password
     const hashedPassword = await bcrypt.hash(
       validatedData.newPassword,
-      parseInt(process.env.BCRYPT_ROUNDS!) || 12
+      CONFIG.BCRYPT_ROUNDS
     );
 
     // Update password
@@ -168,11 +169,8 @@ export class AuthService {
 
   // Generate JWT token
   static generateToken(userId: string): string {
-    const secret: Secret = (process.env.JWT_SECRET || '').trim();
-    const expiresInEnv = process.env.JWT_EXPIRES_IN;
-    const expiresIn = expiresInEnv && !Number.isNaN(Number(expiresInEnv))
-      ? Number(expiresInEnv)
-      : (expiresInEnv ?? '7d');
+    const secret: Secret = CONFIG.JWT_SECRET;
+    const expiresIn = CONFIG.JWT_EXPIRES_IN;
 
     const options: SignOptions = {
       expiresIn: expiresIn as any,
@@ -184,7 +182,7 @@ export class AuthService {
 
   // Verify JWT token
   static verifyToken(token: string): any {
-    return jwt.verify(token, process.env.JWT_SECRET!);
+    return jwt.verify(token, CONFIG.JWT_SECRET);
   }
 
   // Get user profile
