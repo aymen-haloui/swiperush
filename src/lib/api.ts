@@ -437,6 +437,7 @@ if (this.token) {
     const headers: Record<string, string> = {};
     if (this.token) headers['Authorization'] = `Bearer ${this.token}`;
 
+    // Default fetch-based upload (no progress). Use XHR helper if you need progress.
     const response = await fetch(url, {
       method: 'POST',
       headers,
@@ -478,6 +479,42 @@ if (this.token) {
     const data = await response.json().catch(() => null);
     if (!data) throw new Error('Invalid response from upload endpoint');
     return data.data || data;
+  }
+
+  // Upload with XHR to report progress. onProgress receives 0..100 number.
+  uploadWithProgress(endpoint: string, token: string | null, file: File, onProgress: (p: number) => void): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      const url = `${this.baseURL}${endpoint}`;
+      xhr.open('POST', url, true);
+      if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const pct = Math.round((e.loaded / e.total) * 100);
+          onProgress(pct);
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const res = JSON.parse(xhr.responseText);
+            resolve(res.data || res);
+          } catch (err) {
+            resolve(xhr.responseText);
+          }
+        } else {
+          reject(new Error(`Upload failed with status ${xhr.status}`));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Network error during upload'));
+
+      const fd = new FormData();
+      fd.append('file', file);
+      xhr.send(fd);
+    });
   }
 
   async updateChallenge(id: string, data: Partial<CreateChallengeRequest>): Promise<Challenge> {

@@ -296,7 +296,11 @@ const handleSubmit = async (e: React.FormEvent) => {
     // If we have a challenge image file, upload it using the multipart endpoint
     if (challengeImage && createdChallenge?.id) {
       try {
-        await apiClient.uploadChallengeImage(createdChallenge.id, challengeImage);
+        // Use XHR helper to show progress
+        await (apiClient as any).uploadWithProgress(`/challenges/${createdChallenge.id}/image`, apiClient['token'] || null, challengeImage, (p: number) => {
+          // You can add state to show progress; for now we log
+          console.log('Challenge image upload progress', p);
+        });
       } catch (err) {
         console.error('Challenge image upload failed', err);
         toast({
@@ -314,9 +318,11 @@ const handleSubmit = async (e: React.FormEvent) => {
         const localStage = stages[i];
         if (localStage.qrCodeFile) {
           const createdStage = createdChallenge.stages.find(s => s.order === i + 1);
-          if (createdStage) {
+            if (createdStage) {
             try {
-              await apiClient.uploadStageQr(createdChallenge.id, createdStage.id, localStage.qrCodeFile);
+              await (apiClient as any).uploadWithProgress(`/challenges/${createdChallenge.id}/stages/${createdStage.id}/qr`, apiClient['token'] || null, localStage.qrCodeFile!, (p: number) => {
+                console.log(`Stage ${i+1} QR upload`, p);
+              });
             } catch (err) {
               console.error('Stage QR upload failed', err);
               toast({

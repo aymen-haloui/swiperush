@@ -294,6 +294,20 @@ export class ChallengeService {
       }
     });
 
+    // If we saved an image file and read it into a buffer earlier, persist bytes + mime to DB
+    if (challengeImageBuffer && challenge.id) {
+      try {
+        // Use a raw query to avoid generated-client typing mismatch across environments
+        await prisma.$executeRaw`
+          UPDATE "challenges"
+          SET "imageBytes" = ${challengeImageBuffer}, "imageMime" = ${challengeImageMime}
+          WHERE id = ${challenge.id}
+        `;
+      } catch (err) {
+        console.warn('Failed to persist image bytes to DB for challenge', challenge.id, err);
+      }
+    }
+
     // Fetch challenge with uploaded QR codes (fresh from DB)
     const updatedChallenge = await prisma.challenge.findUnique({
       where: { id: challenge.id },
@@ -359,6 +373,19 @@ export class ChallengeService {
     const relative = path.join('challenges', challengeId, destFilename).replace(/\\/g, '/');
     await prisma.challenge.update({ where: { id: challengeId }, data: { image: relative } });
 
+    // Also attempt to persist image bytes + mime in DB (best-effort)
+    try {
+      const buf = fs.readFileSync(destPath);
+      const mime = file.mimetype || `image/${path.extname(destFilename).replace('.', '')}`;
+      await prisma.$executeRaw`
+        UPDATE "challenges"
+        SET "imageBytes" = ${buf}, "imageMime" = ${mime}
+        WHERE id = ${challengeId}
+      `;
+    } catch (err) {
+      console.warn('Failed to persist challenge image bytes in DB for', challengeId, err);
+    }
+
     // Return public URL
     return `/uploads/${relative}`;
   }
@@ -396,6 +423,20 @@ export class ChallengeService {
 
     const relative = path.join('challenges', challengeId, 'stages', stageId, destFilename).replace(/\\/g, '/');
     await prisma.stage.update({ where: { id: stageId }, data: { qrCode: relative } });
+
+    // Also attempt to persist the QR bytes into the stage record (best-effort)
+    try {
+      const buf = fs.readFileSync(destPath);
+      const mime = file.mimetype || `image/${path.extname(destFilename).replace('.', '')}`;
+      await prisma.$executeRaw`
+        UPDATE "stages"
+        SET "qrCode" = ${relative}
+        WHERE id = ${stageId}
+      `;
+      // Note: storing raw bytes for stage QR is optional; we keep path in qrCode column
+    } catch (err) {
+      console.warn('Failed to persist QR bytes for stage', stageId, err);
+    }
 
     return `/uploads/${relative}`;
   }
