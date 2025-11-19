@@ -319,6 +319,85 @@ export class ChallengeService {
     return updatedChallenge || challenge;
   }
 
+  // Upload or replace challenge image file on disk and update DB
+  static async uploadChallengeImage(challengeId: string, file: Express.Multer.File) {
+    const uploadDir = process.env.UPLOAD_DIR || path.join(process.cwd(), 'uploads');
+    const challengeDir = path.join(uploadDir, 'challenges', challengeId);
+    if (!fs.existsSync(challengeDir)) fs.mkdirSync(challengeDir, { recursive: true });
+
+    // Validate file type
+    const allowed = ['image/png', 'image/jpg', 'image/jpeg'];
+    if (!allowed.includes(file.mimetype)) throw new Error('Unsupported file type');
+
+    const destFilename = 'image' + path.extname(file.originalname).toLowerCase();
+    const destPath = path.join(challengeDir, destFilename);
+
+    // Delete old file if exists (from DB)
+    const existing = await prisma.challenge.findUnique({ where: { id: challengeId }, select: { image: true } });
+    if (existing?.image) {
+      try {
+        const oldPath = path.join(uploadDir, existing.image);
+        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+      } catch (err) {
+        console.warn('Failed to delete old challenge image:', err);
+      }
+    }
+
+    // Move uploaded file (multer stored it in uploadDir root). Use rename to move.
+    try {
+      fs.renameSync(file.path, destPath);
+    } catch (err) {
+      // fallback to copy
+      const data = fs.readFileSync(file.path);
+      fs.writeFileSync(destPath, data);
+      fs.unlinkSync(file.path);
+    }
+
+    // Save relative path (relative to uploads root) in DB: challenges/{id}/image.jpg
+    const relative = path.join('challenges', challengeId, destFilename).replace(/\\/g, '/');
+    await prisma.challenge.update({ where: { id: challengeId }, data: { image: relative } });
+
+    // Return public URL
+    return `/uploads/${relative}`;
+  }
+
+  // Upload or replace stage QR file and update DB
+  static async uploadStageQr(challengeId: string, stageId: string, file: Express.Multer.File) {
+    const uploadDir = process.env.UPLOAD_DIR || path.join(process.cwd(), 'uploads');
+    const stageDir = path.join(uploadDir, 'challenges', challengeId, 'stages', stageId);
+    if (!fs.existsSync(stageDir)) fs.mkdirSync(stageDir, { recursive: true });
+
+    const allowed = ['image/png', 'image/jpg', 'image/jpeg'];
+    if (!allowed.includes(file.mimetype)) throw new Error('Unsupported file type');
+
+    const destFilename = 'qr' + path.extname(file.originalname).toLowerCase();
+    const destPath = path.join(stageDir, destFilename);
+
+    // Delete old QR file if exists on stage
+    const stage = await prisma.stage.findUnique({ where: { id: stageId }, select: { qrCode: true } });
+    if (stage?.qrCode) {
+      try {
+        const oldPath = path.join(uploadDir, stage.qrCode);
+        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+      } catch (err) {
+        console.warn('Failed to delete old stage QR:', err);
+      }
+    }
+
+    try {
+      fs.renameSync(file.path, destPath);
+    } catch (err) {
+      const data = fs.readFileSync(file.path);
+      fs.writeFileSync(destPath, data);
+      fs.unlinkSync(file.path);
+    }
+
+    const relative = path.join('challenges', challengeId, 'stages', stageId, destFilename).replace(/\\/g, '/');
+    await prisma.stage.update({ where: { id: stageId }, data: { qrCode: relative } });
+
+    return `/uploads/${relative}`;
+  }
+
   // Get all challenges with filters
   static async getChallenges(filters: {
     category?: string;

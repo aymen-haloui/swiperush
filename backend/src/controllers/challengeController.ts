@@ -144,6 +144,46 @@ export class ChallengeController {
     }
   }
 
+  // Upload or replace challenge image (admin only)
+  static async uploadChallengeImage(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const file = (req as any).file as Express.Multer.File | undefined;
+      if (!file) {
+        res.status(400).json({ success: false, error: 'No file uploaded' });
+        return;
+      }
+
+      const result = await ChallengeService.uploadChallengeImage(id, file);
+
+      res.json({ success: true, message: 'Image uploaded', url: result });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      logger.error('Error in uploadChallengeImage:', message);
+      res.status(400).json({ success: false, error: message });
+    }
+  }
+
+  // Upload or replace stage QR image (admin only)
+  static async uploadStageQr(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      const { id, stageId } = req.params;
+      const file = (req as any).file as Express.Multer.File | undefined;
+      if (!file) {
+        res.status(400).json({ success: false, error: 'No file uploaded' });
+        return;
+      }
+
+      const result = await ChallengeService.uploadStageQr(id, stageId, file);
+
+      res.json({ success: true, message: 'QR uploaded', url: result });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      logger.error('Error in uploadStageQr:', message);
+      res.status(400).json({ success: false, error: message });
+    }
+  }
+
   // Delete challenge (admin only)
   static async deleteChallenge(req: AuthRequest, res: Response): Promise<void> {
     try {

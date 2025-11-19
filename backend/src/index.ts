@@ -16,6 +16,7 @@ import {
   requestLogger 
 } from './middleware';
 import { handleUploadError } from './middleware/upload';
+import { uploadSingle } from './middleware/upload';
 
 // Import controllers
 import { AuthController } from './controllers/authController';
@@ -254,6 +255,9 @@ apiRouter.get('/challenges/:id', optionalAuth, ChallengeController.getChallengeB
 apiRouter.post('/challenges', authenticateToken, requireAdmin, ChallengeController.createChallenge);//verified
 apiRouter.put('/challenges/:id', authenticateToken, requireAdmin, ChallengeController.updateChallenge);//verified
 apiRouter.delete('/challenges/:id', authenticateToken, requireAdmin, ChallengeController.deleteChallenge);//verified
+// Upload endpoints for challenge images and stage QR codes
+apiRouter.post('/challenges/:id/image', authenticateToken, requireAdmin, uploadSingle('file'), ChallengeController.uploadChallengeImage);
+apiRouter.post('/challenges/:id/stages/:stageId/qr', authenticateToken, requireAdmin, uploadSingle('file'), ChallengeController.uploadStageQr);
 apiRouter.post('/challenges/join', authenticateToken, ChallengeController.joinChallenge);
 apiRouter.post('/challenges/submit-stage', authenticateToken, submissionRateLimit, ChallengeController.submitStage);
 apiRouter.get('/challenges/user/my-challenges', authenticateToken, ChallengeController.getUserChallenges);//should craate a page in the frontend
@@ -288,6 +292,9 @@ apiRouter.patch('/users/:id/toggle-status', authenticateToken, requireAdmin, Use
 
 // Mount API routes
 app.use('/api', apiRouter);
+
+// Multer upload error handler
+app.use(handleUploadError);
 
 // 404 handler
 app.use(notFound);
