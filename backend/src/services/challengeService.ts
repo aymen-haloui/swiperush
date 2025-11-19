@@ -311,14 +311,28 @@ export class ChallengeService {
     // Fetch challenge with uploaded QR codes (fresh from DB)
     const updatedChallenge = await prisma.challenge.findUnique({
       where: { id: challenge.id },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        category: true,
+        difficulty: true,
+        xpReward: true,
+        startDate: true,
+        endDate: true,
+        image: true,
+        requiredLevel: true,
+        isActive: true,
+        maxParticipants: true,
+        latitude: true,
+        longitude: true,
+        createdAt: true,
+        updatedAt: true,
         stages: {
           orderBy: { order: 'asc' }
         },
         _count: {
-          select: {
-            progress: true
-          }
+          select: { progress: true }
         }
       }
     });
@@ -485,7 +499,23 @@ export class ChallengeService {
     const [challenges, total] = await Promise.all([
       prisma.challenge.findMany({
         where,
-        include: {
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          category: true,
+          difficulty: true,
+          xpReward: true,
+          startDate: true,
+          endDate: true,
+          image: true,
+          requiredLevel: true,
+          isActive: true,
+          maxParticipants: true,
+          latitude: true,
+          longitude: true,
+          createdAt: true,
+          updatedAt: true,
           stages: {
             orderBy: { order: 'asc' },
             select: {
@@ -494,14 +524,11 @@ export class ChallengeService {
               order: true,
               latitude: true,
               longitude: true,
-              radius: true
+              radius: true,
+              qrCode: true
             }
           },
-          _count: {
-            select: {
-              progress: true
-            }
-          }
+          _count: { select: { progress: true } }
         },
         orderBy: { createdAt: 'desc' },
         take: limit,
@@ -525,15 +552,27 @@ export class ChallengeService {
   static async getChallengeById(challengeId: string, userId?: string) {
     const challenge = await prisma.challenge.findUnique({
       where: { id: challengeId },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        category: true,
+        difficulty: true,
+        xpReward: true,
+        startDate: true,
+        endDate: true,
+        image: true,
+        requiredLevel: true,
+        isActive: true,
+        maxParticipants: true,
+        latitude: true,
+        longitude: true,
+        createdAt: true,
+        updatedAt: true,
         stages: {
           orderBy: { order: 'asc' }
         },
-        _count: {
-          select: {
-            progress: true
-          }
-        }
+        _count: { select: { progress: true } }
       }
     });
 
@@ -578,7 +617,25 @@ static async updateChallenge(id: string, data: z.infer<typeof updateChallengeSch
   // Find existing challenge
   const existingChallenge = await prisma.challenge.findUnique({
     where: { id },
-    include: { stages: true },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      category: true,
+      difficulty: true,
+      xpReward: true,
+      startDate: true,
+      endDate: true,
+      image: true,
+      requiredLevel: true,
+      isActive: true,
+      maxParticipants: true,
+      latitude: true,
+      longitude: true,
+      createdAt: true,
+      updatedAt: true,
+      stages: true
+    }
   });
 
   if (!existingChallenge) {
@@ -710,16 +767,28 @@ static async updateChallenge(id: string, data: z.infer<typeof updateChallengeSch
   // Fetch updated challenge with uploaded QR codes
   const finalChallenge = await prisma.challenge.findUnique({
     where: { id },
-    include: {
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      category: true,
+      difficulty: true,
+      xpReward: true,
+      startDate: true,
+      endDate: true,
+      image: true,
+      requiredLevel: true,
+      isActive: true,
+      maxParticipants: true,
+      latitude: true,
+      longitude: true,
+      createdAt: true,
+      updatedAt: true,
       stages: {
-        orderBy: { order: 'asc' },
+        orderBy: { order: 'asc' }
       },
-      _count: {
-        select: {
-          progress: true,
-        },
-      },
-    },
+      _count: { select: { progress: true } }
+    }
   });
 
   return finalChallenge || updatedChallenge;
