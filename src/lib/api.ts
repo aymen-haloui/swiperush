@@ -482,12 +482,12 @@ if (this.token) {
   }
 
   // Upload with XHR to report progress. onProgress receives 0..100 number.
-  uploadWithProgress(endpoint: string, token: string | null, file: File, onProgress: (p: number) => void): Promise<any> {
+  uploadWithProgress(endpoint: string, file: File, onProgress: (p: number) => void): Promise<any> {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       const url = `${this.baseURL}${endpoint}`;
       xhr.open('POST', url, true);
-      if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+      if (this.token) xhr.setRequestHeader('Authorization', `Bearer ${this.token}`);
 
       xhr.upload.onprogress = (e) => {
         if (e.lengthComputable) {
