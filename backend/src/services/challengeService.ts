@@ -917,10 +917,27 @@ static async deleteChallenge(id: string) {
       },
       include: {
         challenge: {
-          include: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            category: true,
+            difficulty: true,
+            xpReward: true,
+            startDate: true,
+            endDate: true,
+            image: true,
+            requiredLevel: true,
+            isActive: true,
+            maxParticipants: true,
+            latitude: true,
+            longitude: true,
+            createdAt: true,
+            updatedAt: true,
             stages: {
               orderBy: { order: 'asc' }
-            }
+            },
+            _count: { select: { progress: true } }
           }
         },
         stages: {
@@ -942,7 +959,26 @@ static async deleteChallenge(id: string) {
     const stage = await prisma.stage.findUnique({
       where: { id: validatedData.stageId },
       include: {
-        challenge: true
+        challenge: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            category: true,
+            difficulty: true,
+            xpReward: true,
+            startDate: true,
+            endDate: true,
+            image: true,
+            requiredLevel: true,
+            isActive: true,
+            maxParticipants: true,
+            latitude: true,
+            longitude: true,
+            createdAt: true,
+            updatedAt: true
+          }
+        }
       }
     });
 
@@ -1105,15 +1141,27 @@ static async deleteChallenge(id: string) {
       where,
       include: {
         challenge: {
-          include: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            category: true,
+            difficulty: true,
+            xpReward: true,
+            startDate: true,
+            endDate: true,
+            image: true,
+            requiredLevel: true,
+            isActive: true,
+            maxParticipants: true,
+            latitude: true,
+            longitude: true,
+            createdAt: true,
+            updatedAt: true,
             stages: {
               orderBy: { order: 'asc' }
             },
-            _count: {
-              select: {
-                progress: true
-              }
-            }
+            _count: { select: { progress: true } }
           }
         },
         stages: {
