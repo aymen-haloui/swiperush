@@ -410,21 +410,75 @@ if (this.token) {
 
 
   async createChallenge(data: CreateChallengeRequest): Promise<Challenge> {
-  if (!this.token) {
-    throw new Error("❌ Unauthorized: You must be logged in to create a challenge");
+    if (!this.token) {
+      throw new Error("❌ Unauthorized: You must be logged in to create a challenge");
+    }
+
+    const response = await this.request<Challenge>('/challenges', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    return response.data!;
   }
 
-  const response = await this.request<Challenge>('/challenges', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${this.token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
+  // Uploads a single file as the challenge cover image. Expects multipart/form-data with field `file`.
+  async uploadChallengeImage(challengeId: string, file: File): Promise<{ url: string }> {
+    if (!this.token) throw new Error('Unauthorized');
 
-  return response.data!;
-}
+    const url = `${this.baseURL}/challenges/${challengeId}/image`;
+    const form = new FormData();
+    form.append('file', file);
+
+    const headers: Record<string, string> = {};
+    if (this.token) headers['Authorization'] = `Bearer ${this.token}`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: form,
+    });
+
+    if (!response.ok) {
+      const text = await response.text().catch(() => 'Upload failed');
+      throw new Error(text || `Upload failed with status ${response.status}`);
+    }
+
+    const data = await response.json().catch(() => null);
+    if (!data) throw new Error('Invalid response from upload endpoint');
+    return data.data || data;
+  }
+
+  // Upload a QR image for a specific stage. Expects multipart/form-data field `file`.
+  async uploadStageQr(challengeId: string, stageId: string, file: File): Promise<{ url: string }> {
+    if (!this.token) throw new Error('Unauthorized');
+
+    const url = `${this.baseURL}/challenges/${challengeId}/stages/${stageId}/qr`;
+    const form = new FormData();
+    form.append('file', file);
+
+    const headers: Record<string, string> = {};
+    if (this.token) headers['Authorization'] = `Bearer ${this.token}`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers,
+      body: form,
+    });
+
+    if (!response.ok) {
+      const text = await response.text().catch(() => 'Upload failed');
+      throw new Error(text || `Upload failed with status ${response.status}`);
+    }
+
+    const data = await response.json().catch(() => null);
+    if (!data) throw new Error('Invalid response from upload endpoint');
+    return data.data || data;
+  }
 
   async updateChallenge(id: string, data: Partial<CreateChallengeRequest>): Promise<Challenge> {
     if (!this.token) {

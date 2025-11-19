@@ -281,17 +281,58 @@ const handleSubmit = async (e: React.FormEvent) => {
       stages: validatedStages,
     };
 
+    let createdChallenge;
     if (isEditMode) {
-      await updateChallengeMutation.mutateAsync(challengeData);
+      createdChallenge = await updateChallengeMutation.mutateAsync(challengeData);
     } else {
-      await createChallengeMutation.mutateAsync(challengeData);
+      createdChallenge = await createChallengeMutation.mutateAsync(challengeData);
       toast({
         title: t('notifications.challengeCreated.title'),
         description: t('notifications.challengeCreated.description'),
         duration: 3000,
       });
-      navigate("/admin");
     }
+
+    // If we have a challenge image file, upload it using the multipart endpoint
+    if (challengeImage && createdChallenge?.id) {
+      try {
+        await apiClient.uploadChallengeImage(createdChallenge.id, challengeImage);
+      } catch (err) {
+        console.error('Challenge image upload failed', err);
+        toast({
+          title: t('notifications.uploadFailed.title') || 'Upload failed',
+          description: err instanceof Error ? err.message : 'Challenge image upload failed',
+          duration: 4000,
+          variant: 'destructive',
+        });
+      }
+    }
+
+    // Upload QR files for stages (if any). Match by stage order -> returned stage id.
+    if (createdChallenge?.stages && stages.length > 0) {
+      for (let i = 0; i < stages.length; i++) {
+        const localStage = stages[i];
+        if (localStage.qrCodeFile) {
+          const createdStage = createdChallenge.stages.find(s => s.order === i + 1);
+          if (createdStage) {
+            try {
+              await apiClient.uploadStageQr(createdChallenge.id, createdStage.id, localStage.qrCodeFile);
+            } catch (err) {
+              console.error('Stage QR upload failed', err);
+              toast({
+                title: t('notifications.uploadFailed.title') || 'Upload failed',
+                description: err instanceof Error ? err.message : `Stage ${i + 1} QR upload failed`,
+                duration: 4000,
+                variant: 'destructive',
+              });
+            }
+          }
+        }
+      }
+    }
+
+    // After successful create/update and uploads, navigate back to admin
+    navigate("/admin");
   } catch (err) {
     toast({
       title: isEditMode ? t('notifications.challengeUpdateError.title') : t('notifications.challengeCreateError.title'),
