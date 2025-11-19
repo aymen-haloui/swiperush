@@ -65,7 +65,7 @@ const FloatingShapes = () => {
         prevShapes.map((shape) => {
           let newX = shape.x + shape.speedX;
           let newY = shape.y + shape.speedY;
-          let newRotation = shape.rotation + shape.rotationSpeed;
+          const newRotation = shape.rotation + shape.rotationSpeed;
 
           // Bounce off edges
           if (newX < 0 || newX > window.innerWidth) {
