@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import AvatarWithProgress from "@/components/AvatarWithProgress";
 import { useProfile } from "@/hooks/useApi";
 import { useTranslation } from "react-i18next";
+import { getProgressPercent, xpToNextLevel, getLevelForXp } from "@/lib/levelThresholds";
 
 const Profile: React.FC = () => {
   const { t } = useTranslation();
@@ -17,11 +18,10 @@ const Profile: React.FC = () => {
     );
   }
 
-  const level = profile?.level || 1;
-  const currentLevelXP = (level - 1) * 1000;
-  const nextLevelXP = level * 1000;
   const xp = profile?.xp || 0;
-  const progress = Math.max(0, Math.min(100, ((xp - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100));
+  const level = profile?.level || getLevelForXp(xp);
+  const progress = getProgressPercent(xp);
+  const xpRemaining = xpToNextLevel(xp);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -38,6 +38,8 @@ const Profile: React.FC = () => {
             <div className="mt-4 flex flex-wrap gap-4 text-sm text-muted-foreground">
               <div>{t('profile.level')}: <strong>{level}</strong></div>
               <div>{t('profile.xp')}: <strong>{xp}</strong></div>
+              <div>{t('profile.levelProgress')}: <strong>{progress}%</strong></div>
+              <div>{t('profile.xpToNext') ?? 'XP to next'}: <strong>{xpRemaining}</strong></div>
             </div>
           </div>
         </div>
