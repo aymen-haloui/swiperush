@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate, useParams } from "react-router-dom";
 import { Plus, MapPin, Save, Loader2, X, Trash2, Upload } from "lucide-react";
+import { Progress } from '@/components/ui/progress';
 import Navbar from "@/components/Navbar";
 import { toast } from "@/hooks/use-toast";
 import { useTranslation } from "react-i18next";
@@ -90,6 +91,8 @@ const CreateChallenge = () => {
   const [duration, setDuration] = useState(24);
   const [maxParticipants, setMaxParticipants] = useState<number | undefined>(undefined);
   const [challengeImage, setChallengeImage] = useState<File | null>(null);
+  const [challengeUploadProgress, setChallengeUploadProgress] = useState<number | null>(null);
+  const [stageUploadProgress, setStageUploadProgress] = useState<Record<number, number>>({});
   const [existingImageUrl, setExistingImageUrl] = useState<string | undefined>(undefined);
   const [challengeLocation, setChallengeLocation] = useState<{ lat: number; lng: number } | null>(null);
   
@@ -296,13 +299,14 @@ const handleSubmit = async (e: React.FormEvent) => {
     // If we have a challenge image file, upload it using the multipart endpoint
     if (challengeImage && createdChallenge?.id) {
       try {
-        // Use XHR helper to show progress
-        await (apiClient as any).uploadWithProgress(`/challenges/${createdChallenge.id}/image`, apiClient['token'] || null, challengeImage, (p: number) => {
-          // You can add state to show progress; for now we log
-          console.log('Challenge image upload progress', p);
+        setChallengeUploadProgress(0);
+        await apiClient.uploadWithProgress(`/challenges/${createdChallenge.id}/image`, challengeImage, (p: number) => {
+          setChallengeUploadProgress(p);
         });
+        setChallengeUploadProgress(100);
       } catch (err) {
         console.error('Challenge image upload failed', err);
+        setChallengeUploadProgress(null);
         toast({
           title: t('notifications.uploadFailed.title') || 'Upload failed',
           description: err instanceof Error ? err.message : 'Challenge image upload failed',
@@ -320,11 +324,14 @@ const handleSubmit = async (e: React.FormEvent) => {
           const createdStage = createdChallenge.stages.find(s => s.order === i + 1);
             if (createdStage) {
             try {
-              await (apiClient as any).uploadWithProgress(`/challenges/${createdChallenge.id}/stages/${createdStage.id}/qr`, apiClient['token'] || null, localStage.qrCodeFile!, (p: number) => {
-                console.log(`Stage ${i+1} QR upload`, p);
+              setStageUploadProgress((s) => ({ ...s, [localStage.id]: 0 }));
+              await apiClient.uploadWithProgress(`/challenges/${createdChallenge.id}/stages/${createdStage.id}/qr`, localStage.qrCodeFile!, (p: number) => {
+                setStageUploadProgress((s) => ({ ...s, [localStage.id]: p }));
               });
+              setStageUploadProgress((s) => ({ ...s, [localStage.id]: 100 }));
             } catch (err) {
               console.error('Stage QR upload failed', err);
+              setStageUploadProgress((s) => ({ ...s, [localStage.id]: 0 }));
               toast({
                 title: t('notifications.uploadFailed.title') || 'Upload failed',
                 description: err instanceof Error ? err.message : `Stage ${i + 1} QR upload failed`,
@@ -387,6 +394,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{challengeImage.name}</p>
                       <p className="text-xs text-muted-foreground">{(challengeImage.size / 1024).toFixed(2)} KB</p>
+                        {challengeUploadProgress !== null && (
+                          <div className="mt-2">
+                            <Progress value={challengeUploadProgress} />
+                            <div className="text-xs text-muted-foreground mt-1">{challengeUploadProgress}%</div>
+                          </div>
+                        )}
                     </div>
                     <Button
                       type="button"
@@ -746,6 +759,12 @@ const handleSubmit = async (e: React.FormEvent) => {
                             <p className="text-xs text-muted-foreground">
                               {(stage.qrCodeFile.size / 1024).toFixed(2)} KB
                             </p>
+                            {stageUploadProgress[stage.id] !== undefined && (
+                              <div className="mt-2">
+                                <Progress value={stageUploadProgress[stage.id]} />
+                                <div className="text-xs text-muted-foreground mt-1">{stageUploadProgress[stage.id]}%</div>
+                              </div>
+                            )}
                           </div>
                           <Button
                             type="button"
