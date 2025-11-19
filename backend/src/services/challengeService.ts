@@ -220,12 +220,25 @@ export class ChallengeService {
 
     // Process challenge image if provided
     let challengeImagePath: string | undefined = undefined;
+    let challengeImageBuffer: Buffer | undefined = undefined;
+    let challengeImageMime: string | undefined = undefined;
     if (validatedData.image) {
       // Check if it's a base64 string (starts with data:image/)
       if (validatedData.image.startsWith('data:image/')) {
         try {
           // Save base64 image to file (5MB max for challenge images)
           challengeImagePath = saveBase64Image(validatedData.image, 'challenge', 5);
+          // Also read the saved file into a buffer to store in DB
+          try {
+            const fullPath = path.join(process.env.UPLOAD_DIR || './uploads', challengeImagePath);
+            const buf = fs.readFileSync(fullPath);
+            challengeImageBuffer = buf;
+            // Infer mime from the file extension
+            const ext = path.extname(challengeImagePath).toLowerCase().replace('.', '');
+            challengeImageMime = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+          } catch (err) {
+            console.warn('Could not read saved challenge image for DB storing:', err);
+          }
         } catch (error) {
           throw new Error(
             `Failed to save challenge image: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -234,6 +247,17 @@ export class ChallengeService {
       } else {
         // Assume it's already a file path (for backward compatibility)
         challengeImagePath = validatedData.image;
+        try {
+          const fullPath = path.join(process.env.UPLOAD_DIR || './uploads', challengeImagePath);
+          if (fs.existsSync(fullPath)) {
+            const buf = fs.readFileSync(fullPath);
+            challengeImageBuffer = buf;
+            const ext = path.extname(challengeImagePath).toLowerCase().replace('.', '');
+            challengeImageMime = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+          }
+        } catch (err) {
+          console.warn('Could not read existing challenge image for DB storing:', err);
+        }
       }
     }
 
@@ -248,6 +272,8 @@ export class ChallengeService {
         startDate,
         endDate,
         image: challengeImagePath,
+        imageBytes: challengeImageBuffer,
+        imageMime: challengeImageMime,
         requiredLevel: validatedData.requiredLevel ?? 1,
         maxParticipants: validatedData.maxParticipants,
         latitude: validatedData.latitude,

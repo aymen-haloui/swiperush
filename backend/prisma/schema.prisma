@@ -40,6 +40,8 @@ model Challenge {
   startDate       DateTime
   endDate         DateTime
   image           String?
+  imageBytes      Bytes?
+  imageMime       String?
   requiredLevel   Int                 @default(1)
   isActive        Boolean             @default(true)
   maxParticipants Int?
