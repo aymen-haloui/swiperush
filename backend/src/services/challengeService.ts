@@ -265,7 +265,7 @@ export class ChallengeService {
 
     // Create challenge with stages
     const challenge = await prisma.challenge.create({
-      data: ({
+      data: {
         title: validatedData.title,
         description: validatedData.description,
         category: validatedData.category,
@@ -274,18 +274,14 @@ export class ChallengeService {
         startDate,
         endDate,
         image: challengeImagePath,
-        // imageBytes and imageMime may not be present in generated Prisma types until client is regenerated
-        // cast to any to avoid compile-time type errors; DB will accept null values if fields missing
-        imageBytes: challengeImageBuffer as any,
-        imageMime: challengeImageMime,
         requiredLevel: validatedData.requiredLevel ?? 1,
         maxParticipants: validatedData.maxParticipants,
         latitude: validatedData.latitude,
         longitude: validatedData.longitude,
         stages: {
-          create: stagesData as any
+          create: stagesData
         }
-      }) as any,
+      },
       include: {
         stages: {
           orderBy: { order: 'asc' }
