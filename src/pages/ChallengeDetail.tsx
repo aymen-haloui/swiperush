@@ -311,9 +311,11 @@ const ChallengeDetail = () => {
               </div>
 
               <h1 className="text-4xl font-bold mb-4">{challenge.title}</h1>
-              <p className="text-muted-foreground text-lg mb-6">
-                {challenge.description}
-              </p>
+              <div className="mb-6 flex-1 min-w-0">
+                <p className="text-muted-foreground text-lg leading-relaxed whitespace-pre-wrap break-words">
+                  {challenge.description}
+                </p>
+              </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
