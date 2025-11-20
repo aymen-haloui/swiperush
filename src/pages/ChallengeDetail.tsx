@@ -269,147 +269,164 @@ const ChallengeDetail = () => {
 
       <div className="container mx-auto px-4 py-8">
         {/* Challenge Header */}
-        <div className="glass-card rounded-xl p-8 mb-8 border border-primary/20 overflow-hidden">
-          <div className="flex flex-col md:flex-row gap-6">
-            {/* Challenge Image */}
-            {challenge.image && (
-              <div className="md:w-1/2 h-64 md:h-auto flex-shrink-0">
-                <img
-                  src={challenge.image.startsWith('data:image') || challenge.image.startsWith('http') ? challenge.image : `${UPLOADS_BASE}/uploads/${challenge.image}`}
-                  alt={challenge.title}
-                  className="w-full h-full object-contain bg-muted/10 rounded-lg shadow-lg"
-                  style={{ display: 'block' }}
-                  onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                    try {
-                      const img = e.currentTarget as HTMLImageElement;
-                      console.warn('Image load error:', challenge.image);
-                      // Simple inline SVG placeholder to avoid external dependency
-                      const placeholderSvg = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'><rect fill='%23f8fafc' width='100%' height='100%'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-family='Arial, Helvetica, sans-serif' font-size='28'>Image not available</text></svg>`;
+        <div className="glass-card rounded-xl p-6 md:p-8 mb-8 border border-primary/20 overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+        {/* Challenge Image (left column on desktop, top on mobile) */}
+        {challenge.image && (
+          <div className="w-full md:col-span-1 flex items-start">
+            <img
+          src={
+            challenge.image.startsWith('data:image') || challenge.image.startsWith('http')
+              ? challenge.image
+              : `${UPLOADS_BASE}/uploads/${challenge.image}`
+          }
+          alt={challenge.title}
+          className="w-full h-44 md:h-64 rounded-lg object-cover shadow-lg bg-muted/10"
+          onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+            try {
+              const img = e.currentTarget as HTMLImageElement;
+              console.warn('Image load error:', challenge.image);
+              const placeholderSvg = `<?xml version="1.0" encoding="UTF-8"?><svg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'><rect fill='%23f8fafc' width='100%' height='100%'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-family='Arial, Helvetica, sans-serif' font-size='28'>Image not available</text></svg>`;
 
-                      // Prevent infinite loop: if placeholder already applied, hide the element
-                      if (img.dataset['fallbackApplied'] === '1') {
-                        img.style.display = 'none';
-                        return;
-                      }
+              if (img.dataset['fallbackApplied'] === '1') {
+            img.style.display = 'none';
+            return;
+              }
 
-                      img.src = `data:image/svg+xml;utf8,${encodeURIComponent(placeholderSvg)}`;
-                      img.dataset['fallbackApplied'] = '1';
-                    } catch (err) {
-                      // Fallback: hide image if anything goes wrong
-                      (e.currentTarget as HTMLImageElement).style.display = 'none';
-                    }
-                  }}
-                />
+              img.src = `data:image/svg+xml;utf8,${encodeURIComponent(placeholderSvg)}`;
+              img.dataset['fallbackApplied'] = '1';
+            } catch {
+              (e.currentTarget as HTMLImageElement).style.display = 'none';
+            }
+          }}
+            />
+          </div>
+        )}
+
+        {/* Main content (middle column on desktop, below image on mobile) */}
+        <div className="md:col-span-2 flex flex-col min-w-0">
+          <div className="flex items-center gap-3 mb-3 flex-wrap">
+            <Badge variant="outline">{challenge.category}</Badge>
+            <Badge className="bg-accent text-accent-foreground">
+          {challenge.difficulty?.toUpperCase()}
+            </Badge>
+          </div>
+
+          <h1 className="text-3xl md:text-4xl font-bold mb-3 truncate">
+            {challenge.title}
+          </h1>
+
+          <div className="mb-4">
+            <p className="text-muted-foreground text-base leading-relaxed whitespace-pre-wrap break-words min-w-0">
+          {challenge.description}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            <div>
+          <h4 className="text-sm font-semibold mb-3">{t('challenge.statsTitle')}</h4>
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="flex items-center gap-2">
+              <Trophy className="w-4 h-4 text-accent" />
+              <div>
+            <div className="font-semibold">{challenge.xpReward} XP</div>
+            <div className="text-xs text-muted-foreground">Reward</div>
               </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Users className="w-4 h-4 text-secondary" />
+              <div>
+            <div className="font-semibold">{challenge._count?.progress || 0}{challenge.maxParticipants ? ` / ${challenge.maxParticipants}` : ''}</div>
+            <div className="text-xs text-muted-foreground">Players</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4 text-success" />
+              <div>
+            <div className="font-semibold">{challenge.stages?.length || 0}</div>
+            <div className="text-xs text-muted-foreground">Stages</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-primary" />
+              <div>
+            <div className="font-semibold">{durationDays > 0 ? `${durationDays} days` : `${durationHours} hours`}</div>
+            <div className="text-xs text-muted-foreground">Duration</div>
+              </div>
+            </div>
+          </div>
+            </div>
+
+            <div>
+          <h4 className="text-sm font-semibold mb-3">{t('challenge.scheduleTitle')}</h4>
+          <div className="text-sm text-muted-foreground space-y-1">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4" />
+              <span>Start: {new Date(challenge.startDate).toLocaleDateString()}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4" />
+              <span>End: {new Date(challenge.endDate).toLocaleDateString()}</span>
+            </div>
+            {isChallengeActive && <div className="text-sm text-muted-foreground">{daysLeft} days left</div>}
+            {isChallengeUpcoming && <div className="text-sm text-muted-foreground">Starts in {Math.ceil((startDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days</div>}
+          </div>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <h4 className="text-sm font-semibold mb-3">{t('challenge.locationTitle')}</h4>
+            {challenge.latitude != null && challenge.longitude != null && challenge.latitude !== 0 && challenge.longitude !== 0 ? (
+          <div className="flex items-center gap-3">
+            <MapPin className="w-4 h-4 text-success" />
+            <div className="flex-1 text-sm">
+              <div className="font-semibold">{t('challenge.locationAvailable')}</div>
+              <div className="text-xs text-muted-foreground">{t('challenge.coordinatesHidden')}</div>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 px-3 text-xs"
+              onClick={() => {
+            window.open(
+              `https://www.openstreetmap.org/?mlat=${challenge.latitude}&mlon=${challenge.longitude}&zoom=15`,
+              '_blank',
+              'noopener,noreferrer'
+            );
+              }}
+            >
+              {t('challenge.viewOnMap')}
+            </Button>
+          </div>
+            ) : (
+          <div className="text-sm text-muted-foreground">{t('challenge.noLocation')}</div>
             )}
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-4">
-                <Badge variant="outline">{challenge.category}</Badge>
-                <Badge className="bg-accent text-accent-foreground">
-                  {challenge.difficulty?.toUpperCase()}
-                </Badge>
-              </div>
+          </div>
 
-              <h1 className="text-4xl font-bold mb-4">{challenge.title}</h1>
-              <div className="mb-6 flex-1 min-w-0">
-                <p className="text-muted-foreground text-lg leading-relaxed whitespace-pre-wrap break-words">
-                  {challenge.description}
-                </p>
-              </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <h4 className="text-sm font-semibold mb-3">{t('challenge.statsTitle')}</h4>
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Trophy className="w-4 h-4 text-accent" />
-                      <div>
-                        <div className="font-semibold">{challenge.xpReward} XP</div>
-                        <div className="text-xs text-muted-foreground">Reward</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4 text-secondary" />
-                      <div>
-                        <div className="font-semibold">{challenge._count?.progress || 0}{challenge.maxParticipants ? ` / ${challenge.maxParticipants}` : ''}</div>
-                        <div className="text-xs text-muted-foreground">Players</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-success" />
-                      <div>
-                        <div className="font-semibold">{challenge.stages?.length || 0}</div>
-                        <div className="text-xs text-muted-foreground">Stages</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-primary" />
-                      <div>
-                        <div className="font-semibold">{durationDays > 0 ? `${durationDays} days` : `${durationHours} hours`}</div>
-                        <div className="text-xs text-muted-foreground">Duration</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="text-sm font-semibold mb-3">{t('challenge.scheduleTitle')}</h4>
-                  <div className="text-sm text-muted-foreground space-y-1">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      <span>Start: {new Date(challenge.startDate).toLocaleDateString()}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      <span>End: {new Date(challenge.endDate).toLocaleDateString()}</span>
-                    </div>
-                    {isChallengeActive && <div className="text-sm text-muted-foreground">{daysLeft} days left</div>}
-                    {isChallengeUpcoming && <div className="text-sm text-muted-foreground">Starts in {Math.ceil((startDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))} days</div>}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <h4 className="text-sm font-semibold mb-3">{t('challenge.locationTitle')}</h4>
-                {challenge.latitude != null && challenge.longitude != null && challenge.latitude !== 0 && challenge.longitude !== 0 ? (
-                  <div className="flex items-center gap-3">
-                    <MapPin className="w-4 h-4 text-success" />
-                    <div className="flex-1 text-sm">
-                      <div className="font-semibold">{t('challenge.locationAvailable')}</div>
-                      <div className="text-xs text-muted-foreground">{t('challenge.coordinatesHidden')}</div>
-                    </div>
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      className="h-8 px-3 text-xs"
-                      onClick={() => {
-                        window.open(
-                          `https://www.openstreetmap.org/?mlat=${challenge.latitude}&mlon=${challenge.longitude}&zoom=15`,
-                          '_blank',
-                          'noopener,noreferrer'
-                        );
-                      }}
-                    >
-                      {t('challenge.viewOnMap')}
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="text-sm text-muted-foreground">{t('challenge.noLocation')}</div>
-                )}
-              </div>
-
-              <div className="space-y-2 mb-6">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Overall Progress</span>
-                  <span className="font-semibold">{Math.round(progress)}%</span>
-                </div>
-                <Progress value={progress} className="h-3" />
-              </div>
+          <div className="space-y-2 mb-2">
+            <div className="flex justify-between text-sm">
+          <span className="text-muted-foreground">Overall Progress</span>
+          <span className="font-semibold">{Math.round(progress)}%</span>
             </div>
+            <Progress value={progress} className="h-3" />
+          </div>
+        </div>
 
-            <div className="md:w-80">
-                {/* Right-side info card removed per request */}
+        {/* Right-side compact actions / info (desktop only) */}
+        <div className="hidden md:flex md:flex-col md:col-span-1 gap-4">
+          {/* Kept intentionally light — can add Join/Share/Rules */}
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-3">Quick Actions</div>
+            <div className="flex flex-col gap-2">
+          <Button variant="secondary" onClick={() => navigate(`/challenge/${challenge.id}/rules`)}>
+            View Rules
+          </Button>
+          <Button variant="ghost" onClick={() => navigator.share?.({ title: challenge.title, text: challenge.description })}>
+            Share
+          </Button>
             </div>
+          </Card>
+        </div>
           </div>
         </div>
 
