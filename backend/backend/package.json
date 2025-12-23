@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "pidusage": "^4.0.1"
+  },
+  "scripts": {
+    "load:test": "ts-node scripts/local-load-test.ts"
+  }
+}
