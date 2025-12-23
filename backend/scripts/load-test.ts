@@ -126,7 +126,8 @@ async function main() {
           const s = await hit(ep, token);
           samples.push(s);
         } catch {
-          // Ignore request errors, continue
+          /* ignore errors */
+          void 0;
         }
       }
       // If logged in, also hit profile
@@ -134,7 +135,10 @@ async function main() {
         try {
           const s = await hit({ method: 'GET', path: '/auth/profile' }, token);
           samples.push(s);
-        } catch {}
+        } catch {
+          /* ignore errors */
+          void 0;
+        }
       }
     }
   });
