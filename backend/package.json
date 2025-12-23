@@ -14,7 +14,8 @@
     "db:generate": "npx prisma generate",
     "db:seed": "ts-node prisma/seed.ts",
     "db:studio": "npx prisma studio",
-    "load:test": "ts-node scripts/local-load-test.ts"
+    "load:test": "ts-node scripts/local-load-test.ts",
+    "smoke:login": "ts-node scripts/login-smoke.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.17.1",
