@@ -53,7 +53,7 @@ async function registerAndLogin(userIdx: number) {
     body: JSON.stringify({ email, password })
   });
   if (!loginResp.ok) throw new Error(`Login failed: ${loginResp.status}`);
-  const loginData = await loginResp.json();
+  const loginData: any = await loginResp.json();
   const token = loginData?.data?.token || loginData?.token;
   return token as string;
 }
@@ -78,7 +78,7 @@ async function sampleMetrics() {
   try {
     const resp = await fetch(`${SERVER_BASE}/metrics`);
     if (!resp.ok) return null;
-    const data = await resp.json();
+    const data: any = await resp.json();
     return {
       cpuPercent: Number(data?.cpu?.percent ?? 0),
       rss: Number(data?.memory?.rss ?? 0),
