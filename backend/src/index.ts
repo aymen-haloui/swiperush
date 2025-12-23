@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import { createServer } from 'http';
 import dotenv from 'dotenv';
 import path from 'path';
+import os from 'os';
 
 // Import middleware
 import { 
@@ -104,6 +105,47 @@ app.get('/health', (req, res) => {
     uptime: process.uptime(),
     environment: process.env.NODE_ENV,
     connectedUsers: socketService.getConnectedUsersCount()
+  });
+});
+
+// Lightweight process metrics (CPU/memory) with 1s sampling window
+let lastCpu = process.cpuUsage();
+let lastTime = process.hrtime.bigint();
+let cpuPercent = 0;
+const cores = Math.max(1, os.cpus()?.length || 1);
+setInterval(() => {
+  const nowCpu = process.cpuUsage();
+  const nowTime = process.hrtime.bigint();
+  const deltaUser = nowCpu.user - lastCpu.user;
+  const deltaSys = nowCpu.system - lastCpu.system;
+  const deltaMicros = deltaUser + deltaSys; // microseconds used by this process
+  const deltaMs = Number((nowTime - lastTime) / BigInt(1_000_000));
+  const percent = deltaMs > 0 ? ((deltaMicros / 1000) / (deltaMs * cores)) * 100 : 0;
+  cpuPercent = Math.min(100, Math.max(0, percent));
+  lastCpu = nowCpu;
+  lastTime = nowTime;
+}, 1000);
+
+app.get('/metrics', (req, res) => {
+  const mem = process.memoryUsage();
+  res.json({
+    timestamp: new Date().toISOString(),
+    pid: process.pid,
+    cpu: {
+      percent: Number(cpuPercent.toFixed(2)),
+      userMicros: lastCpu.user,
+      systemMicros: lastCpu.system,
+      cores,
+    },
+    memory: {
+      rss: mem.rss,
+      heapTotal: mem.heapTotal,
+      heapUsed: mem.heapUsed,
+      external: (mem as any).external,
+      arrayBuffers: (mem as any).arrayBuffers,
+    },
+    uptime: process.uptime(),
+    env: process.env.NODE_ENV,
   });
 });
 
