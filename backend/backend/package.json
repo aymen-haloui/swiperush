@@ -4,5 +4,8 @@
   },
   "scripts": {
     "load:test": "ts-node scripts/local-load-test.ts"
+  },
+  "dependencies": {
+    "challengequest-backend": "file:.."
   }
 }
